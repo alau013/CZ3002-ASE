@@ -61,4 +61,14 @@ public class gyroManager : MonoBehaviour
         return rotation;
     }
 
+    void GyroModifyCamera()
+    {
+        transform.rotation = GyroToUnity(Input.gyro.attitude);
+    }
+
+    private static Quaternion GyroToUnity(Quaternion q)
+    {
+        return new Quaternion(q.x, q.y, -q.z, -q.w);
+    }
+
 }

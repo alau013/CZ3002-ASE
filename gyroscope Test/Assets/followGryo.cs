@@ -17,4 +17,6 @@ public class followGryo : MonoBehaviour
     {
        transform.localRotation = gyroManager.Instance.GetGryoRotation() * baseRotation; 
     }
+
+    
 }
