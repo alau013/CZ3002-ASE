@@ -25,6 +25,9 @@ public class LeaderboardScript : MonoBehaviour
             new LeaderboardEntry{score = 76, name = "jaslyn97"},
             new LeaderboardEntry{score = 67, name = "anotherPlayer2"},
             new LeaderboardEntry{score = 31, name = "bondJames"},
+            new LeaderboardEntry{score = 21, name = "randomPlay1"},
+            new LeaderboardEntry{score = 20, name = "platypus"},
+            new LeaderboardEntry{score = 15, name = "doraemon"},
         };
 
         leaderboardEntryTransformList = new List<Transform>();
