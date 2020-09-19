@@ -4,40 +4,31 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -3081339826765052375
-    second: RedQuestion
+    second: RedRight
   - first:
       213: -2823202251401723664
-    second: GreenQuestion
+    second: GreenRight
   - first:
       213: 1131935511247659663
-    second: YellowQuestion
+    second: YellowRight
   - first:
       213: -5731396717161615682
-    second: BlueQuestion
+    second: BlueRight
   - first:
       213: -7305605870587295932
-    second: RedReplay
+    second: RedLeft
   - first:
       213: 3749690277163349949
-    second: GreenReplay
+    second: GreenLeft
   - first:
       213: -2354599989249271683
-    second: YellowReplay
+    second: YellowLeft
   - first:
       213: 5955374641869914063
-    second: BlueReplay
+    second: BlueLeft
   - first:
       213: -6498203283847595383
-    second: RedLeftArrow
-  - first:
-      213: 3620537561413376388
-    second: GreenLeftArrow
-  - first:
-      213: -2798355927708327844
-    second: YellowLeftArrow
-  - first:
-      213: 7914235688049830298
-    second: BlueLeftArrow
+    second: Iconic1024x1024_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -137,15 +128,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RedQuestion
+      name: RedRight
       rect:
         serializedVersion: 2
-        x: 367
-        y: 479
+        x: 72
+        y: 476
         width: 68
-        height: 67
+        height: 70
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -158,15 +149,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GreenQuestion
+      name: GreenRight
       rect:
         serializedVersion: 2
-        x: 437
-        y: 479
-        width: 72
-        height: 67
+        x: 144
+        y: 478
+        width: 69
+        height: 68
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -179,15 +170,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YellowQuestion
+      name: YellowRight
       rect:
         serializedVersion: 2
-        x: 511
+        x: 218
         y: 479
-        width: 74
-        height: 67
+        width: 68
+        height: 70
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -200,15 +191,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlueQuestion
+      name: BlueRight
       rect:
         serializedVersion: 2
-        x: 587
-        y: 479
-        width: 71
-        height: 67
+        x: 291
+        y: 477
+        width: 72
+        height: 71
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -221,36 +212,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RedReplay
+      name: GreenLeft
       rect:
         serializedVersion: 2
-        x: 367
-        y: 773
+        x: 147
+        y: 404
         width: 68
-        height: 69
+        height: 68
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 447c2aeda264d9a90800000000000000
-      internalID: -7305605870587295932
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GreenReplay
-      rect:
-        serializedVersion: 2
-        x: 439
-        y: 773
-        width: 71
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -263,15 +233,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: YellowReplay
+      name: YellowLeft
       rect:
         serializedVersion: 2
-        x: 515
-        y: 774
-        width: 69
-        height: 69
+        x: 217
+        y: 406
+        width: 73
+        height: 67
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -284,15 +254,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BlueReplay
+      name: BlueLeft
       rect:
         serializedVersion: 2
-        x: 589
-        y: 774
-        width: 68
-        height: 67
+        x: 295
+        y: 404
+        width: 69
+        height: 68
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -305,13 +275,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RedLeftArrow
+      name: RedLeft
       rect:
         serializedVersion: 2
-        x: 70
-        y: 403
+        x: 71
+        y: 405
         width: 69
-        height: 69
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -319,71 +289,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98abcf3da8eb1d5a0800000000000000
-      internalID: -6498203283847595383
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GreenLeftArrow
-      rect:
-        serializedVersion: 2
-        x: 142
-        y: 403
-        width: 71
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 489d00ccabbbe3230800000000000000
-      internalID: 3620537561413376388
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: YellowLeftArrow
-      rect:
-        serializedVersion: 2
-        x: 216
-        y: 402
-        width: 71
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c5026dd2c1e3a29d0800000000000000
-      internalID: -2798355927708327844
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BlueLeftArrow
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 402
-        width: 75
-        height: 71
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a99ede64d6305dd60800000000000000
-      internalID: 7914235688049830298
+      spriteID: 447c2aeda264d9a90800000000000000
+      internalID: -7305605870587295932
       vertices: []
       indices: 
       edges: []
