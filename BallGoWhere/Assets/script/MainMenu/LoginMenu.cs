@@ -11,9 +11,11 @@ public class LoginMenu : MonoBehaviour
     public void Login()
     {
         string deviceID = SystemInfo.deviceUniqueIdentifier;
+        string nameStr = username.text;
+
         Debug.Log("[Login] button clicketty click! Accessing LoginMenu.cs");
         
-        Debug.Log(username.text +" on device: "+ deviceID);
+        Debug.Log(nameStr +" on device: "+ deviceID);
 
         //Insert login authentication stuff
 
