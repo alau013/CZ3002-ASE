@@ -6,6 +6,9 @@ using TMPro;
 
 public class LeaderboardScript : MonoBehaviour
 {
+    private Transform scrollView;
+    private Transform viewPort;
+
     private Transform entryContainer;
     private Transform entryTemplate;
     private List<LeaderboardEntry> leaderboardEntryList;
@@ -13,8 +16,13 @@ public class LeaderboardScript : MonoBehaviour
 
     private void Awake()
     {
-        entryContainer = transform.Find("EntryContainer");
+        scrollView = transform.Find("Scroll View");
+        viewPort = scrollView.Find("Viewport");
+        entryContainer = viewPort.Find("Content");
         entryTemplate = entryContainer.Find("EntryTemplate");
+
+       //entryContainer = transform.Find("Content");
+        //entryTemplate = entryContainer.Find("EntryTemplate");
         entryTemplate.gameObject.SetActive(false);
 
         leaderboardEntryList = new List<LeaderboardEntry>()
