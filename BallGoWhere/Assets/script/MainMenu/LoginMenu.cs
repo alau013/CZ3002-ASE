@@ -10,8 +10,10 @@ public class LoginMenu : MonoBehaviour
     public TMP_Text display; //from mainmenu
     public void Login()
     {
+        string deviceID = SystemInfo.deviceUniqueIdentifier;
         Debug.Log("[Login] button clicketty click! Accessing LoginMenu.cs");
-        Debug.Log(username.text);
+        
+        Debug.Log(username.text +" on device: "+ deviceID);
 
         //Insert login authentication stuff
 
