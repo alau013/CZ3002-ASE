@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour
         //BeginGame();
     }
 
-    private void EndGame()
+    public void EndGame()
     {
         gamePlaying = false;
     }
