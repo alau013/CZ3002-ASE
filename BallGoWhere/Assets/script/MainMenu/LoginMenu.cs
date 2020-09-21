@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LoginMenu : MonoBehaviour
 {
+    public GameObject LoginScreen;
+    public GameObject MainScreen;
     public TMP_InputField username;
     public TMP_Text display; //from mainmenu
+    public static Boolean loginSuccess = false;
+    public static string playerName = null;
+    private void Awake()
+    {
+        if (loginSuccess)
+        {
+            LoginScreen.SetActive(false);
+            MainScreen.SetActive(true);
+        }
+    }
     public void Login()
     {
         string deviceID = SystemInfo.deviceUniqueIdentifier;
@@ -19,8 +32,25 @@ public class LoginMenu : MonoBehaviour
 
         //Insert login authentication stuff
 
-        //After successful login, display welcome msg in menu screen.
-        string welcomeMsg = "Welcome! " + username.text;
-        display.text = welcomeMsg;
+        //After successful login, set display msg in MainScreen
+        LoginMenu.loginSuccess = true;
+        if (loginSuccess)
+        {
+            LoginMenu.playerName = nameStr;
+            Debug.Log(playerName + "logged in");
+            string welcomeMsg = "Welcome " + playerName+"!";
+            display.text = welcomeMsg;
+            LoginScreen.SetActive(false);
+            MainScreen.SetActive(true);
+            
+        }
     }
+
+    public static void LogOut()
+    {
+        LoginMenu.loginSuccess = false;
+        LoginMenu.playerName = null;
+    }
+
+   
 }

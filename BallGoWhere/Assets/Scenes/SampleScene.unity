@@ -2528,10 +2528,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1668278095}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1668278097}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: ToDashboard
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2539,18 +2539,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1008538217}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &312483404
 MonoBehaviour:
@@ -4300,45 +4288,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1668278097}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: GamePlay
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: ToSelect
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
-      - m_Target: {fileID: 1495481639}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1411970715}
-        m_TargetAssemblyTypeName: ChangeScene, Assembly-CSharp
-        m_MethodName: btn_change_scene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: level 1
-          m_BoolArgument: 0
-        m_CallState: 0
-      - m_Target: {fileID: 1668278095}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5022,7 +4974,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 928128426}
         m_TargetAssemblyTypeName: 
         m_MethodName: SetActive
@@ -5034,7 +4986,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 928128428}
         m_TargetAssemblyTypeName: 
         m_MethodName: Login
@@ -5442,6 +5394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dd9a3d34ca655b4798553b6903eeaae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoginScreen: {fileID: 928128426}
+  MainScreen: {fileID: 1668278095}
   username: {fileID: 34679983}
   display: {fileID: 1064351642}
 --- !u!1 &947889948
@@ -6146,6 +6100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba07e49870119a4781bc6f6b4d53ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  display: {fileID: 0}
+  MenuScreen: {fileID: 0}
+  SelectScreen: {fileID: 0}
+  LeaderboardsScreen: {fileID: 0}
+  DashboardScreen: {fileID: 0}
+  LoginScreen: {fileID: 0}
 --- !u!1 &1034874441
 GameObject:
   m_ObjectHideFlags: 0
@@ -6792,22 +6752,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1850949410}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1668278095}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1668278097}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: ToLeaderboards
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9808,6 +9756,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba07e49870119a4781bc6f6b4d53ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  display: {fileID: 0}
+  MenuScreen: {fileID: 0}
+  SelectScreen: {fileID: 0}
+  LeaderboardsScreen: {fileID: 0}
+  DashboardScreen: {fileID: 0}
+  LoginScreen: {fileID: 0}
 --- !u!1 &1540598787
 GameObject:
   m_ObjectHideFlags: 0
@@ -10727,8 +10681,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1668278097}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: QuitGame
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: ToLogOut
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10958,6 +10912,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba07e49870119a4781bc6f6b4d53ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  display: {fileID: 1064351642}
+  MenuScreen: {fileID: 1668278095}
+  SelectScreen: {fileID: 1495481639}
+  LeaderboardsScreen: {fileID: 1850949410}
+  DashboardScreen: {fileID: 1008538217}
+  LoginScreen: {fileID: 928128426}
 --- !u!1 &1681896867
 GameObject:
   m_ObjectHideFlags: 0
