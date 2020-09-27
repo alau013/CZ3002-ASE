@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class ChallengesScript : MonoBehaviour
 {
@@ -27,6 +29,8 @@ public class ChallengesScript : MonoBehaviour
             new ChallengeEntry{state = "WIN", oppName = "ahHuat10", oppTiming="00:30",timing="00:25",level=3},
             new ChallengeEntry{state = "WIN", oppName = "player179", oppTiming="01:10",timing="00:50",level=2},
             new ChallengeEntry{state = "LOSS", oppName = "doraemon", oppTiming="01:00",timing="02:30",level=4},
+            new ChallengeEntry{state = "START", oppName = "doraemon", oppTiming="00:55",timing="",level=3},
+            new ChallengeEntry{state = "START", oppName = "randomPlay1", oppTiming="02:00",timing="",level=4},
         };
 
         challengeEntryTransformList = new List<Transform>();
@@ -54,11 +58,21 @@ public class ChallengesScript : MonoBehaviour
 
         //set pos,name and score for each row.
 
-        entryTransform.Find("challengeStateText").GetComponent<TMP_Text>().text = state;
+        entryTransform.Find("stateButton").GetComponentInChildren<TMP_Text>().text = state;
         entryTransform.Find("oppNameText").GetComponent<TMP_Text>().text = oppName;
-        entryTransform.Find("oppTimingText").GetComponent<TMP_Text>().text = oppTiming;
-        entryTransform.Find("timingText").GetComponent<TMP_Text>().text = timing;
         entryTransform.Find("challengeLevelText").GetComponent<TMP_Text>().text = level.ToString();
+
+        if (state == "WIN" || state =="LOSS") 
+        {
+            UnityEngine.UI.Button stateButton = entryTransform.Find("stateButton").GetComponent<UnityEngine.UI.Button>();
+            stateButton.interactable = false;
+            entryTransform.Find("oppTimingText").GetComponent<TMP_Text>().text = oppTiming;
+            entryTransform.Find("timingText").GetComponent<TMP_Text>().text = timing;
+        }
+        else
+        {
+
+        }
 
         transformList.Add(entryTransform);
     }
@@ -66,7 +80,7 @@ public class ChallengesScript : MonoBehaviour
 
     private class ChallengeEntry
     {
-        public string state; //"WIN", "LOSS", "PENDING"
+        public string state; //"WIN", "LOSS", "START"
         public string oppName;
         public string oppTiming;
         public string timing;
