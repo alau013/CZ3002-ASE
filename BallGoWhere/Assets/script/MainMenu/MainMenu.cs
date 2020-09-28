@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class MainMenu : MonoBehaviour
     public GameObject ChallengesScreen;
     public GameObject DashboardScreen;
     public GameObject LoginScreen;
-
+    public GameObject HelpScreen;
+    private bool helpToggle = false;
     private void Awake()
     {
         //Ensure that display message is set to player's name when active.
@@ -63,5 +65,11 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("[Quit] button clicketty click! Accessing MainMenu.cs");
         Application.Quit();
+    }
+
+    public void ToHelp()
+    {
+        HelpScreen.SetActive(!helpToggle);
+        helpToggle = !helpToggle;
     }
 }
