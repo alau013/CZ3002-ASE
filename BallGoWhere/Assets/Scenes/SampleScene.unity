@@ -2552,7 +2552,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1668278097}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: ToDashboard
+        m_MethodName: ToChallenges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2755,7 +2755,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 360836324}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1668278097}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: ToDashboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &360836324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4296,7 +4308,7 @@ GameObject:
   - component: {fileID: 687524119}
   - component: {fileID: 687524118}
   m_Layer: 5
-  m_Name: QuitButtonText
+  m_Name: LogOutButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11367,6 +11379,7 @@ MonoBehaviour:
   MenuScreen: {fileID: 0}
   SelectScreen: {fileID: 0}
   LeaderboardsScreen: {fileID: 0}
+  ChallengesScreen: {fileID: 0}
   DashboardScreen: {fileID: 0}
   LoginScreen: {fileID: 0}
 --- !u!1 &1527897719
@@ -12834,7 +12847,7 @@ GameObject:
   - component: {fileID: 1649237232}
   - component: {fileID: 1649237231}
   m_Layer: 5
-  m_Name: QuitButton
+  m_Name: LogOutButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13141,7 +13154,8 @@ MonoBehaviour:
   MenuScreen: {fileID: 1668278095}
   SelectScreen: {fileID: 1495481639}
   LeaderboardsScreen: {fileID: 1850949410}
-  DashboardScreen: {fileID: 1008538217}
+  ChallengesScreen: {fileID: 1008538217}
+  DashboardScreen: {fileID: 1064131632}
   LoginScreen: {fileID: 928128426}
 --- !u!1 &1681896867
 GameObject:

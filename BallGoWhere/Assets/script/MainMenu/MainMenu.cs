@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     public GameObject MenuScreen;
     public GameObject SelectScreen;
     public GameObject LeaderboardsScreen;
+    public GameObject ChallengesScreen;
     public GameObject DashboardScreen;
     public GameObject LoginScreen;
 
@@ -44,6 +45,12 @@ public class MainMenu : MonoBehaviour
     {
         MenuScreen.SetActive(false);
         DashboardScreen.SetActive(true);
+    }
+
+    public void ToChallenges()
+    {
+        MenuScreen.SetActive(false);
+        ChallengesScreen.SetActive(true);
     }
 
     public void ToLogOut()
