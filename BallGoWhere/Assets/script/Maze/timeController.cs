@@ -46,6 +46,7 @@ public class timeController : MonoBehaviour
        while (timerGoing)
        {
            elapsedTime += Time.deltaTime;
+           //Debug.Log("Countdown: " + elapsedTime.ToString("f0"));
            timePlaying = TimeSpan.FromSeconds(elapsedTime);
            string timePlayingStr = "Time: "+ timePlaying.ToString("mm':'ss'.'ff");
            timeCounter.text = timePlayingStr;
@@ -54,5 +55,11 @@ public class timeController : MonoBehaviour
        }
    }
 
+   public int GetPlayTime()
+   {
+       elapsedTime += Time.deltaTime;
+       return Mathf.FloorToInt(elapsedTime);  
+        
+   }
 
 }

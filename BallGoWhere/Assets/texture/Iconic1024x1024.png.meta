@@ -244,7 +244,7 @@ TextureImporter:
     second: Iconic1024x1024_71
   - first:
       213: 6931065665610225486
-    second: Iconic1024x1024_72
+    second: next button
   - first:
       213: -4427995149436953102
     second: Iconic1024x1024_73
@@ -2105,7 +2105,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Iconic1024x1024_72
+      name: next button
       rect:
         serializedVersion: 2
         x: 72

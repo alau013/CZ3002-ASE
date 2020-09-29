@@ -38,5 +38,12 @@ public class PauseFunction : MonoBehaviour
         GameController.instance.EndGame();
     }
 
+    public void nextGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        GameController.instance.EndGame();
+    }
+
     
 }
