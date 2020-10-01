@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerPrefUI : MonoBehaviour
@@ -12,11 +13,87 @@ public class PlayerPrefUI : MonoBehaviour
     public int dailyAttempts = 0; //no. of attempted levels today
     public string lastActive; //datetime string from last level attempt
 
-    
+    #region Getters Setters
 
-    public void Save()
+    public void setUsername(string playerName)
     {
-        string playerID; //might change as players are added/removed. only used for internal identification purposes.
+        this.username = playerName;
+
+    }
+
+    public string getUsername()
+    {
+        return this.username;
+    }
+
+    public void addStreak()
+    {
+        this.streak += 1;
+    }
+
+    public void resetStreak()
+    {
+        this.streak = 0;
+    }
+
+    public int getStreak()
+    {
+        return this.streak;
+    }
+
+    public float getDailyPlay()
+    {
+        return this.dailyPlay;
+    }
+
+    public void resetDailyPlay()
+    {
+        this.dailyPlay = 0;
+    }
+
+    public int getLevel()
+    {
+        return this.level;
+    }
+
+    public void addLevel(int num)
+    {
+        this.level += num;
+    }
+
+    
+    public int getDailyAttempts()
+    {
+        return this.dailyAttempts;
+    }
+
+    public void addDailyAttempts()
+    {
+        this.dailyAttempts += 1;
+    }
+
+    public void resetDailyAttempts()
+    {
+        this.dailyAttempts = 0;
+    }
+
+    public void updateLastActive()
+    {
+        this.lastActive = System.DateTime.Now.ToString();
+    }
+
+    public string getLastActive()
+    {
+        return this.lastActive;
+    }
+
+    #endregion
+
+    #region Methods
+
+    public void Save() //save PlayerPrefUI current variables to the PlayerPrefs file. Call this after you've set the variables to what you want.
+    {
+        string playerID; //might change as players are added/removed. only used for internal purposes.
 
         if (PlayerPrefs.HasKey("NumPlayers") == false)
         {
@@ -56,4 +133,24 @@ public class PlayerPrefUI : MonoBehaviour
             print("[PlayerPrefUI]: " + "BEEEP boop BEEP error detected! Invalid playername!");
         }
     }
+
+    
+    public List<string> availablePlayers() //returns list of player names previously used
+    {
+        List<string> newList = new List<string>();
+        if (PlayerPrefs.HasKey("StrPlayers"))
+        {
+            List<string> idList = PlayerPrefs.GetString("StrPlayers").Split(' ').ToList();
+            foreach (string playerID in idList)
+            {
+                newList.Add(PlayerPrefs.GetString(playerID));
+            }
+
+        }
+        return newList;
+    }
+
+    #endregion
+
+
 }
