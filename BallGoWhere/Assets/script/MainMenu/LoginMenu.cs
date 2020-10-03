@@ -7,6 +7,7 @@ using System;
 
 public class LoginMenu : MonoBehaviour
 {
+    public GameObject APIObject;
     public GameObject PrefObject;
     public GameObject LoginScreen;
     public GameObject MainScreen;
@@ -96,6 +97,11 @@ public class LoginMenu : MonoBehaviour
         Debug.Log("[Login] button clicketty click! Accessing LoginMenu.cs");
         
         Debug.Log(nameStr +" on device: "+ deviceID);
+
+        //Test for accessing api endpoint - very important chuck norris api in this example :)
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        AccessAPI.GetChuckling();
+        //test above
 
         if (nameStr != "")
         {

@@ -63,6 +63,7 @@
     <Compile Include="Assets\script\MainMenu\LoginMenu.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\script\MainMenu\PlayerPrefUI.cs" />
     <Compile Include="Assets\script\Maze\PauseFunction.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
@@ -104,7 +105,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\script\Maze\Goal.cs" />
     <Compile Include="Assets\script\MainMenu\DashboardScript.cs" />
-    <Compile Include="Assets\script\MainMenu\PlayerPrefUI.cs" />
+    <Compile Include="Assets\script\MainMenu\APIScript.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
