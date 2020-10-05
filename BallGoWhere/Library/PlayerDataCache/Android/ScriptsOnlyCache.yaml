@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - APIScript
     - CameraFollow
     - ChallengesScript
     - ChangeScene
@@ -104,35 +105,37 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12690}
     - Class: 114
-      Script: {instanceID: 12932}
+      Script: {instanceID: 12806}
     - Class: 114
-      Script: {instanceID: 12996}
+      Script: {instanceID: 12934}
     - Class: 114
-      Script: {instanceID: 13038}
+      Script: {instanceID: 12998}
     - Class: 114
-      Script: {instanceID: 13046}
+      Script: {instanceID: 13040}
     - Class: 114
-      Script: {instanceID: 13190}
+      Script: {instanceID: 13048}
     - Class: 114
-      Script: {instanceID: 13194}
+      Script: {instanceID: 13192}
     - Class: 114
-      Script: {instanceID: 13212}
+      Script: {instanceID: 13196}
     - Class: 114
-      Script: {instanceID: 13240}
+      Script: {instanceID: 13214}
     - Class: 114
-      Script: {instanceID: 13450}
+      Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13518}
+      Script: {instanceID: 13452}
     - Class: 114
-      Script: {instanceID: 13712}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13830}
+      Script: {instanceID: 13714}
     - Class: 114
-      Script: {instanceID: 13936}
+      Script: {instanceID: 13832}
     - Class: 114
-      Script: {instanceID: 13940}
+      Script: {instanceID: 13938}
     - Class: 114
-      Script: {instanceID: 13976}
+      Script: {instanceID: 13942}
+    - Class: 114
+      Script: {instanceID: 13978}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -197,21 +200,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12464}
     - Class: 114
-      Script: {instanceID: 12932}
+      Script: {instanceID: 12934}
     - Class: 114
-      Script: {instanceID: 13240}
+      Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13334}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13518}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13556}
+      Script: {instanceID: 13558}
     - Class: 114
-      Script: {instanceID: 13742}
+      Script: {instanceID: 13744}
     - Class: 114
-      Script: {instanceID: 13870}
+      Script: {instanceID: 13872}
     - Class: 114
-      Script: {instanceID: 13940}
+      Script: {instanceID: 13942}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -274,23 +277,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12464}
     - Class: 114
-      Script: {instanceID: 12932}
+      Script: {instanceID: 12934}
     - Class: 114
-      Script: {instanceID: 13240}
+      Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13334}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13518}
+      Script: {instanceID: 13520}
     - Class: 114
-      Script: {instanceID: 13556}
+      Script: {instanceID: 13558}
     - Class: 114
-      Script: {instanceID: 13742}
+      Script: {instanceID: 13744}
     - Class: 114
-      Script: {instanceID: 13870}
+      Script: {instanceID: 13872}
     - Class: 114
-      Script: {instanceID: 13876}
+      Script: {instanceID: 13878}
     - Class: 114
-      Script: {instanceID: 13940}
+      Script: {instanceID: 13942}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -492,7 +495,7 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 0a88aa5a5f83d005ee6cb72690d571b5
+      Hash: e2e2c54fdd63349b6798274c49428040
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LoginMenu
@@ -616,6 +619,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: APIScript
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -990,7 +999,7 @@ ScriptsOnlyBuild:
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: 1ccf664f2bd2307f01c3715cc2c53591
+      Hash: fe9dc9d329dbdf7077dd3450b0bb8785
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DashboardScript
@@ -1035,4 +1044,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/level 1.unity
   - Assets/Scenes/Special Level.unity
-  playerPath: C:/Users/whate/Documents/GitHub/CZ3002-ASE/BallGoWhere/BallGoWhereV5.apk
+  playerPath: C:/Users/whate/Documents/GitHub/CZ3002-ASE/BallGoWhere/BallGoWhereV6.apk

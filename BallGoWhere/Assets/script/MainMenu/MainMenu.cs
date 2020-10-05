@@ -17,14 +17,14 @@ public class MainMenu : MonoBehaviour
     public GameObject LoginScreen;
     public GameObject HelpScreen;
     private bool helpToggle = false;
-    private void Awake()
+
+    public void OnEnable()
     {
         //Ensure that display message is set to player's name when active.
         if (display != null)
         {
-            display.text = "Welcome "+LoginMenu.playerName + "!";
+            display.text = "Welcome " + LoginMenu.playerName + "!";
         }
-        
     }
 
     public void ToSelect()

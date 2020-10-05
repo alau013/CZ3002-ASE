@@ -5,10 +5,10 @@ using UnityEngine;
 using System.Net;
 using System;
 using System.IO;
+using TMPro;
 
 public class APIScript : MonoBehaviour
 {
-    
     public ChuckNorris GetChuckling()
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
