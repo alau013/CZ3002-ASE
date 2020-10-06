@@ -58,7 +58,7 @@ public class LoginMenu : MonoBehaviour
             usernamesList = playerInfo.availablePlayers();
             if (usernamesList.Count > 0)
             {
-                Debug.Log("usernamesList Count: " + usernamesList.Count.ToString());
+                //Debug.Log("usernamesList Count: " + usernamesList.Count.ToString());
                 foreach (string username in usernamesList)
                 {
                     loginEntryList.Add(new LoginEntry { name = username });
@@ -69,7 +69,6 @@ public class LoginMenu : MonoBehaviour
             loginEntryTransformList = new List<Transform>();
             if (loginEntryList.Count > 0)
             {
-                Debug.Log("loginEntryList old Count: " + loginEntryList.Count);
                 ResetContent(entryContainer);
                 foreach (LoginEntry loginEntry in loginEntryList)
                 {
@@ -181,7 +180,6 @@ public class LoginMenu : MonoBehaviour
     //Represents a single leaderboard entry
     private void CreateLoginEntryTransform(LoginEntry loginEntry, Transform container, List<Transform> transformList)
     {
-        Debug.Log("[CreateLoginEntryTransform] transformList count: " + transformList.Count.ToString());
         float templateHeight = 60f;
         //generate objects for each row
         Transform entryTransform = Instantiate(entryTemplate, container);

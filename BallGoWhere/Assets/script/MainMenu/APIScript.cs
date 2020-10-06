@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 public class APIScript : MonoBehaviour
 {
     public int timeOut = 2;
+    public string localHostIp = "192.168.1.15";
     public ChuckNorris GetChuckling()
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
@@ -42,36 +43,51 @@ public class APIScript : MonoBehaviour
     }
     */
 
-    public ArrayList GetLeaderboard()
+    public async Task<ArrayList> GetLeaderboard()
     {
-        ArrayList resultsList = new ArrayList();
-        Boolean flag;
-        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
-        string apiLink = String.Format("http://localhost:3000/score/leaderboard/weekly?date=\"{0}\"", dateStr);
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
-        HttpWebResponse response;
-        var task = Task.Run(() => request.GetResponse()); 
-        if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+        try
         {
-            response = (HttpWebResponse) task.Result;
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-            string jsonResponse = reader.ReadToEnd();
-            LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
-            flag = true;
-            resultsList.Add(flag);
-            resultsList.Add(info);
-            return resultsList;
-        }
-
-        else
-        {
-            Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
-            flag = false;
-            resultsList.Add(flag);
-            return resultsList;
-            throw new Exception("Timed out");
+            ArrayList resultsList = new ArrayList();
+            Boolean flag;
+            String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
+            string apiLink = String.Format("http://{0}:3000/score/leaderboard/weekly?date=\"{1}\"", this.localHostIp,dateStr);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
+            HttpWebResponse response;
+            //HttpWebResponse response =(HttpWebResponse) request.GetResponse();
+            //return resultsList;
             
+            var task = Task.Run(async () => await request.GetResponseAsync());
+            if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+            {
+                response = (HttpWebResponse)task.Result;
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string jsonResponse = reader.ReadToEnd();
+                LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
+                flag = true;
+                resultsList.Add(flag);
+                resultsList.Add(info);
+                return resultsList;
+            }
+
+            else
+            {
+                Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
+                flag = false;
+                resultsList.Add(flag);
+                return resultsList;
+                throw new Exception("Timed out");
+
+            }
+
         }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            throw;
+
+        }
+        
+        
             
 
     }

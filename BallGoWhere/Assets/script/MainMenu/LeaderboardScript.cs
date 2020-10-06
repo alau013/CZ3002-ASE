@@ -61,7 +61,8 @@ public class LeaderboardScript : MonoBehaviour
         leaderboardEntryTransformList = new List<Transform>();
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         //LeaderboardAPI info = AccessAPI.GetBoard();
-        ArrayList results = AccessAPI.GetLeaderboard();
+        //ArrayList results = AccessAPI.GetLeaderboard();
+        ArrayList results = AccessAPI.GetLeaderboard().Result;
         ResetContent(entryContainer);
 
         if (results[0].Equals(true) && results.Count>1)
