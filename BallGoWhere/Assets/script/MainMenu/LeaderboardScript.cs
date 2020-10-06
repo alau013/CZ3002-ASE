@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Threading.Tasks;
 public class LeaderboardScript : MonoBehaviour
 {
     private Transform scrollView;
     private Transform viewPort;
     public GameObject APIObject;
+    public GameObject LeaderboardError;
 
     private Transform entryContainer;
     private Transform entryTemplate;
@@ -56,24 +57,39 @@ public class LeaderboardScript : MonoBehaviour
         entryTemplate = entryContainer.Find("EntryTemplate");
         entryTemplate.gameObject.SetActive(false);
 
-        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        LeaderboardAPI info = AccessAPI.GetBoard();
         leaderboardEntryList = new List<LeaderboardEntry>();
         leaderboardEntryTransformList = new List<Transform>();
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        //LeaderboardAPI info = AccessAPI.GetBoard();
+        ArrayList results = AccessAPI.GetLeaderboard();
+        ResetContent(entryContainer);
 
-        foreach (BoardEntryAPI item in info.board)
+        if (results[0].Equals(true) && results.Count>1)
         {
-            leaderboardEntryList.Add(new LeaderboardEntry { score = item.score, name = item.name });
-        }
-        if (leaderboardEntryList.Count > 0)
-        {
-            ResetContent(entryContainer);
-            foreach (LeaderboardEntry leaderboardEntry in leaderboardEntryList)
+            LeaderboardError.SetActive(false);
+            LeaderboardAPI info = (LeaderboardAPI)results[1];
+            foreach (BoardEntryAPI item in info.board)
             {
-                CreateLeaderboardEntryTransform(leaderboardEntry, entryContainer, leaderboardEntryTransformList);
+                leaderboardEntryList.Add(new LeaderboardEntry { score = item.score, name = item.name });
+            }
 
+            if (leaderboardEntryList.Count > 0)
+            {
+                
+                foreach (LeaderboardEntry leaderboardEntry in leaderboardEntryList)
+                {
+                    CreateLeaderboardEntryTransform(leaderboardEntry, entryContainer, leaderboardEntryTransformList);
+
+                }
             }
         }
+        else
+        {
+            Debug.Log("[LeaderboardScript.cs OnEnable()]: Error accessing API!");
+            LeaderboardError.SetActive(true);
+        }
+        
+        
         
     }
 

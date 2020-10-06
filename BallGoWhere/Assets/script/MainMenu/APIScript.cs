@@ -7,9 +7,12 @@ using System;
 using System.IO;
 using TMPro;
 using System.Globalization;
+using UnityEngine.Rendering;
+using System.Threading.Tasks;
 
 public class APIScript : MonoBehaviour
 {
+    public int timeOut = 2;
     public ChuckNorris GetChuckling()
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
@@ -24,8 +27,9 @@ public class APIScript : MonoBehaviour
         return info;
     }
 
-    public LeaderboardAPI GetBoard()
+    /*public LeaderboardAPI GetBoard()
     {
+
         String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
         string apiLink = String.Format("http://localhost:3000/score/leaderboard/weekly?date=\"{0}\"",dateStr);
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
@@ -34,6 +38,42 @@ public class APIScript : MonoBehaviour
         string jsonResponse = reader.ReadToEnd();
         LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
         return info;
+
+    }
+    */
+
+    public ArrayList GetLeaderboard()
+    {
+        ArrayList resultsList = new ArrayList();
+        Boolean flag;
+        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
+        string apiLink = String.Format("http://localhost:3000/score/leaderboard/weekly?date=\"{0}\"", dateStr);
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
+        HttpWebResponse response;
+        var task = Task.Run(() => request.GetResponse()); 
+        if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+        {
+            response = (HttpWebResponse) task.Result;
+            StreamReader reader = new StreamReader(response.GetResponseStream());
+            string jsonResponse = reader.ReadToEnd();
+            LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
+            flag = true;
+            resultsList.Add(flag);
+            resultsList.Add(info);
+            return resultsList;
+        }
+
+        else
+        {
+            Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
+            flag = false;
+            resultsList.Add(flag);
+            return resultsList;
+            throw new Exception("Timed out");
+            
+        }
+            
+
     }
 }
 
