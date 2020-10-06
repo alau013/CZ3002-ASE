@@ -100,7 +100,9 @@ public class LoginMenu : MonoBehaviour
 
         //Test for accessing api endpoint - very important chuck norris api in this example :)
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        AccessAPI.GetChuckling();
+        //AccessAPI.GetChuckling();
+        AccessAPI.GetBoard();
+
         //test above
 
         if (nameStr != "")

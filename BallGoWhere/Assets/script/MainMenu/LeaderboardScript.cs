@@ -8,6 +8,7 @@ public class LeaderboardScript : MonoBehaviour
 {
     private Transform scrollView;
     private Transform viewPort;
+    public GameObject APIObject;
 
     private Transform entryContainer;
     private Transform entryTemplate;
@@ -15,7 +16,7 @@ public class LeaderboardScript : MonoBehaviour
     private List<Transform> leaderboardEntryTransformList;
 
     private void Awake()
-    {
+    {/*
         scrollView = transform.Find("Scroll View");
         viewPort = scrollView.Find("Viewport");
         entryContainer = viewPort.Find("Content");
@@ -44,8 +45,54 @@ public class LeaderboardScript : MonoBehaviour
             CreateLeaderboardEntryTransform(leaderboardEntry, entryContainer, leaderboardEntryTransformList);
 
         }
+        */
     }
 
+    private void OnEnable()
+    {
+        scrollView = transform.Find("Scroll View");
+        viewPort = scrollView.Find("Viewport");
+        entryContainer = viewPort.Find("Content");
+        entryTemplate = entryContainer.Find("EntryTemplate");
+        entryTemplate.gameObject.SetActive(false);
+
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        LeaderboardAPI info = AccessAPI.GetBoard();
+        leaderboardEntryList = new List<LeaderboardEntry>();
+        leaderboardEntryTransformList = new List<Transform>();
+
+        foreach (BoardEntryAPI item in info.board)
+        {
+            leaderboardEntryList.Add(new LeaderboardEntry { score = item.score, name = item.name });
+        }
+        if (leaderboardEntryList.Count > 0)
+        {
+            ResetContent(entryContainer);
+            foreach (LeaderboardEntry leaderboardEntry in leaderboardEntryList)
+            {
+                CreateLeaderboardEntryTransform(leaderboardEntry, entryContainer, leaderboardEntryTransformList);
+
+            }
+        }
+        
+    }
+
+    private void ResetContent(Transform entryContainer)
+    {
+        var children = new List<GameObject>();
+        foreach (Transform child in entryContainer)
+        {
+            if (child.name != "EntryTemplate")
+            {
+                children.Add(child.gameObject);
+            }
+
+
+        }
+        children.ForEach(child => Destroy(child));
+
+
+    }
     //Represents a single leaderboard entry
 
     private void CreateLeaderboardEntryTransform(LeaderboardEntry leaderboardEntry, Transform container, List<Transform> transformList)
