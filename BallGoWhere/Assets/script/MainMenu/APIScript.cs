@@ -9,6 +9,7 @@ using TMPro;
 using System.Globalization;
 using UnityEngine.Rendering;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 public class APIScript : MonoBehaviour
 {
@@ -23,27 +24,59 @@ public class APIScript : MonoBehaviour
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string jsonResponse = reader.ReadToEnd();
         ChuckNorris info = JsonUtility.FromJson<ChuckNorris>(jsonResponse);
-        Debug.Log("[GetChuckling()]...");
-        Debug.Log(info.value);
+        UnityEngine.Debug.Log("[GetChuckling()]...");
+        UnityEngine.Debug.Log(info.value);
         return info;
     }
 
-    /*public LeaderboardAPI GetBoard()
+    
+    public string GetResponse(string apiLink)
     {
-
-        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
-        string apiLink = String.Format("http://localhost:3000/score/leaderboard/weekly?date=\"{0}\"",dateStr);
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        StreamReader reader = new StreamReader(response.GetResponseStream());
-        string jsonResponse = reader.ReadToEnd();
-        LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
-        return info;
-
+        string jsonResponse = "ERROR";
+        try
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
+            HttpWebResponse response;
+            var task = Task.Run(async () => await request.GetResponseAsync());
+            if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+            {
+                response = (HttpWebResponse)task.Result;
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                jsonResponse = reader.ReadToEnd();
+            }
+            else
+            {
+                new Exception("Timed out");
+            }
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.Log("[APIScript.cs GetResponse()]: ERROR! "+e.Message);
+            throw;
+        }
+        return jsonResponse;
     }
-    */
 
-    public async Task<ArrayList> GetLeaderboard()
+    public ArrayList GetLeaderboard()
+    {
+        ArrayList resultsList = new ArrayList();
+        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
+        string apiLink = String.Format("http://{0}:3000/score/leaderboard/weekly?date=\"{1}\"", this.localHostIp, dateStr);
+        string jsonResponse = GetResponse(apiLink);
+        if (jsonResponse.Equals("ERROR"))
+        {
+            resultsList.Add(false);
+        }
+        else
+        {
+            resultsList.Add(true);
+            LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
+            resultsList.Add(info);
+        }
+        return resultsList;
+    }
+
+ /*public async Task<ArrayList> GetLeaderboard()
     {
         try
         {
@@ -71,7 +104,7 @@ public class APIScript : MonoBehaviour
 
             else
             {
-                Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
+                UnityEngine.Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
                 flag = false;
                 resultsList.Add(flag);
                 return resultsList;
@@ -82,7 +115,7 @@ public class APIScript : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            UnityEngine.Debug.Log(e);
             throw;
 
         }
@@ -90,7 +123,7 @@ public class APIScript : MonoBehaviour
         
             
 
-    }
+    }*/
 }
 
 [Serializable]
