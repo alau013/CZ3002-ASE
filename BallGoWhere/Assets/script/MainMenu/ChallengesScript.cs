@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class ChallengesScript : MonoBehaviour
 {
+    public GameObject HelpScreen;
+    private bool helpToggle = false;
     private Transform scrollView;
     private Transform viewPort;
 
@@ -87,5 +89,11 @@ public class ChallengesScript : MonoBehaviour
         public int level;
         
 
+    }
+
+    public void ToHelp()
+    {
+        HelpScreen.SetActive(!helpToggle);
+        helpToggle = !helpToggle;
     }
 }
