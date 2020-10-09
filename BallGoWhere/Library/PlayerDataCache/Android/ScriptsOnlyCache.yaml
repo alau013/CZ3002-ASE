@@ -123,19 +123,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13452}
+      Script: {instanceID: 13454}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13522}
     - Class: 114
-      Script: {instanceID: 13714}
+      Script: {instanceID: 13716}
     - Class: 114
-      Script: {instanceID: 13832}
+      Script: {instanceID: 13834}
     - Class: 114
-      Script: {instanceID: 13938}
+      Script: {instanceID: 13940}
     - Class: 114
-      Script: {instanceID: 13942}
+      Script: {instanceID: 13944}
     - Class: 114
-      Script: {instanceID: 13978}
+      Script: {instanceID: 13980}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -206,15 +206,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13522}
     - Class: 114
-      Script: {instanceID: 13558}
+      Script: {instanceID: 13560}
     - Class: 114
-      Script: {instanceID: 13744}
+      Script: {instanceID: 13746}
     - Class: 114
-      Script: {instanceID: 13872}
+      Script: {instanceID: 13874}
     - Class: 114
-      Script: {instanceID: 13942}
+      Script: {instanceID: 13944}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -283,17 +283,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13522}
     - Class: 114
-      Script: {instanceID: 13558}
+      Script: {instanceID: 13560}
     - Class: 114
-      Script: {instanceID: 13744}
+      Script: {instanceID: 13746}
     - Class: 114
-      Script: {instanceID: 13872}
+      Script: {instanceID: 13874}
     - Class: 114
-      Script: {instanceID: 13878}
+      Script: {instanceID: 13880}
     - Class: 114
-      Script: {instanceID: 13942}
+      Script: {instanceID: 13944}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -657,7 +657,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 89873ecaf40b0203ba4b569697a1f77c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ChallengesScript
@@ -799,6 +799,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: TMPro.Examples
     className: TMP_TextSelector_B
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UserData
   - hash:
       serializedVersion: 2
       Hash: 760787567e1b60d64a3e421ab83ee14a

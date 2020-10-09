@@ -82,8 +82,8 @@ public class LoginMenu : MonoBehaviour
         
     }
 
-    
 
+    
     public void SetName(TMP_Text tmpName)
     {
         this.username.text = tmpName.text;

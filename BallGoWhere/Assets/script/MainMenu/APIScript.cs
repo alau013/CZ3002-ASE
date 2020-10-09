@@ -3,18 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
-using System;
 using System.IO;
 using TMPro;
 using System.Globalization;
 using UnityEngine.Rendering;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using UnityEngine.Networking;
+using System.Security.Cryptography;
+using System.Text;
+//using System.Diagnostics;
 
+//Create an empty game object in each Scene, that links to this APIScript.cs. Then, will be able to access the methods here, as well as
+//loading of data to DB when app is closed/exited (see OnFocus() method here).
 public class APIScript : MonoBehaviour
 {
-    public int timeOut = 2;
-    public string localHostIp = "192.168.1.15";
+    public int timeOut;
+    public string localHostIp;
     public ChuckNorris GetChuckling()
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
@@ -32,6 +36,8 @@ public class APIScript : MonoBehaviour
     
     public string GetResponse(string apiLink)
     {
+        apiLink = this.localHostIp + apiLink;
+        Debug.Log("this.localHostIp: "+this.localHostIp);
         string jsonResponse = "ERROR";
         try
         {
@@ -57,11 +63,41 @@ public class APIScript : MonoBehaviour
         return jsonResponse;
     }
 
+    public IEnumerator Post(string apiLink,object dataObject)
+    {
+        
+        apiLink = this.localHostIp + apiLink;
+        string jsonStr = JsonUtility.ToJson(dataObject);
+        Debug.Log("JSON...");
+        Debug.Log(jsonStr.ToString());
+
+        byte[] bytePostData = Encoding.UTF8.GetBytes(jsonStr);
+        var request = new UnityWebRequest(apiLink,"POST");
+        // request.method = UnityWebRequest.kHttpVerbPOST;
+        //request.timeout = this.timeOut;
+        request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bytePostData);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        //request.uploadHandler.contentType = "application/json";
+        yield return request.SendWebRequest();
+
+        
+        if(!request.isNetworkError)
+        {
+            Debug.Log("Data upload success!");
+        }
+        else
+        {
+            Debug.Log("Data upload error!");
+        }
+
+    }
     public ArrayList GetLeaderboard()
     {
         ArrayList resultsList = new ArrayList();
         String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
-        string apiLink = String.Format("http://{0}:3000/score/leaderboard/weekly?date=\"{1}\"", this.localHostIp, dateStr);
+        string apiLink = String.Format("/score/leaderboard/weekly?date=\"{0}\"", dateStr);
+        
         string jsonResponse = GetResponse(apiLink);
         if (jsonResponse.Equals("ERROR"))
         {
@@ -76,54 +112,29 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
- /*public async Task<ArrayList> GetLeaderboard()
+    public void OnApplicationFocus(bool focus)
     {
-        try
+        if (focus) //user loads the app 
         {
-            ArrayList resultsList = new ArrayList();
-            Boolean flag;
-            String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
-            string apiLink = String.Format("http://{0}:3000/score/leaderboard/weekly?date=\"{1}\"", this.localHostIp,dateStr);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
-            HttpWebResponse response;
-            //HttpWebResponse response =(HttpWebResponse) request.GetResponse();
-            //return resultsList;
-            
-            var task = Task.Run(async () => await request.GetResponseAsync());
-            if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
-            {
-                response = (HttpWebResponse)task.Result;
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                string jsonResponse = reader.ReadToEnd();
-                LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
-                flag = true;
-                resultsList.Add(flag);
-                resultsList.Add(info);
-                return resultsList;
-            }
-
-            else
-            {
-                UnityEngine.Debug.Log("[APIScript.cs GetLeaderboard()]: ERROR!");
-                flag = false;
-                resultsList.Add(flag);
-                return resultsList;
-                throw new Exception("Timed out");
-
-            }
-
+            Debug.Log("Focus is TRUE");
         }
-        catch (Exception e)
+        else //focus=false means the user exits the app (back/home button)
         {
-            UnityEngine.Debug.Log(e);
-            throw;
+            Debug.Log("Focus is FALSE");
+            AttemptEntry a1 = new AttemptEntry();
+            a1.date_time =  "2020-10-07";
+            a1.point = 24;
+            a1.level = 1;
+            AttemptList aList = new AttemptList();
+            aList.attempts.Add(a1);
 
-        }
-        
-        
+            Debug.Log("Attempts: ");
+            Debug.Log(aList.attempts);
+            StartCoroutine(Post("/attempt/jaslyn", aList));
             
-
-    }*/
+        }
+    }
+    
 }
 
 [Serializable]
@@ -147,3 +158,17 @@ public class LeaderboardAPI
     public List<BoardEntryAPI> board;
 }
 
+[Serializable]
+public class AttemptEntry
+{
+    public string date_time;
+    public int point;
+    public int level;
+}
+
+[Serializable]
+public class AttemptList
+{
+    public List<AttemptEntry> attempts = new List<AttemptEntry>();
+   
+}
