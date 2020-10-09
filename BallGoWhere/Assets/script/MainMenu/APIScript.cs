@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using UnityEngine.Networking;
 using System.Security.Cryptography;
 using System.Text;
+using System.Net.Http;
 //using System.Diagnostics;
 
 //Create an empty game object in each Scene, that links to this APIScript.cs. Then, will be able to access the methods here, as well as
@@ -71,7 +72,44 @@ public class APIScript : MonoBehaviour
         return jsonResponse;
     }
 
-    public IEnumerator Post(string apiLink,object dataObject)
+    public string Post2(string apiLink, object dataObject)
+    {
+        apiLink = this.localHostIp + apiLink;
+        string jsonStr = JsonUtility.ToJson(dataObject);
+        string jsonResponse = "ERROR";
+        string contentStr = "";
+        try
+        {
+           
+            var client = new HttpClient(new HttpClientHandler { UseProxy = false });
+            var task = Task.Run(async () => {
+                var response = await client.PostAsync(apiLink, new StringContent(jsonStr, Encoding.UTF8, "application/json"));
+                var content = await response.Content.ReadAsStringAsync();
+                contentStr = content.ToString();
+                Debug.Log("[APIScript.cs Post2() content]: "+contentStr);
+            });
+            if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+            {   
+                jsonResponse = "SUCCESS";
+                //jsonResponse = contentStr; //replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
+            }
+            else
+            {
+                new Exception("Timed out");
+            }
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.Log("[APIScript.cs GetResponse()]: ERROR! " + e.Message);
+            throw;
+        }
+        return jsonResponse;
+
+        
+
+    }
+   /*
+    public IEnumerator Post(string apiLink,object dataObject) 
     {
         apiLink = this.localHostIp + apiLink;
         string jsonStr = JsonUtility.ToJson(dataObject);
@@ -99,7 +137,7 @@ public class APIScript : MonoBehaviour
         }
 
     }
-
+   */
    
     public ArrayList GetLeaderboard()
     {
@@ -121,17 +159,18 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
-    
-    public Boolean PostLogin(string username)
+
+    public string PostLogin(string username)
     {
         this.loginFlag = false;
+        string result = "";
         LoginAPI logUser = new LoginAPI();
         logUser.name = username;
-        StartCoroutine(Post("/account/login", logUser));
-
-
-        return this.loginFlag;
+        //StartCoroutine(Post("/account/login", logUser));
+        result = Post2("/account/login", logUser);
+        return result;
     }
+
     public void OnApplicationFocus(bool focus)
     {
         if (focus) //user loads the app 

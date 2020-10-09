@@ -100,15 +100,17 @@ public class LoginMenu : MonoBehaviour
         Debug.Log(nameStr +" on device: "+ deviceID);
 
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        //AccessAPI.PostLogin(nameStr);
 
+        string result = AccessAPI.PostLogin(nameStr);
+        Debug.Log("[LoginMenu.cs result]: " + result);
+        
         if (nameStr != "")
         {
             //Insert login authentication stuff
             //After successful login, set display msg in MainScreen
-            LoginMenu.loginSuccess = true;
-
-            if (loginSuccess)
+            //LoginMenu.loginSuccess = true;
+            
+            if (result.Equals("SUCCESS"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
                 usernamesList = playerInfo.getNameList();
@@ -149,7 +151,15 @@ public class LoginMenu : MonoBehaviour
 
             else
             {
-                this.LoginWarningText.text = "Username already taken! Please try another...";
+                if (result.Equals("ERROR"))
+                {
+                    this.LoginWarningText.text = "Connection Error! Please try again!";
+                }
+                else
+                {
+                    this.LoginWarningText.text = "Username already taken! Please try another...";
+                }
+                    
             }
         }
         else
