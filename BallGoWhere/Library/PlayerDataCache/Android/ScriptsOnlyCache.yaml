@@ -525,7 +525,7 @@ ScriptsOnlyBuild:
     className: WarpTextExample
   - hash:
       serializedVersion: 2
-      Hash: 211bdc732f41739b55c12f7bbf7eb382
+      Hash: 84083eb3de1fdd8da58caed3b911b585
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerPrefUI
@@ -621,7 +621,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: cd5207f9b0d5102918fbbc09a206d282
+      Hash: ccaf76d74d364ab51c2ee5ccb7babbdc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: APIScript
@@ -663,7 +663,7 @@ ScriptsOnlyBuild:
     className: ChallengesScript
   - hash:
       serializedVersion: 2
-      Hash: 86bc358d33b206f8d95d79e9abb65a91
+      Hash: 26460abe51e3e6dd442e11dca9c4273d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainMenu
@@ -799,12 +799,6 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: TMPro.Examples
     className: TMP_TextSelector_B
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: UserData
   - hash:
       serializedVersion: 2
       Hash: 760787567e1b60d64a3e421ab83ee14a
