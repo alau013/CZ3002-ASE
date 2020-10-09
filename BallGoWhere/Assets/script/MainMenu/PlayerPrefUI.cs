@@ -1,19 +1,120 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using UnityEditor.UI;
 using UnityEngine;
+
 
 public class PlayerPrefUI : MonoBehaviour
 {
-    public string strPlayers = ""; // "1 2 3 5 6 7">> string of valid playerID. Split by " " to iterate through it..
+    public PlayerData Data = new PlayerData();
+    public DeviceUsernames users= new DeviceUsernames();
+
+    public void SetData(PlayerData inputData)
+    {
+        this.Data = inputData;
+    }
+
+    public void LoadDataFromPlayerPref(string nameStr)
+    {
+        if (PlayerPrefs.HasKey(nameStr))
+        {
+            string jsonStr = PlayerPrefs.GetString(nameStr);
+            this.SetData(JsonUtility.FromJson<PlayerData>(jsonStr));
+        }
+        else
+        {
+            Debug.Log("[PlayerPrefUI]: " + "BEEEP boop BEEP error detected! Invalid playername load attempt!");
+        }
+
+    }
+
+    public void SaveDataToPlayerPref()
+    {
+        if (PlayerPrefs.HasKey("Usernames"))
+        {
+            this.users = JsonUtility.FromJson<DeviceUsernames>(PlayerPrefs.GetString("Usernames"));
+            
+        }
+
+        if (this.users.nameList.Contains(this.Data.username) == false)
+        {
+            this.users.nameList.Add(this.Data.username);
+        }
+        PlayerPrefs.SetString("Usernames", JsonUtility.ToJson(this.users)); //save to list of usernames on device
+        PlayerPrefs.SetString(this.Data.getUsername(), this.Data.ExportToJson()); //save user's data to device
+    }
+
+    public List<string> getNameList()
+    {
+        List<string> newList = new List<string>();
+        if (PlayerPrefs.HasKey("Usernames"))
+        {
+            this.users = JsonUtility.FromJson<DeviceUsernames>(PlayerPrefs.GetString("Usernames"));
+            newList = this.users.nameList;
+
+        }
+        
+        return newList;
+    }
+
+
+}
+[Serializable]
+public class DeviceUsernames
+{
+    public List<string> nameList = new List<String>();
+}
+
+[Serializable]
+public class AttemptEntry
+{
+    public string date_time;
+    public int point;
+    public int level;
+
+    public AttemptEntry(string date_time,int point, int level)
+    {
+        this.date_time = date_time;
+        this.point = point;
+        this.level = level;
+    }
+}
+
+[Serializable]
+public class AttemptList
+{
+    public List<AttemptEntry> attempts = new List<AttemptEntry>();
+    public string ExportToJson()
+    {
+        return JsonUtility.ToJson(this);
+    }
+    public AttemptList LoadFromJson(string jsonStr)
+    {
+        return JsonUtility.FromJson<AttemptList>(jsonStr);
+    }
+}
+[Serializable]
+public class PlayerData
+{
     public string username;
     public int streak = 0;
     public float dailyPlay = 0; //total playtime for the day, in mins
-    public int level =3; //highest unlocked level
+    public int level = 3; //highest unlocked level
     public int dailyAttempts = 0; //no. of attempted levels today
-    public string lastActive; //datetime string from last level attempt
-
-    #region Getters Setters
+    public string lastActive; //datetime string from last login/attempt
+    public List<AttemptEntry> attempts = new List<AttemptEntry>();
+    public string ExportToJson()
+    {
+        return JsonUtility.ToJson(this);
+    }
+    public PlayerData LoadFromJson(string jsonStr)
+    {
+        return JsonUtility.FromJson<PlayerData>(jsonStr);
+    }
 
     public void setUsername(string playerName)
     {
@@ -61,7 +162,16 @@ public class PlayerPrefUI : MonoBehaviour
         this.level += num;
     }
 
-    
+
+    public void addAttempt(AttemptEntry inputAttempt)
+    {
+        this.attempts.Add(inputAttempt);
+    }
+    public void deleteAllAttempts()
+    {
+        this.attempts.Clear();
+    }
+
     public int getDailyAttempts()
     {
         return this.dailyAttempts;
@@ -86,71 +196,4 @@ public class PlayerPrefUI : MonoBehaviour
     {
         return this.lastActive;
     }
-
-    #endregion
-
-    #region Methods
-
-    public void Save() //save PlayerPrefUI current variables to the PlayerPrefs file. Call this after you've set the variables to what you want.
-    {
-        string playerID; //might change as players are added/removed. only used for internal purposes.
-
-        if (PlayerPrefs.HasKey("NumPlayers") == false)
-        {
-            PlayerPrefs.SetInt("NumPlayers", 1);
-            PlayerPrefs.SetString("StrPlayers", "1");
-            playerID = "1";
-        }
-        else
-        {
-            PlayerPrefs.SetInt("NumPlayers", PlayerPrefs.GetInt("NumPlayers")+1);
-            playerID = PlayerPrefs.GetInt("NumPlayers").ToString();
-            PlayerPrefs.SetString("StrPlayers", PlayerPrefs.GetString("StrPlayers") + " " + playerID);
-        }
-
-        strPlayers = PlayerPrefs.GetString("StrPlayers");
-        PlayerPrefs.SetString(playerID, username); //1 ahHuat08
-        PlayerPrefs.SetInt(username, 1); //ahHuat08 : 1 (binary flag for quick check if username is saved)
-        PlayerPrefs.SetInt(username + "_Streak", streak); //ahHuat08_Streak : 7
-        PlayerPrefs.SetFloat(username + "_dailyPlay", dailyPlay); //ahHuat08_DailyPlay : 32.3 mins
-        PlayerPrefs.SetInt(username + "_dailyAttempts", dailyAttempts); //ahHuat08_DailyAttempts : 5
-        PlayerPrefs.SetInt(username + "_Level", level); //ahHuat08_Level : 3
-        PlayerPrefs.SetString(username + "_LastActive", lastActive); //ahHuat08_LastActive : "1/12/2020 12:00:00 AM"
-    }
-
-    public void Load(string playerName)
-    {
-        if (PlayerPrefs.HasKey(playerName))
-        {
-            username = playerName;
-            streak = PlayerPrefs.GetInt(playerName + "_Streak");
-            dailyPlay = PlayerPrefs.GetFloat(playerName + "_Float");
-            level = PlayerPrefs.GetInt(playerName + "_Level");
-            lastActive = PlayerPrefs.GetString(playerName + "_LastActive");
-        }
-        else
-        {
-            print("[PlayerPrefUI]: " + "BEEEP boop BEEP error detected! Invalid playername!");
-        }
-    }
-
-    
-    public List<string> availablePlayers() //returns list of player names previously used
-    {
-        List<string> newList = new List<string>();
-        if (PlayerPrefs.HasKey("StrPlayers"))
-        {
-            List<string> idList = PlayerPrefs.GetString("StrPlayers").Split(' ').ToList();
-            foreach (string playerID in idList)
-            {
-                newList.Add(PlayerPrefs.GetString(playerID));
-            }
-
-        }
-        return newList;
-    }
-
-    #endregion
-
-
 }

@@ -9,6 +9,7 @@ using System;
 public class MainMenu : MonoBehaviour
 {
     public TMP_Text display;
+    public GameObject PrefObject;
     public GameObject MenuScreen;
     public GameObject SelectScreen;
     public GameObject LeaderboardsScreen;
@@ -17,13 +18,17 @@ public class MainMenu : MonoBehaviour
     public GameObject LoginScreen;
     public GameObject HelpScreen;
     private bool helpToggle = false;
+    private PlayerPrefUI playerInfo;
 
     public void OnEnable()
     {
+        playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
+        playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
         //Ensure that display message is set to player's name when active.
         if (display != null)
         {
-            display.text = "Welcome " + LoginMenu.playerName + "!";
+            
+            display.text = "Welcome " + playerInfo.Data.getUsername() + "!";
         }
     }
 

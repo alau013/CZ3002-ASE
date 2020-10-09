@@ -1,9 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserData : MonoBehaviour
-{
-    public ArrayList attempts = new ArrayList();
-    
-}
+//TEST CODE IGNORE THIS FOR NOW.

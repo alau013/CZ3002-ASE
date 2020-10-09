@@ -17,8 +17,16 @@ using System.Text;
 //loading of data to DB when app is closed/exited (see OnFocus() method here).
 public class APIScript : MonoBehaviour
 {
-    public int timeOut;
-    public string localHostIp;
+    public int timeOut;//SET THIS ONLY FROM UNITY
+    public string localHostIp; //SET THIS ONLY FROM UNITY!
+    public GameObject PrefObject;
+    private PlayerPrefUI playerInfo;
+    private bool loginFlag = false;
+    public void OnEnable()
+    {
+        playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
+        
+    }
     public ChuckNorris GetChuckling()
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
@@ -65,33 +73,34 @@ public class APIScript : MonoBehaviour
 
     public IEnumerator Post(string apiLink,object dataObject)
     {
-        
         apiLink = this.localHostIp + apiLink;
         string jsonStr = JsonUtility.ToJson(dataObject);
+        
         Debug.Log("JSON...");
         Debug.Log(jsonStr.ToString());
 
         byte[] bytePostData = Encoding.UTF8.GetBytes(jsonStr);
         var request = new UnityWebRequest(apiLink,"POST");
-        // request.method = UnityWebRequest.kHttpVerbPOST;
-        //request.timeout = this.timeOut;
         request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bytePostData);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        //request.uploadHandler.contentType = "application/json";
-        yield return request.SendWebRequest();
 
+        yield return request.SendWebRequest();
         
         if(!request.isNetworkError)
         {
             Debug.Log("Data upload success!");
+            loginFlag = true;
         }
         else
         {
             Debug.Log("Data upload error!");
+            loginFlag = false;
         }
 
     }
+
+   
     public ArrayList GetLeaderboard()
     {
         ArrayList resultsList = new ArrayList();
@@ -112,6 +121,17 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
+    
+    public Boolean PostLogin(string username)
+    {
+        this.loginFlag = false;
+        LoginAPI logUser = new LoginAPI();
+        logUser.name = username;
+        StartCoroutine(Post("/account/login", logUser));
+
+
+        return this.loginFlag;
+    }
     public void OnApplicationFocus(bool focus)
     {
         if (focus) //user loads the app 
@@ -121,6 +141,8 @@ public class APIScript : MonoBehaviour
         else //focus=false means the user exits the app (back/home button)
         {
             Debug.Log("Focus is FALSE");
+            
+            /* //test code for uploading attempts to DB
             AttemptEntry a1 = new AttemptEntry();
             a1.date_time =  "2020-10-07";
             a1.point = 24;
@@ -130,8 +152,9 @@ public class APIScript : MonoBehaviour
 
             Debug.Log("Attempts: ");
             Debug.Log(aList.attempts);
-            StartCoroutine(Post("/attempt/jaslyn", aList));
-            
+            StartCoroutine(Post("/attempt/jaslyn", aList)); //important to use this
+            */
+
         }
     }
     
@@ -143,6 +166,11 @@ public class ChuckNorris
     public string id;
     public string value;
     
+}
+[Serializable]
+public class LoginAPI
+{
+    public string name;
 }
 
 [Serializable]
@@ -158,17 +186,4 @@ public class LeaderboardAPI
     public List<BoardEntryAPI> board;
 }
 
-[Serializable]
-public class AttemptEntry
-{
-    public string date_time;
-    public int point;
-    public int level;
-}
 
-[Serializable]
-public class AttemptList
-{
-    public List<AttemptEntry> attempts = new List<AttemptEntry>();
-   
-}

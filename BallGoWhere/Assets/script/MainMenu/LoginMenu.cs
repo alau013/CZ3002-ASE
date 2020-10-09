@@ -29,6 +29,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnEnable() 
     {
+        playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         if (loginSuccess)
         {
             LoginScreen.SetActive(false);
@@ -54,11 +55,12 @@ public class LoginMenu : MonoBehaviour
         };
         */
             loginEntryList = new List<LoginEntry>();
-            playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
-            usernamesList = playerInfo.availablePlayers();
+            
+            usernamesList = playerInfo.getNameList();
+            //usernamesList = playerInfo.availablePlayers();
+            
             if (usernamesList.Count > 0)
             {
-                //Debug.Log("usernamesList Count: " + usernamesList.Count.ToString());
                 foreach (string username in usernamesList)
                 {
                     loginEntryList.Add(new LoginEntry { name = username });
@@ -97,47 +99,48 @@ public class LoginMenu : MonoBehaviour
         
         Debug.Log(nameStr +" on device: "+ deviceID);
 
-        //Test for accessing api endpoint - very important chuck norris api in this example :)
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        //AccessAPI.GetChuckling();
-        //AccessAPI.GetBoard();
-
-        //test above
+        //AccessAPI.PostLogin(nameStr);
 
         if (nameStr != "")
         {
             //Insert login authentication stuff
             //After successful login, set display msg in MainScreen
             LoginMenu.loginSuccess = true;
+
             if (loginSuccess)
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
-                playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
-                usernamesList = playerInfo.availablePlayers();
-
+                usernamesList = playerInfo.getNameList();
+                playerInfo.Data.setUsername(nameStr);
+                
                 if (usernamesList.Count > 0)
                 {
                     if (usernamesList.Contains(nameStr)) //load old username
                     {
-                        playerInfo.Load(nameStr);
+                        playerInfo.LoadDataFromPlayerPref(nameStr);
+                        
                     }
                     else //save new username
                     {
-                        playerInfo.setUsername(nameStr);
-                        playerInfo.Save();
+                        playerInfo.Data.setUsername(nameStr);
                     }
                 }
                 else //save new username
                 {
-                    playerInfo.setUsername(nameStr);
-                    playerInfo.Save();
+                    playerInfo.Data.setUsername(nameStr);
+                    
                 }
 
 
+                playerInfo.Data.updateLastActive();
+                playerInfo.SaveDataToPlayerPref();
+                Debug.Log("[playerInfo.Data]: "+playerInfo.Data.ExportToJson());
+
                 LoginMenu.playerName = nameStr;
                 Debug.Log(playerName + "logged in");
-                string welcomeMsg = "Welcome " + playerName + "!";
-                display.text = welcomeMsg;
+                //string welcomeMsg = "Welcome " + playerName + "!";
+                //display.text = welcomeMsg;
                 LoginScreen.SetActive(false);
                 MainScreen.SetActive(true);
 
