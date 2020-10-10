@@ -38,13 +38,22 @@ public class LoginMenu : MonoBehaviour
 
         else
         {
-            this.LoginWarningText.text = "";
-            scrollView = transform.Find("Scroll View");
-            viewPort = scrollView.Find("Viewport");
-            entryContainer = viewPort.Find("Content");
-            entryTemplate = entryContainer.Find("EntryTemplate");
 
-            entryTemplate.gameObject.SetActive(false);
+            this.LoginWarningText.text = "";
+            if (transform.Find("Scroll View")!=null)
+            {scrollView = transform.Find("Scroll View");
+                if (scrollView.Find("Viewport") != null)
+                {viewPort = scrollView.Find("Viewport");
+                    if (viewPort.Find("Content")!=null)
+                    {entryContainer = viewPort.Find("Content");
+                        if (entryContainer.Find("EntryTemplate") != null)
+                        {entryTemplate = entryContainer.Find("EntryTemplate");
+                         entryTemplate.gameObject.SetActive(false);
+                        }
+                    }
+                }
+            }
+            
 
             /*
             loginEntryList = new List<LoginEntry>()
@@ -101,18 +110,21 @@ public class LoginMenu : MonoBehaviour
 
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
 
-        string result = AccessAPI.PostLogin(nameStr);
-        Debug.Log("[LoginMenu.cs result]: " + result);
+        
         
         if (nameStr != "")
         {
+            string result = AccessAPI.PostLogin(nameStr);
+            Debug.Log("[LoginMenu.cs result]: " + result);
             //Insert login authentication stuff
             //After successful login, set display msg in MainScreen
             //LoginMenu.loginSuccess = true;
-            
+
+
             if (result.Equals("SUCCESS"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
+                LoginMenu.loginSuccess = true;
                 usernamesList = playerInfo.getNameList();
                 playerInfo.Data.setUsername(nameStr);
                 

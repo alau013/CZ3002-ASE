@@ -18,12 +18,25 @@ public class ChallengesScript : MonoBehaviour
     private List<Transform> challengeEntryTransformList;
     private void Awake()
     {
-        scrollView = transform.Find("Scroll View");
-        viewPort = scrollView.Find("Viewport");
-        entryContainer = viewPort.Find("Content");
-        entryTemplate = entryContainer.Find("ChallengeTemplate");
+        if (transform.Find("Scroll View") != null)
+        {
+            scrollView = transform.Find("Scroll View");
+            if (scrollView.Find("Viewport") != null)
+            {
+                viewPort = scrollView.Find("Viewport");
+                if (viewPort.Find("Content") != null)
+                {
+                    entryContainer = viewPort.Find("Content");
+                    if (entryContainer.Find("ChallengeTemplate") != null)
+                    {
+                        entryTemplate = entryContainer.Find("ChallengeTemplate");
+                        entryTemplate.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
 
-        
+
         entryTemplate.gameObject.SetActive(false);
 
         challengeEntryList = new List<ChallengeEntry>()

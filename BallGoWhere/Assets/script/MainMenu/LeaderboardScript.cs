@@ -17,45 +17,29 @@ public class LeaderboardScript : MonoBehaviour
     private List<Transform> leaderboardEntryTransformList;
 
     private void Awake()
-    {/*
-        scrollView = transform.Find("Scroll View");
-        viewPort = scrollView.Find("Viewport");
-        entryContainer = viewPort.Find("Content");
-        entryTemplate = entryContainer.Find("EntryTemplate");
-
-       //entryContainer = transform.Find("Content");
-        //entryTemplate = entryContainer.Find("EntryTemplate");
-        entryTemplate.gameObject.SetActive(false);
-
-        leaderboardEntryList = new List<LeaderboardEntry>()
-        {
-            new LeaderboardEntry{score = 120, name = "ahHuat10"},
-            new LeaderboardEntry{score = 100, name = "player179"},
-            new LeaderboardEntry{score = 98, name = "phoonHuat"},
-            new LeaderboardEntry{score = 76, name = "jaslyn97"},
-            new LeaderboardEntry{score = 67, name = "anotherPlayer2"},
-            new LeaderboardEntry{score = 31, name = "bondJames"},
-            new LeaderboardEntry{score = 21, name = "randomPlay1"},
-            new LeaderboardEntry{score = 20, name = "platypus"},
-            new LeaderboardEntry{score = 15, name = "doraemon"},
-        };
-
-        leaderboardEntryTransformList = new List<Transform>();
-        foreach(LeaderboardEntry leaderboardEntry in leaderboardEntryList)
-        {
-            CreateLeaderboardEntryTransform(leaderboardEntry, entryContainer, leaderboardEntryTransformList);
-
-        }
-        */
+    {
     }
 
     private void OnEnable()
     {
-        scrollView = transform.Find("Scroll View");
-        viewPort = scrollView.Find("Viewport");
-        entryContainer = viewPort.Find("Content");
-        entryTemplate = entryContainer.Find("EntryTemplate");
-        entryTemplate.gameObject.SetActive(false);
+        if (transform.Find("Scroll View") != null)
+        {
+            scrollView = transform.Find("Scroll View");
+            if (scrollView.Find("Viewport") != null)
+            {
+                viewPort = scrollView.Find("Viewport");
+                if (viewPort.Find("Content") != null)
+                {
+                    entryContainer = viewPort.Find("Content");
+                    if (entryContainer.Find("EntryTemplate") != null)
+                    {
+                        entryTemplate = entryContainer.Find("EntryTemplate");
+                        entryTemplate.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
 
         leaderboardEntryList = new List<LeaderboardEntry>();
         leaderboardEntryTransformList = new List<Transform>();
