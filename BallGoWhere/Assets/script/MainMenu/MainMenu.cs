@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnEnable()
     {
+       
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
         //Ensure that display message is set to player's name when active.
@@ -30,6 +31,9 @@ public class MainMenu : MonoBehaviour
         {
             
             display.text = "Welcome " + playerInfo.Data.getUsername() + "!";
+
+            PlayerPrefs.SetString("user",playerInfo.Data.getUsername());
+            // get username to be use for other scene since gameobject get destoryed when changing scene
         }
     }
 

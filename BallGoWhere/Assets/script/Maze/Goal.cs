@@ -7,7 +7,23 @@ public class Goal : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject WinPanel;
+    public GameObject APIObject;
+    public GameObject PrefObject;
     public timeController TimeController;
+
+    private PlayerPrefUI playerinfo;
+    public int score = 0;
+    public int highScore = 0;
+    string highScoreKey = "HighScore";
+
+    private void Awake() {
+        playerinfo = GameObject.Find("PrefObject").GetComponent<PlayerPrefUI>();
+    }
+    private void start()
+    {
+        highScore = PlayerPrefs.GetInt(highScoreKey,0); 
+    }
+        
 
      private void OnTriggerEnter(Collider other) 
     {
@@ -18,7 +34,28 @@ public class Goal : MonoBehaviour
         
         Time.timeScale = 0f;
         WinPanel.SetActive(true);
-        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your score: "+ (TimeController.GetPlayTime()*10).ToString();
+        int score = 100- (TimeController.GetPlayTime()*10);
+         if(score>highScore){
+             PlayerPrefs.SetInt(highScoreKey, score);
+             PlayerPrefs.Save();
+         }
+        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your score: "+ (score).ToString();
+        
+       List<AttemptEntry> gameAttempt = new List<AttemptEntry>();
+
+         //gameAttempt.Add(new AttemptEntry("10-10-20",1,2));
+
+
+        //playerinfo.Data.setUsername(PlayerPrefs.GetString("user"));
+
+         string day = System.DateTime.Now.ToString("MM/dd/yyyy");
+         playerinfo.Data.addAttempt(new AttemptEntry(day,score,1));
+
+         playerinfo.SaveDataToPlayerPref();
+         playerinfo.Data.ExportToJson();
+
+         //Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
+         Debug.Log(PlayerPrefs.GetInt("highscore"));
 
         }
     }

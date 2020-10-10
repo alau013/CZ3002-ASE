@@ -10,7 +10,13 @@ using UnityEngine;
 public class PlayerPrefUI : MonoBehaviour
 {
     public PlayerData Data = new PlayerData();
+
+
     public DeviceUsernames users= new DeviceUsernames();
+
+
+    private static bool created = false;
+
 
     public void SetData(PlayerData inputData)
     {
@@ -161,11 +167,11 @@ public class PlayerData
         this.level += num;
     }
 
-
     public void addAttempt(AttemptEntry inputAttempt)
     {
         this.attempts.Add(inputAttempt);
     }
+    
     public void deleteAllAttempts()
     {
         this.attempts.Clear();

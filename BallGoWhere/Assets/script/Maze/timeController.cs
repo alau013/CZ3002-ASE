@@ -16,10 +16,13 @@ public class timeController : MonoBehaviour
 
    private float elapsedTime;
 
-   private void Awake() 
-   {
-       instance = this;
-   }
+    private PlayerPrefUI playerinfo;
+
+    private void Awake() {
+        
+        
+         instance = this;
+    }
 
    private void Start() 
    {
@@ -49,6 +52,7 @@ public class timeController : MonoBehaviour
            //Debug.Log("Countdown: " + elapsedTime.ToString("f0"));
            timePlaying = TimeSpan.FromSeconds(elapsedTime);
            string timePlayingStr = "Time: "+ timePlaying.ToString("mm':'ss'.'ff");
+          // string timePlayingStr = playerinfo.Data.getUsername();
            timeCounter.text = timePlayingStr;
 
            yield return null;
