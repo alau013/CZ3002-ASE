@@ -126,13 +126,16 @@ public class LeaderboardScript : MonoBehaviour
         int rank = transformList.Count + 1;
         string name = leaderboardEntry.name;
         int score = leaderboardEntry.score;
+        if(entryTransform.Find("posText")!=null && entryTransform.Find("nameText")!=null && entryTransform.Find("scoreText") != null)
+        {
+            //set pos,name and score for each row.
+            entryTransform.Find("posText").GetComponent<TMP_Text>().text = rank.ToString();
+            entryTransform.Find("nameText").GetComponent<TMP_Text>().text = name;
+            entryTransform.Find("scoreText").GetComponent<TMP_Text>().text = score.ToString();
 
-        //set pos,name and score for each row.
-        entryTransform.Find("posText").GetComponent<TMP_Text>().text = rank.ToString();
-        entryTransform.Find("nameText").GetComponent<TMP_Text>().text = name;
-        entryTransform.Find("scoreText").GetComponent<TMP_Text>().text = score.ToString();
-
-        transformList.Add(entryTransform);
+            transformList.Add(entryTransform);
+        }
+        
     }
     private class LeaderboardEntry
     {

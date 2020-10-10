@@ -67,7 +67,7 @@ public class APIScript : MonoBehaviour
         catch (Exception e)
         {
             UnityEngine.Debug.Log("[APIScript.cs GetResponse()]: ERROR! "+e.Message);
-            throw;
+            //throw;
         }
         return jsonResponse;
     }
@@ -105,7 +105,7 @@ public class APIScript : MonoBehaviour
         catch (Exception e)
         {
             UnityEngine.Debug.Log("[APIScript.cs GetResponse()]: ERROR! " + e.Message);
-            throw;
+            //throw;
         }
         return jsonResponse;
 

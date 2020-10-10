@@ -203,9 +203,12 @@ public class LoginMenu : MonoBehaviour
         string name = loginEntry.name;
 
         //set name for each row.
-        entryTransform.Find("nameButton").GetComponentInChildren<TMP_Text>().text = name;
-
-        transformList.Add(entryTransform);
+        if (entryTransform.Find("nameButton") != null)
+        {
+            entryTransform.Find("nameButton").GetComponentInChildren<TMP_Text>().text = name;
+            transformList.Add(entryTransform);
+        }
+        
     }
     private class LoginEntry
     {
