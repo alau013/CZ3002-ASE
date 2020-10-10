@@ -100,10 +100,9 @@ public class LeaderboardScript : MonoBehaviour
     public void togglePrevMode()
     {
         vizMode += 1;
-        vizMode %= numModes;
-        if (vizMode < 0)
+        if (vizMode >= numModes)
         {
-            vizMode *= -1;
+            vizMode = 0;
         }
         
         OnEnable();
@@ -112,11 +111,11 @@ public class LeaderboardScript : MonoBehaviour
     public void toggleNextMode()
     {
         vizMode -= 1;
-        vizMode %= numModes;
         if (vizMode < 0)
         {
-            vizMode *= -1;
+            vizMode = 2;
         }
+        
         OnEnable();
     }
     private void ResetContent(Transform entryContainer)

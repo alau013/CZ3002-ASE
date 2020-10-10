@@ -20,6 +20,8 @@ public class DashboardScript : MonoBehaviour
     public TMP_Text MazesText;
     public TMP_Text ChallengesText;
     public Button TypeButton;
+    public GameObject HelpScreen;
+    private bool helpToggle = false;
 
     private int vizMode = 1; //0 - Progress, 1 - Stats
     private int numModes = 2;
@@ -58,6 +60,11 @@ public class DashboardScript : MonoBehaviour
         
     }
 
+    public void ToHelp()
+    {
+        HelpScreen.SetActive(!helpToggle);
+        helpToggle = !helpToggle;
+    }
     public void togglePrevMode()
     {
         vizMode += 1;
