@@ -80,23 +80,27 @@ public class APIScript : MonoBehaviour
         string contentStr = "";
         try
         {
-           
-            var client = new HttpClient(new HttpClientHandler { UseProxy = false });
-            var task = Task.Run(async () => {
-                var response = await client.PostAsync(apiLink, new StringContent(jsonStr, Encoding.UTF8, "application/json"));
-                var content = await response.Content.ReadAsStringAsync();
-                contentStr = content.ToString();
-                Debug.Log("[APIScript.cs Post2() content]: "+contentStr);
-            });
-            if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
-            {   
-                jsonResponse = "SUCCESS";
-                //jsonResponse = contentStr; //replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
-            }
-            else
+
+            using (var client = new HttpClient(new HttpClientHandler { UseProxy = false }))
             {
-                new Exception("Timed out");
+                var task = Task.Run(async () =>
+                {
+                    var response = await client.PostAsync(apiLink, new StringContent(jsonStr, Encoding.UTF8, "application/json"));
+                    var content = await response.Content.ReadAsStringAsync();
+                    contentStr = content.ToString();
+                    Debug.Log("[APIScript.cs Post2() content]: " + contentStr);
+                });
+                if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+                {
+                    jsonResponse = "SUCCESS";
+                    //jsonResponse = contentStr; //replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
+                }
+                else
+                {
+                    new Exception("Timed out");
+                }
             }
+                
         }
         catch (Exception e)
         {
