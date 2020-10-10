@@ -163,6 +163,77 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
+    public ArrayList GetLeaderboard(string mode)
+    {
+        ArrayList resultsList = new ArrayList();
+        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
+        string apiLink = "";
+
+        if (mode == "weekly")
+        {
+            apiLink = String.Format("/score/leaderboard/weekly?date=\"{0}\"", dateStr);
+        }
+        else if (mode == "special")
+        {
+            apiLink = String.Format("/score/leaderboard/special");
+        }
+        else
+        {
+            apiLink = String.Format("/score/leaderboard/all_time");
+        }
+
+        string jsonResponse = GetResponse(apiLink);
+        if (jsonResponse.Equals("ERROR"))
+        {
+            resultsList.Add(false);
+        }
+        else
+        {
+            resultsList.Add(true);
+            LeaderboardAPI info = JsonUtility.FromJson<LeaderboardAPI>(jsonResponse);
+            resultsList.Add(info);
+        }
+        return resultsList;
+    }
+
+    public ArrayList GetChallengesTest() //dummy function to return json for challenges api - for development testing purposes.
+    {
+        ArrayList resultsList = new ArrayList();
+        string apiLink = String.Format("/challenge/{0}", playerInfo.Data.username);
+
+        string jsonResponse = GetResponse(apiLink);
+        if (jsonResponse.Equals("ERROR"))
+        {
+            resultsList.Add(false);
+        }
+        else
+        {
+            resultsList.Add(true);
+            Debug.Log("RECEIVED: " + jsonResponse);
+            resultsList.Add(jsonResponse); 
+        }
+        return resultsList;
+
+    }
+    public ArrayList GetChallenges() //actual function for challenge api access.
+    {
+
+        ArrayList resultsList = new ArrayList();
+        string apiLink = String.Format("/challenge/{0}", playerInfo.Data.username);
+
+        string jsonResponse = GetResponse(apiLink); 
+        if (jsonResponse.Equals("ERROR"))
+        {
+            resultsList.Add(false);
+        }
+        else
+        {
+            resultsList.Add(true);
+            ChallengesAPI info = JsonUtility.FromJson<ChallengesAPI>(jsonResponse); //add this and the one below once challenge api response is fixed.
+            resultsList.Add(info);
+        }
+        return resultsList;
+    }
 
     public string PostLogin(string username)
     {
@@ -232,5 +303,19 @@ public class LeaderboardAPI
 {
     public List<BoardEntryAPI> board;
 }
-
-
+[Serializable]
+public class ChallengeEntryAPI
+{
+    public string state;
+    public string recvTime;
+    public string _id;
+    public string date_time;
+    public string senderName;
+    public int senderTime;
+    public int level;
+}
+[Serializable]
+public class ChallengesAPI
+{
+    public List<ChallengeEntryAPI> board;
+}

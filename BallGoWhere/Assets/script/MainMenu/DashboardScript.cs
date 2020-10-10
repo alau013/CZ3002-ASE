@@ -23,7 +23,7 @@ public class DashboardScript : MonoBehaviour
 
     private int vizMode = 1; //0 - Progress, 1 - Stats
     private int numModes = 2;
-    private void Awake()
+    private void OnEnable()
     {
         if (vizMode == 0)
         {
@@ -62,14 +62,14 @@ public class DashboardScript : MonoBehaviour
     {
         vizMode += 1;
         vizMode %= numModes;
-        Awake();
+        OnEnable();
     }
 
     public void toggleNextMode()
     {
         vizMode -= 1;
         vizMode %= numModes;
-        Awake();
+        OnEnable();
     }
 
 

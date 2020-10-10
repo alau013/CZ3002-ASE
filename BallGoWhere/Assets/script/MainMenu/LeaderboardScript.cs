@@ -11,12 +11,14 @@ public class LeaderboardScript : MonoBehaviour
     public GameObject PrefObject;
     public GameObject APIObject;
     public GameObject LeaderboardError;
+    public Button TypeButton;
 
     private Transform entryContainer;
     private Transform entryTemplate;
     private List<LeaderboardEntry> leaderboardEntryList;
     private List<Transform> leaderboardEntryTransformList;
-
+    private int vizMode = 0; //0 - Weekly, 1- Special, 2- All-time
+    private int numModes = 3;
     private void Awake()
     {
     }
@@ -47,7 +49,23 @@ public class LeaderboardScript : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         //LeaderboardAPI info = AccessAPI.GetBoard();
         //ArrayList results = AccessAPI.GetLeaderboard();
-        ArrayList results = AccessAPI.GetLeaderboard();
+        ArrayList results = new ArrayList();
+        if (vizMode == 0)
+        {//Weekly
+            results = AccessAPI.GetLeaderboard("weekly");
+            TypeButton.GetComponentInChildren<TMP_Text>().text = "Weekly";
+        }
+        else if (vizMode == 1)
+        {//Special
+            results = AccessAPI.GetLeaderboard("special");
+            TypeButton.GetComponentInChildren<TMP_Text>().text = "Special";
+        }
+        else
+        {//All-Time
+            results = AccessAPI.GetLeaderboard("all_time");
+            TypeButton.GetComponentInChildren<TMP_Text>().text = "All-Time";
+        }
+        
         ResetContent(entryContainer);
 
         if (results[0].Equals(true) && results.Count>1)
@@ -79,6 +97,28 @@ public class LeaderboardScript : MonoBehaviour
         
     }
 
+    public void togglePrevMode()
+    {
+        vizMode += 1;
+        vizMode %= numModes;
+        if (vizMode < 0)
+        {
+            vizMode *= -1;
+        }
+        
+        OnEnable();
+    }
+
+    public void toggleNextMode()
+    {
+        vizMode -= 1;
+        vizMode %= numModes;
+        if (vizMode < 0)
+        {
+            vizMode *= -1;
+        }
+        OnEnable();
+    }
     private void ResetContent(Transform entryContainer)
     {
         var children = new List<GameObject>();
