@@ -92,8 +92,8 @@ public class APIScript : MonoBehaviour
                 });
                 if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
                 {
-                    jsonResponse = "SUCCESS";
-                    //jsonResponse = contentStr; //replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
+                    //jsonResponse = "SUCCESS";
+                    jsonResponse = contentStr;//replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
                 }
                 else
                 {
@@ -184,19 +184,23 @@ public class APIScript : MonoBehaviour
         else //focus=false means the user exits the app (back/home button)
         {
             Debug.Log("Focus is FALSE");
-            
-            /* //test code for uploading attempts to DB
+            /*
+            //test code for uploading attempts to DB
             AttemptEntry a1 = new AttemptEntry();
             a1.date_time =  "2020-10-07";
             a1.point = 24;
-            a1.level = 1;
-            AttemptList aList = new AttemptList();
-            aList.attempts.Add(a1);
-
+            a1.level = 1; //timing = 120;
+            //playerInfo.Data.attempts.Add(a1);
+            //playerInfo.SaveDataToPlayerPref();
+            //AttemptList aList = new AttemptList();
+            //aList.attempts.Add(a1);
+            
             Debug.Log("Attempts: ");
             Debug.Log(aList.attempts);
             StartCoroutine(Post("/attempt/jaslyn", aList)); //important to use this
+
             */
+
 
         }
     }

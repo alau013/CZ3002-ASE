@@ -116,14 +116,14 @@ public class LoginMenu : MonoBehaviour
         {
             string result = AccessAPI.PostLogin(nameStr);
             Debug.Log("[LoginMenu.cs result]: " + result);
-            //Insert login authentication stuff
-            //After successful login, set display msg in MainScreen
-            //LoginMenu.loginSuccess = true;
-
-
-            if (result.Equals("SUCCESS"))
+            if (!result.Equals("ERROR"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
+                bool validLogin = true;
+                if (!validLogin) //modify to check if login is valid by reading the result json string.
+                {
+                    this.LoginWarningText.text = "Invalid Username! Please try another...";
+                }
                 LoginMenu.loginSuccess = true;
                 usernamesList = playerInfo.getNameList();
                 playerInfo.Data.setUsername(nameStr);
@@ -146,9 +146,10 @@ public class LoginMenu : MonoBehaviour
                     
                 }
 
-
                 playerInfo.Data.updateLastActive();
                 playerInfo.SaveDataToPlayerPref();
+                
+
                 Debug.Log("[playerInfo.Data]: "+playerInfo.Data.ExportToJson());
 
                 LoginMenu.playerName = nameStr;
@@ -163,15 +164,8 @@ public class LoginMenu : MonoBehaviour
 
             else
             {
-                if (result.Equals("ERROR"))
-                {
-                    this.LoginWarningText.text = "Connection Error! Please try again!";
-                }
-                else
-                {
-                    this.LoginWarningText.text = "Username already taken! Please try another...";
-                }
-                    
+                
+                this.LoginWarningText.text = "Connection Error! Please try again!";
             }
         }
         else
