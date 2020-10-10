@@ -12,6 +12,8 @@ public class LeaderboardScript : MonoBehaviour
     public GameObject APIObject;
     public GameObject LeaderboardError;
     public Button TypeButton;
+    public GameObject HelpScreen;
+    private bool helpToggle = false;
 
     private Transform entryContainer;
     private Transform entryTemplate;
@@ -47,8 +49,6 @@ public class LeaderboardScript : MonoBehaviour
         leaderboardEntryList = new List<LeaderboardEntry>();
         leaderboardEntryTransformList = new List<Transform>();
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        //LeaderboardAPI info = AccessAPI.GetBoard();
-        //ArrayList results = AccessAPI.GetLeaderboard();
         ArrayList results = new ArrayList();
         if (vizMode == 0)
         {//Weekly
@@ -95,6 +95,12 @@ public class LeaderboardScript : MonoBehaviour
         
         
         
+    }
+
+    public void ToHelp()
+    {
+        HelpScreen.SetActive(!helpToggle);
+        helpToggle = !helpToggle;
     }
 
     public void togglePrevMode()
