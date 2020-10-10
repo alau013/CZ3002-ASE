@@ -8,6 +8,7 @@ public class LeaderboardScript : MonoBehaviour
 {
     private Transform scrollView;
     private Transform viewPort;
+    public GameObject PrefObject;
     public GameObject APIObject;
     public GameObject LeaderboardError;
 

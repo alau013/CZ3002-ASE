@@ -8,6 +8,8 @@ using System;
 
 public class SelectLevelScript : MonoBehaviour
 {
+    public GameObject APIObject;
+    public GameObject PrefObject;
     public GameObject MenuScreen;
     public GameObject SelectScreen;
     public GameObject HelpScreen;

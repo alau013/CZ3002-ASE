@@ -6,6 +6,8 @@ using TMPro;
 using System;
 public class DashboardScript : MonoBehaviour
 {
+    public GameObject APIObject;
+    public GameObject PrefObject;
     public GameObject MainScreen;
     public GameObject DashboardScreen;
     public GameObject Viz;

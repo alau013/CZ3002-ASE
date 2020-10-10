@@ -9,6 +9,7 @@ using System;
 public class MainMenu : MonoBehaviour
 {
     public TMP_Text display;
+    public GameObject APIObject;
     public GameObject PrefObject;
     public GameObject MenuScreen;
     public GameObject SelectScreen;
