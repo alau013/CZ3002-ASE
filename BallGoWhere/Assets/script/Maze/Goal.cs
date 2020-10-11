@@ -50,8 +50,7 @@ public class Goal : MonoBehaviour
          {
              score = 0;
          }
-       
-         //WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "current score: "+ (score).ToString()+" Highest Score: "+ownHighestscore.ToString();
+        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your score: "+ (score).ToString();
         
      
          string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
@@ -89,7 +88,6 @@ public class Goal : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         int currHighscore = 0;
         currHighscore = playerinfo.Data.getLeaderboardScore(leaderboardType, level);
-        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "current score: "+ (score).ToString()+"    Highest Score: "+currHighscore.ToString();
         if (score > currHighscore)
         {
             Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
