@@ -42,20 +42,13 @@ public class Goal : MonoBehaviour
         Time.timeScale = 0f;
         WinPanel.SetActive(true);
         int score = 600 / (TimeController.GetPlayTime());
-         if(score>highScore){
-             PlayerPrefs.SetInt(highScoreKey, score);
-             PlayerPrefs.Save();
-         }
-         if(score < 0)
-         {
-             score = 0;
-         }
+         playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
+
+         Debug.Log(playerinfo.Data.challengeHolder.Count);
         
         if (playerinfo.Data.challengeHolder.Count==0) //no challengeholder object = normal gameplay
         { 
-           Debug.Log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
             string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-            playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
 
             playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
             playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
@@ -72,7 +65,6 @@ public class Goal : MonoBehaviour
         }
         else // challenge stage
         {
-
             APIScript AccessAPI = APIObject.GetComponent<APIScript>();
             string challengeID = playerinfo.Data.challengeHolder[1].ToString();
             int  oppTiming = (int)playerinfo.Data.challengeHolder[2];
@@ -80,13 +72,13 @@ public class Goal : MonoBehaviour
             if (TimeController.GetPlayTime() < oppTiming)
             {
                 ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerinfo.Data.username,TimeController.GetPlayTime(),challengeID);
+                WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your timing: "+ TimeController.GetPlayTime().ToString() +" opponent timing: "+oppTiming.ToString();
                 if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
                 {
                     Debug.Log("PutUpdateChallenge() failed!");
                 }
                 else
                 {
-                    WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your timing: "+ TimeController.GetPlayTime().ToString() +"    opponent timing: "+oppTiming.ToString();
                     Debug.Log("LoginMenu.cs test [PutUpdateChallenge()]: " + arrTest[0]);
                 }
             }
@@ -119,9 +111,10 @@ public class Goal : MonoBehaviour
         int currHighscore = 0;
         currHighscore = playerinfo.Data.getLeaderboardScore(leaderboardType, level);
         WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your current score: "+ (score).ToString() +"   Personal High score: "+currHighscore.ToString();
-        if (score > currHighscore)
+        if (score > currHighscore+1)
         {
             Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
+            toCreateChallenge(level);
             ArrayList arr = AccessAPI.PostLeaderboard(playerinfo.Data.username, leaderboardType, new StandardEntryAPI(score, time, date_time, level));
             if (!arr[0].Equals("ERROR"))
             {
@@ -138,9 +131,25 @@ public class Goal : MonoBehaviour
         }
         else
         {
-            WinPanel.transform.Find("winText").GetComponent<Text>().text = "Awww too bad";
+            WinPanel.transform.Find("winText").GetComponent<Text>().text = "Awwwww";
             Debug.Log("Current highscore of " + currHighscore + " is higher than " + score+". Score not submitted.");
         }
         
+    }
+
+    public void toCreateChallenge(int level)
+    {
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        string dateCreated = System.DateTime.Now.ToString("yyyy/dd/MM");
+
+          ArrayList arrTest = AccessAPI.PostCreateChallenge(dateCreated,playerinfo.Data.username,"standard",level);
+                if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
+                {
+                    Debug.Log("PostCreateChallenge() failed!");
+                }
+                else
+                {
+                    Debug.Log("PostCreateChallenge() success!");
+                }
     }
 }
