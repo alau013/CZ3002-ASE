@@ -74,7 +74,7 @@ public class DeviceUsernames
     public List<string> nameList = new List<String>();
 }
 
-[Serializable]
+[Serializable] 
 public class AttemptEntry
 {
     public string date_time;

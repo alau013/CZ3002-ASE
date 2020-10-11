@@ -26,6 +26,7 @@ public class LoginMenu : MonoBehaviour
     private List<Transform> loginEntryTransformList;
     private PlayerPrefUI playerInfo;
     private List<String> usernamesList;
+    private LoginResponseAPI loginData = new LoginResponseAPI();
 
     private void OnEnable() 
     {
@@ -38,7 +39,6 @@ public class LoginMenu : MonoBehaviour
 
         else
         {
-
             this.LoginWarningText.text = "";
             if (transform.Find("Scroll View")!=null)
             {scrollView = transform.Find("Scroll View");
@@ -114,9 +114,8 @@ public class LoginMenu : MonoBehaviour
         
         if (nameStr != "")
         {
-            string result = AccessAPI.PostLogin(nameStr);
-            Debug.Log("[LoginMenu.cs result]: " + result);
-            if (!result.Equals("ERROR"))
+            ArrayList arr = AccessAPI.PostLogin(nameStr);
+            if (!arr[0].Equals("ERROR"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
                 bool validLogin = true;
@@ -124,42 +123,42 @@ public class LoginMenu : MonoBehaviour
                 {
                     this.LoginWarningText.text = "Invalid Username! Please try another...";
                 }
-                LoginMenu.loginSuccess = true;
-                usernamesList = playerInfo.getNameList();
-                playerInfo.Data.setUsername(nameStr);
-                
-                if (usernamesList.Count > 0)
+                else
                 {
-                    if (usernamesList.Contains(nameStr)) //load old username
+                    LoginMenu.loginSuccess = true;
+                    usernamesList = playerInfo.getNameList();
+                    playerInfo.Data.setUsername(nameStr);
+                    loginData = (LoginResponseAPI) arr[1];
+                    if (usernamesList.Count > 0)
                     {
-                        playerInfo.LoadDataFromPlayerPref(nameStr);
-                        
+                        if (usernamesList.Contains(nameStr)) //load old username
+                        {
+                            playerInfo.LoadDataFromPlayerPref(nameStr);
+
+                        }
+                        else //save new username
+                        {
+                            playerInfo.Data.setUsername(nameStr);
+                        }
                     }
                     else //save new username
                     {
                         playerInfo.Data.setUsername(nameStr);
+
                     }
-                }
-                else //save new username
-                {
-                    playerInfo.Data.setUsername(nameStr);
-                    
-                }
 
-                playerInfo.Data.updateLastActive();
-                playerInfo.SaveDataToPlayerPref();
+                    playerInfo.Data.updateLastActive();
+                    playerInfo.SaveDataToPlayerPref();
+                    Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
+
+                    LoginMenu.playerName = nameStr;
+                    Debug.Log(playerName + "logged in");
+                    //string welcomeMsg = "Welcome " + playerName + "!";
+                    //display.text = welcomeMsg;
+                    LoginScreen.SetActive(false);
+                    MainScreen.SetActive(true);
+                }
                 
-
-                Debug.Log("[playerInfo.Data]: "+playerInfo.Data.ExportToJson());
-
-                LoginMenu.playerName = nameStr;
-                Debug.Log(playerName + "logged in");
-                //string welcomeMsg = "Welcome " + playerName + "!";
-                //display.text = welcomeMsg;
-                LoginScreen.SetActive(false);
-                MainScreen.SetActive(true);
-
-
             }
 
             else

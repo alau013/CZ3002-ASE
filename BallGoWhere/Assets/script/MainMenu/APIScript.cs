@@ -112,36 +112,6 @@ public class APIScript : MonoBehaviour
         
 
     }
-   /*
-    public IEnumerator Post(string apiLink,object dataObject) 
-    {
-        apiLink = this.localHostIp + apiLink;
-        string jsonStr = JsonUtility.ToJson(dataObject);
-        
-        Debug.Log("JSON...");
-        Debug.Log(jsonStr.ToString());
-
-        byte[] bytePostData = Encoding.UTF8.GetBytes(jsonStr);
-        var request = new UnityWebRequest(apiLink,"POST");
-        request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bytePostData);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-        
-        if(!request.isNetworkError)
-        {
-            Debug.Log("Data upload success!");
-            loginFlag = true;
-        }
-        else
-        {
-            Debug.Log("Data upload error!");
-            loginFlag = false;
-        }
-
-    }
-   */
    
     public ArrayList GetLeaderboard()
     {
@@ -235,15 +205,22 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
-    public string PostLogin(string username)
+    public ArrayList PostLogin(string username)
     {
+        ArrayList arr = new ArrayList();
+        LoginResponseAPI loginData = new LoginResponseAPI();
         this.loginFlag = false;
         string result = "";
         LoginAPI logUser = new LoginAPI();
         logUser.name = username;
-        //StartCoroutine(Post("/account/login", logUser));
         result = Post2("/account/login", logUser);
-        return result;
+        loginData = JsonUtility.FromJson<LoginResponseAPI>(result);
+        Debug.Log(loginData.standard.Count);
+        Debug.Log(loginData.special.Count);
+        Debug.Log(loginData.weekly.Count);
+        arr.Add(result);
+        arr.Add(loginData);
+        return arr;
     }
 
     public void OnApplicationFocus(bool focus)
@@ -318,4 +295,33 @@ public class ChallengeEntryAPI
 public class ChallengesAPI
 {
     public List<ChallengeEntryAPI> board;
+}
+
+[Serializable]
+public class StandardEntryAPI //can use for Standard/Weekly/All-Time
+{
+    public int score;
+    public int time;
+    public string _id;
+    public string date_time;
+    public int level;
+}
+
+[Serializable]
+public class LoginResponseAPI
+{
+    public string _id;
+    public int levelUnlock;
+    public string name;
+    public string deviceID;
+    
+    public AttemptList attempts;
+    public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
+    public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
+    public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
+    public string createdAt;
+    public string updatedAt;
+    public int __v;
+    //public List<ChallengeEntryAPI> challenges;
+
 }
