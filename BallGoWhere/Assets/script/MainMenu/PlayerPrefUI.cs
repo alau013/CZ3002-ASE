@@ -149,6 +149,8 @@ public class PlayerData
         {
             for(int i = 0; i < typeDict[leaderboardType].Count; i++)
             {
+                Debug.Log("[entries in leaderboard scores]:");
+                Debug.Log(typeDict[leaderboardType][i].level + "" + typeDict[leaderboardType][i].score);
                 if (typeDict[leaderboardType][i].level.Equals(levelNum))
                 {
                     result = typeDict[leaderboardType][i].score;

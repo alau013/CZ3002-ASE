@@ -215,9 +215,19 @@ public class APIScript : MonoBehaviour
         LoginAPI logUser = new LoginAPI();
         logUser.name = username;
         result = Post2("/account/login", logUser);
-        loginData = JsonUtility.FromJson<LoginResponseAPI>(result);
-        arr.Add(result);
-        arr.Add(loginData);
+        try
+        {
+            loginData = JsonUtility.FromJson<LoginResponseAPI>(result);
+            arr.Add(result);
+            arr.Add(loginData);
+
+        }
+        catch(Exception e)
+        {
+            Debug.Log("[PostLogin()]: Error");
+            result = "ERROR";
+            arr.Add(result);
+        }
         return arr;
     }
 
@@ -225,11 +235,11 @@ public class APIScript : MonoBehaviour
     {
          //see challengesscript.cs for sample implementation (search "test").
         ArrayList arr = new ArrayList();
-        LeaderboardResponseAPI leaderboardData = new LeaderboardResponseAPI();
+        LoginResponseAPI leaderboardData = new LoginResponseAPI();
         this.leadboardFlag = false;
         string result = "";
         result = Post2(String.Format("/score/{0}/{1}",username,leaderboardType), inputEntry);
-        leaderboardData = JsonUtility.FromJson<LeaderboardResponseAPI>(result);
+        leaderboardData = JsonUtility.FromJson<LeaderboardResponseAPI>(result).info;
         arr.Add(result);
         arr.Add(leaderboardData);
         return arr;

@@ -155,8 +155,10 @@ public class LoginMenu : MonoBehaviour
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
                     LoginMenu.playerName = nameStr;
                     Debug.Log(playerName + "logged in");
-                    //string welcomeMsg = "Welcome " + playerName + "!";
-                    //display.text = welcomeMsg;
+                    
+                    //TEST LEADERBOARD POST test
+                    //toSubmitLeaderboard("special", 16, 4, "2020-10-07 10:30", 1);
+
                     LoginScreen.SetActive(false);
                     MainScreen.SetActive(true);
                 }
@@ -176,6 +178,33 @@ public class LoginMenu : MonoBehaviour
         
     }
 
+    public void toSubmitLeaderboard(string leaderboardType, int score, int time, string date_time, int level)
+    {
+        //test leaderboard post method.
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        int currHighscore = 0;
+        currHighscore = playerInfo.Data.getLeaderboardScore(leaderboardType, level);
+        if (score > currHighscore)
+        {
+            Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
+            ArrayList arr = AccessAPI.PostLeaderboard(playerInfo.Data.username, leaderboardType, new StandardEntryAPI(score, time, date_time, level));
+            if (!arr[0].Equals("ERROR"))
+            {
+                LoginResponseAPI leaderboardData = (LoginResponseAPI)arr[1];
+                playerInfo.Data.LoadLoginData(leaderboardData);
+                playerInfo.SaveDataToPlayerPref();
+            }
+            else
+            {
+                Debug.Log("Connection error. Failed to update new highscore...");
+            }
+        }
+        else
+        {
+            Debug.Log("Current highscore of " + currHighscore + " is higher than " + score+". Score not submitted.");
+        }
+        
+    }
     public static void LogOut()
     {
         LoginMenu.loginSuccess = false;

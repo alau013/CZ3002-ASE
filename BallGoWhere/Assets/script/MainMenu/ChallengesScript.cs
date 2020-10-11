@@ -186,21 +186,9 @@ public class ChallengesScript : MonoBehaviour
             //resultsList.Add(info);
         }
 
-        //test leaderboard post method.
-        /*
-        ArrayList arr =  AccessAPI.PostLeaderboard(playerInfo.Data.username, "special", new StandardEntryAPI(10, 5, "2020-10-07 08:30", 1));
-        if (!arr[0].Equals("ERROR"))
-        {
-            LeaderboardResponseAPI leaderboardResponse = (LeaderboardResponseAPI)arr[1];
-            LoginResponseAPI loginData = leaderboardResponse.info;
-            playerInfo.Data.LoadLoginData(loginData);
-            playerInfo.SaveDataToPlayerPref();
-            Debug.Log("special count: "+playerInfo.Data.special.Count);
-
-            Debug.Log("[LeaderboardResponse TEST]: "+playerInfo.Data.getLeaderboardScore("special",4));
-        }
-        */
         
+
+
         return resultsList;
     }
 
