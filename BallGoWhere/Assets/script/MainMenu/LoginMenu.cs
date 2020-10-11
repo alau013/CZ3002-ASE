@@ -156,34 +156,20 @@ public class LoginMenu : MonoBehaviour
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
                     LoginMenu.playerName = nameStr;
                     Debug.Log(playerName + "logged in");
-
-                    //TEST LEADERBOARD POST test
-                    //toSubmitLeaderboard("special", 16, 4, "2020-10-07 10:30", 1
-
-                    //TEST Start Challenge PUT test
+                    
+                    //test update challenge
                     /*
-                    String cid = "5f82f9bbd563394597f952ea";
-                    ArrayList arrStart = AccessAPI.PutStartChallenge(playerInfo.Data.username, cid);
-                    if (arrStart.Count > 1)
+                    string cid = "5f833a1688dbaa83b57a6d65"; //challengeId
+                    ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerInfo.Data.username,9,cid);
+                    if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
                     {
-                        Debug.Log("Successfully acquired challenge!");
+                        Debug.Log("PutUpdateChallenge() failed!");
                     }
                     else
                     {
-                        if (arrStart[0].Equals("INVALID"))
-                        {
-                            Debug.Log("Challenge declined! Someone beat you to it...please try another!");
-                        }
-                        else
-                        {
-                            Debug.Log("Error processing challenge!");
-                        }
+                        Debug.Log("LoginMenu.cs test [PutUpdateChallenge()]: " + arrTest[0]);
                     }
                     */
-                    //String testStr = String.Format("/challenge/start/{0}", cid);
-                    
-                    //AccessAPI.Put(testStr, new StartChallengeEntryAPI(playerInfo.Data.username));
-                    
                     
                     LoginScreen.SetActive(false);
                     MainScreen.SetActive(true);

@@ -283,8 +283,7 @@ public class APIScript : MonoBehaviour
     }
 
     public ArrayList PutStartChallenge(string username, string challengeId)
-    {
-
+    {   
         ArrayList arr = new ArrayList();
         string result = "";
         String apiLink = String.Format("/challenge/start/{0}", challengeId);
@@ -312,6 +311,35 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
+    public ArrayList PutUpdateChallenge(string username, int timing, string challengeId)
+    {
+        ArrayList arr = new ArrayList();
+        string result = "";
+        String apiLink = String.Format("/challenge/finish/{0}", challengeId);
+        result = Put(apiLink, new UpdateChallengeEntryAPI(playerInfo.Data.username,timing));
+        UpdateChallengeResponseAPI challengeResponse = new UpdateChallengeResponseAPI();
+        try
+        {
+            challengeResponse = JsonUtility.FromJson<UpdateChallengeResponseAPI>(result);
+            arr.Add(result);
+            arr.Add(challengeResponse);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[PutUpdateChallenge()]: Error");
+            if (result.Contains("Other user has taken this challenge"))
+            {
+                result = "INVALID";
+            }
+            else
+            {
+                result = "ERROR";
+            }
+            arr.Add(result);
+        }
+        return arr;
+    }
+
     public ArrayList PostLeaderboard(string username, string leaderboardType, StandardEntryAPI inputEntry)
     {
          //see challengesscript.cs for sample implementation (search "test").
@@ -325,6 +353,8 @@ public class APIScript : MonoBehaviour
         arr.Add(leaderboardData);
         return arr;
     }
+
+    
 
     public void OnApplicationFocus(bool focus)
     {
@@ -460,4 +490,32 @@ public class LeaderboardResponseAPI
 {
     public string status;
     public LoginResponseAPI info;
+}
+
+[Serializable]
+
+public class UpdateChallengeEntryAPI
+{
+    public string name;
+    public int time;
+
+    public UpdateChallengeEntryAPI(string name, int time)
+    {
+        this.name = name;
+        this.time = time;
+    }
+}
+
+[Serializable]
+public class UpdateChallengeResponseAPI
+{
+    public string state;
+    public string recvName;
+    public int recvTime;
+    public string _id;
+    public string date_time;
+    public string senderName;
+    public string senderTime;
+    public int level;
+    public string type;
 }
