@@ -253,7 +253,6 @@ public class APIScript : MonoBehaviour
         ArrayList arr = new ArrayList();
         string deviceID = SystemInfo.deviceUniqueIdentifier;
         LoginResponseAPI loginData = new LoginResponseAPI();
-        this.loginFlag = false;
         string result = "";
         LoginAPI logUser = new LoginAPI();
         logUser.name = username;
@@ -268,13 +267,14 @@ public class APIScript : MonoBehaviour
         }
         catch(Exception e)
         {
-            Debug.Log("[PostLogin()]: Error");
+            
             if (result.Contains("This account may have existed"))
             {
                 result = "INVALID";
             }
             else
             {
+                Debug.Log("[PostLogin()]: Error");
                 result = "ERROR";
             }
             arr.Add(result);
@@ -282,6 +282,37 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
+    public ArrayList PostCreateChallenge(string date_time, string name, string type, int level)
+    {
+        ArrayList arr = new ArrayList();
+        string deviceID = SystemInfo.deviceUniqueIdentifier;
+        CreateChallengeResponseAPI createResponse = new CreateChallengeResponseAPI();
+        string result = "";
+        CreateChallengeEntryAPI challengeRequest = new CreateChallengeEntryAPI(date_time, name, type, level);
+        result = Post2("/challenge/", challengeRequest);
+        try
+        {
+            createResponse = JsonUtility.FromJson<CreateChallengeResponseAPI>(result);
+            arr.Add(result);
+            arr.Add(createResponse);
+
+        }
+        catch (Exception e)
+        {
+            
+            if (result.Contains("User must finish that level before challenging the other"))
+            {
+                result = "INVALID";
+            }
+            else
+            {
+                Debug.Log("[PostCreateChallenge()]: Error");
+                result = "ERROR";
+            }
+            arr.Add(result);
+        }
+        return arr;
+    }
     public ArrayList PutStartChallenge(string username, string challengeId)
     {   
         ArrayList arr = new ArrayList();
@@ -508,6 +539,38 @@ public class UpdateChallengeEntryAPI
 
 [Serializable]
 public class UpdateChallengeResponseAPI
+{
+    public string state;
+    public string recvName;
+    public int recvTime;
+    public string _id;
+    public string date_time;
+    public string senderName;
+    public string senderTime;
+    public int level;
+    public string type;
+}
+
+
+[Serializable]
+public class CreateChallengeEntryAPI
+{
+    public string date_time;
+    public string senderName;
+    public string type;
+    public int level;
+
+    public CreateChallengeEntryAPI(string date_time, string senderName, string type, int level)
+    {
+        this.date_time = date_time;
+        this.senderName = senderName;
+        this.type = type;
+        this.level = level;
+    }
+}
+
+[Serializable]
+public class CreateChallengeResponseAPI
 {
     public string state;
     public string recvName;

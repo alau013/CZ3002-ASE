@@ -156,7 +156,7 @@ public class LoginMenu : MonoBehaviour
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
                     LoginMenu.playerName = nameStr;
                     Debug.Log(playerName + "logged in");
-                    
+
                     //test update challenge
                     /*
                     string cid = "5f833a1688dbaa83b57a6d65"; //challengeId
@@ -170,7 +170,11 @@ public class LoginMenu : MonoBehaviour
                         Debug.Log("LoginMenu.cs test [PutUpdateChallenge()]: " + arrTest[0]);
                     }
                     */
-                    
+
+                    //test create challenge
+                    //ArrayList arrTest = AccessAPI.PostCreateChallenge("2020-10-07", playerInfo.Data.username, "standard", 1);
+                    //Debug.Log(arrTest[0]);
+
                     LoginScreen.SetActive(false);
                     MainScreen.SetActive(true);
                 }
