@@ -113,6 +113,48 @@ public class APIScript : MonoBehaviour
         
 
     }
+
+    public string Put(string apiLink, object dataObject)
+    {
+        apiLink = this.localHostIp + apiLink;
+        string jsonStr = JsonUtility.ToJson(dataObject);
+        string jsonResponse = "ERROR";
+        string contentStr = "";
+        try
+        {
+
+            using (var client = new HttpClient(new HttpClientHandler { UseProxy = false }))
+            {
+                var task = Task.Run(async () =>
+                {
+                    var response = await client.PutAsync(apiLink, new StringContent(jsonStr, Encoding.UTF8, "application/json"));
+                    var content = await response.Content.ReadAsStringAsync();
+                    contentStr = content.ToString();
+                    Debug.Log("[APIScript.cs Put() content]: " + contentStr);
+                });
+                if (task.Wait(TimeSpan.FromSeconds(this.timeOut)))
+                {
+                    //jsonResponse = "SUCCESS";
+                    jsonResponse = contentStr;//replace with this when the api response has a flag for success/username already taken. you will need to modify LoginMenu.cs accordingly as well.
+                }
+                else
+                {
+                    new Exception("Timed out");
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.Log("[APIScript.cs GetResponse()]: ERROR! " + e.Message);
+            //throw;
+        }
+        return jsonResponse;
+
+
+
+    }
+
    
     public ArrayList GetLeaderboard()
     {
@@ -205,6 +247,7 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
+
     public ArrayList PostLogin(string username)
     {
         ArrayList arr = new ArrayList();
@@ -227,6 +270,36 @@ public class APIScript : MonoBehaviour
         {
             Debug.Log("[PostLogin()]: Error");
             if (result.Contains("This account may have existed"))
+            {
+                result = "INVALID";
+            }
+            else
+            {
+                result = "ERROR";
+            }
+            arr.Add(result);
+        }
+        return arr;
+    }
+
+    public ArrayList PutStartChallenge(string username, string challengeId)
+    {
+
+        ArrayList arr = new ArrayList();
+        string result = "";
+        String apiLink = String.Format("/challenge/start/{0}", challengeId);
+        result = Put(apiLink, new StartChallengeEntryAPI(playerInfo.Data.username));
+        StartChallengeResponseAPI challengeResponse = new StartChallengeResponseAPI();
+        try
+        {
+            challengeResponse = JsonUtility.FromJson<StartChallengeResponseAPI>(result);
+            arr.Add(result);
+            arr.Add(challengeResponse);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[PutStartChallenge()]: Error");
+            if (result.Contains("This challenge has been taken"))
             {
                 result = "INVALID";
             }
@@ -310,6 +383,22 @@ public class BoardEntryAPI
 public class LeaderboardAPI
 {
     public List<BoardEntryAPI> board;
+}
+[Serializable]
+public class StartChallengeEntryAPI
+{
+    public string name;
+    public StartChallengeEntryAPI(string name)
+    {
+        this.name = name;
+    }
+}
+
+[Serializable]
+public class StartChallengeResponseAPI
+{
+    public string status;
+    public StartChallengeEntryAPI info;
 }
 [Serializable]
 public class ChallengeEntryAPI
