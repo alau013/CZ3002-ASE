@@ -115,6 +115,7 @@ public class PlayerData
     public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
+    public ArrayList challengeHolder = new ArrayList();
 
     public string ExportToJson()
     {
