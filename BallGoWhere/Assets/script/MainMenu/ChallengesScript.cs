@@ -50,7 +50,7 @@ public class ChallengesScript : MonoBehaviour
         ArrayList results =AccessAPI.GetChallenges();
         Debug.Log("[ChallengesScript.cs OnEnable()]: ");
         Debug.Log(results);
-
+        /*
         challengeEntryList = new List<ChallengeEntry>()
         {
             new ChallengeEntry{state = "WIN", oppName = "ahHuat10", oppTiming="00:30",timing="00:25",level=3},
@@ -59,14 +59,26 @@ public class ChallengesScript : MonoBehaviour
             new ChallengeEntry{state = "START", oppName = "doraemon", oppTiming="?",timing="?",level=1},
             new ChallengeEntry{state = "START", oppName = "randomPlay1", oppTiming="?",timing="?",level=1},
         };
-
+        */
+        challengeEntryList = new List<ChallengeEntry>();
         challengeEntryTransformList = new List<Transform>();
-        ResetContent(entryContainer);
-        foreach (ChallengeEntry challengeEntry in challengeEntryList)
-        {
-            CreateChallengeEntryTransform(challengeEntry, entryContainer, challengeEntryTransformList);
 
+        if (results.Count > 1 && results[0].Equals(true)){
+            ResetContent(entryContainer);
+            ChallengesAPI info = (ChallengesAPI)results[1];
+            foreach (ChallengeEntryAPI item in info.challenges)
+            {
+                challengeEntryList.Add(new ChallengeEntry(item.state, item.senderName, item.senderTime, item.recvTime, item.level, item.type));
+            }
+
+            foreach (ChallengeEntry challengeEntry in challengeEntryList)
+            {
+                CreateChallengeEntryTransform(challengeEntry, entryContainer, challengeEntryTransformList);
+
+            }
         }
+
+        
     }
     private void Awake()
     {
@@ -100,8 +112,8 @@ public class ChallengesScript : MonoBehaviour
 
         string state = challengeEntry.state;
         string oppName = challengeEntry.oppName;
-        string oppTiming = challengeEntry.oppTiming;
-        string timing = challengeEntry.timing;
+        string oppTiming = challengeEntry.oppTiming.ToString();
+        string timing = challengeEntry.timing.ToString();
         int level = challengeEntry.level;
 
         if (entryTransform.Find("stateButton") != null && entryTransform.Find("oppNameText") != null && entryTransform.Find("challengeLevelText") != null && entryTransform.Find("oppTimingText")!=null && entryTransform.Find("timingText")!=null)
@@ -139,18 +151,34 @@ public class ChallengesScript : MonoBehaviour
         ChallengesScreen.SetActive(false);
         IDictionary<int, string> scenesDict = new Dictionary<int, string>();
         scenesDict.Add(1, "level 1");
-        scenesDict.Add(6, "special level");
+        scenesDict.Add(2, "level 2");
+        scenesDict.Add(3, "level 3");
+        //scenesDict.Add(6, "special level");
 
-        SceneManager.LoadScene(scenesDict[challengeLevel]);
+        if (scenesDict.ContainsKey(challengeLevel))
+        {
+            SceneManager.LoadScene(scenesDict[challengeLevel]);
+        }
     }
 
     private class ChallengeEntry
     {
         public string state; //"WIN", "LOSS", "START"
         public string oppName;
-        public string oppTiming;
-        public string timing;
+        public int oppTiming;
+        public int timing;
         public int level;
+        public string type;
+
+        public ChallengeEntry(string state, string oppName, int oppTiming, int timing, int level, string type)
+        {
+            this.state = state;
+            this.oppName = oppName;
+            this.oppTiming = oppTiming;
+            this.timing = timing;
+            this.level = level;
+            this.type = type;
+        }
         
 
     }

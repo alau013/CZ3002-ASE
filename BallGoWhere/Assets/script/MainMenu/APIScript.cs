@@ -201,7 +201,6 @@ public class APIScript : MonoBehaviour
             resultsList.Add(true);
             ChallengesAPI info = JsonUtility.FromJson<ChallengesAPI>(jsonResponse); //add this and the one below once challenge api response is fixed.
             resultsList.Add(info);
-            Debug.Log("[GetChallenges() count]: "+info.challenges.Count);
         }
         return resultsList;
     }
@@ -316,7 +315,7 @@ public class LeaderboardAPI
 public class ChallengeEntryAPI
 {
     public string state;
-    public string recvTime;
+    public int recvTime;
     public string _id;
     public string date_time;
     public string senderName;
