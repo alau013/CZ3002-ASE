@@ -50,25 +50,55 @@ public class Goal : MonoBehaviour
          {
              score = 0;
          }
-        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your score: "+ (score).ToString();
         
-     
-         string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-         playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
+        if (playerinfo.Data.challengeHolder.Count==0) //no challengeholder object = normal gameplay
+        { 
+           Debug.Log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+            string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+            playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
 
-         playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
-         playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
+            playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
 
-         toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
-         
-         if(highScrSuccess==true)
-         {
-             playerinfo.SaveDataToPlayerPref();
-         }
+            toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
+            
+            if(highScrSuccess==true)
+            {
+                playerinfo.SaveDataToPlayerPref();
+            }
 
-         Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
-         //Debug.Log("player score: "+score);
+            Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
+            //Debug.Log("player score: "+score);
+        }
+        else // challenge stage
+        {
 
+            APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+            string challengeID = playerinfo.Data.challengeHolder[1].ToString();
+            int  oppTiming = (int)playerinfo.Data.challengeHolder[2];
+
+            if (TimeController.GetPlayTime() < oppTiming)
+            {
+                ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerinfo.Data.username,TimeController.GetPlayTime(),challengeID);
+                if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
+                {
+                    Debug.Log("PutUpdateChallenge() failed!");
+                }
+                else
+                {
+                    WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your timing: "+ TimeController.GetPlayTime().ToString() +"    opponent timing: "+oppTiming.ToString();
+                    Debug.Log("LoginMenu.cs test [PutUpdateChallenge()]: " + arrTest[0]);
+                }
+            }
+            else
+            {
+                WinPanel.transform.Find("winText").GetComponent<Text>().text = "You Lose!";
+                WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "Challenged failed!";
+                Debug.Log("challenge failed");
+            }
+            
+
+        }
         }
     }
 
@@ -88,6 +118,7 @@ public class Goal : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         int currHighscore = 0;
         currHighscore = playerinfo.Data.getLeaderboardScore(leaderboardType, level);
+        WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your current score: "+ (score).ToString() +"   Personal High score: "+currHighscore.ToString();
         if (score > currHighscore)
         {
             Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
@@ -107,6 +138,7 @@ public class Goal : MonoBehaviour
         }
         else
         {
+            WinPanel.transform.Find("winText").GetComponent<Text>().text = "Awww too bad";
             Debug.Log("Current highscore of " + currHighscore + " is higher than " + score+". Score not submitted.");
         }
         
