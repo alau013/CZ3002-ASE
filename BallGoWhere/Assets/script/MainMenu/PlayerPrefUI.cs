@@ -147,6 +147,10 @@ public class PlayerData
         return this.streak;
     }
 
+    public void addDailyPlay(float dailyPlayTime)
+    {
+        this.dailyPlay = dailyPlay + dailyPlayTime;
+    }
     public float getDailyPlay()
     {
         return this.dailyPlay;

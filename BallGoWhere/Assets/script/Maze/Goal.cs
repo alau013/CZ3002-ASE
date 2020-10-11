@@ -34,28 +34,28 @@ public class Goal : MonoBehaviour
         
         Time.timeScale = 0f;
         WinPanel.SetActive(true);
-        int score = 100- (TimeController.GetPlayTime()*10);
+        int score = 600 / (TimeController.GetPlayTime());
          if(score>highScore){
              PlayerPrefs.SetInt(highScoreKey, score);
              PlayerPrefs.Save();
          }
+         if(score < 0)
+         {
+             score = 0;
+         }
         WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your score: "+ (score).ToString();
         
-       List<AttemptEntry> gameAttempt = new List<AttemptEntry>();
-
-         //gameAttempt.Add(new AttemptEntry("10-10-20",1,2));
-
-
-        //playerinfo.Data.setUsername(PlayerPrefs.GetString("user"));
-
+     
          string day = System.DateTime.Now.ToString("MM/dd/yyyy");
+         playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
+
          playerinfo.Data.addAttempt(new AttemptEntry(day,score,1));
+         playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
 
          playerinfo.SaveDataToPlayerPref();
-         playerinfo.Data.ExportToJson();
 
          //Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
-         Debug.Log(PlayerPrefs.GetInt("highscore"));
+         Debug.Log("player score: "+score);
 
         }
     }
