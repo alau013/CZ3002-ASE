@@ -26,6 +26,7 @@ public class ChallengesScript : MonoBehaviour
 
     private void OnEnable()
     {
+        playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         if (flagInvalidChallenge)
         {
             ChallengesInvalidPanel.SetActive(true);
@@ -59,28 +60,18 @@ public class ChallengesScript : MonoBehaviour
         entryTemplate.gameObject.SetActive(false);
         //modify to load challenges from api..
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-        ArrayList results =AccessAPI.GetChallenges();
-        //Debug.Log("[ChallengesScript.cs OnEnable()]: ");
-        //Debug.Log(results);
-        /*
-        challengeEntryList = new List<ChallengeEntry>()
-        {
-            new ChallengeEntry{state = "WIN", oppName = "ahHuat10", oppTiming="00:30",timing="00:25",level=3},
-            new ChallengeEntry{state = "WIN", oppName = "player179", oppTiming="01:10",timing="00:50",level=2},
-            new ChallengeEntry{state = "LOSS", oppName = "doraemon", oppTiming="01:00",timing="02:30",level=4},
-            new ChallengeEntry{state = "START", oppName = "doraemon", oppTiming="?",timing="?",level=1},
-            new ChallengeEntry{state = "START", oppName = "randomPlay1", oppTiming="?",timing="?",level=1},
-        };
-        */
+        ArrayList results = AccessAPI.GetChallenges();
+        //Debug.Log("[ChallengesScript.cs OnEnable()]: "
         challengeEntryList = new List<ChallengeEntry>();
         challengeEntryTransformList = new List<Transform>();
 
-        if (results.Count > 1 && results[0].Equals(true)){
+        if (results.Count > 1 && results[0].Equals(true))
+        {
             ResetContent(entryContainer);
             ChallengesAPI info = (ChallengesAPI)results[1];
             foreach (ChallengeEntryAPI item in info.challenges)
             {
-                challengeEntryList.Add(new ChallengeEntry(item.state, item.senderName, item.senderTime, item.recvTime, item.level, item.type,item._id));
+                challengeEntryList.Add(new ChallengeEntry(item.state, item.senderName, item.senderTime, item.recvTime, item.level, item.type, item._id));
             }
 
             foreach (ChallengeEntry challengeEntry in challengeEntryList)
@@ -94,11 +85,11 @@ public class ChallengesScript : MonoBehaviour
             ChallengesError.SetActive(true);
         }
 
-        
+
     }
     private void Awake()
     {
-        
+
     }
 
     private void ResetContent(Transform entryContainer)
@@ -133,7 +124,7 @@ public class ChallengesScript : MonoBehaviour
         int level = challengeEntry.level;
         string challengeId = challengeEntry._id;
 
-        if (entryTransform.Find("stateButton") != null && entryTransform.Find("oppNameText") != null && entryTransform.Find("challengeLevelText") != null && entryTransform.Find("oppTimingText")!=null && entryTransform.Find("timingText")!=null)
+        if (entryTransform.Find("stateButton") != null && entryTransform.Find("oppNameText") != null && entryTransform.Find("challengeLevelText") != null && entryTransform.Find("oppTimingText") != null && entryTransform.Find("timingText") != null)
         {
             //set pos,name and score for each row.
 
@@ -143,7 +134,7 @@ public class ChallengesScript : MonoBehaviour
             entryTransform.Find("challengeIdText").GetComponent<TMP_Text>().text = challengeId;
 
 
-            if (state == "WIN" || state == "LOSS")
+            if (state == "win" || state == "loss")
             {
                 UnityEngine.UI.Button stateButton = entryTransform.Find("stateButton").GetComponent<UnityEngine.UI.Button>();
                 stateButton.interactable = false;
@@ -152,10 +143,10 @@ public class ChallengesScript : MonoBehaviour
             }
             else
             {
-                entryTransform.Find("oppTimingText").GetComponent<TMP_Text>().text ="?";
-                entryTransform.Find("timingText").GetComponent<TMP_Text>().text ="?";
+                entryTransform.Find("oppTimingText").GetComponent<TMP_Text>().text = "?";
+                entryTransform.Find("timingText").GetComponent<TMP_Text>().text = "?";
                 UnityEngine.UI.Button stateButton = entryTransform.Find("stateButton").GetComponent<UnityEngine.UI.Button>();
-                stateButton.onClick.AddListener(delegate { OnStartChallenge(level,challengeId); });
+                stateButton.onClick.AddListener(delegate { OnStartChallenge(level, challengeId, challengeEntry.oppTiming); });
 
             }
 
@@ -173,16 +164,16 @@ public class ChallengesScript : MonoBehaviour
 
         return result;
     }
-    public void OnStartChallenge(int challengeLevel, string challengeId)
+    public void OnStartChallenge(int challengeLevel, string challengeId, int oppTiming)
     {
-        
+
         IDictionary<int, string> scenesDict = new Dictionary<int, string>();
         scenesDict.Add(1, "level 1");
         scenesDict.Add(2, "level 2");
         scenesDict.Add(3, "level 3");
         //scenesDict.Add(6, "special level");
         string result = CheckStartChallenge(challengeId);
-        if(result.Equals("INVALID"))
+        if (result.Equals("INVALID"))
         {
             ChallengesInvalidPanel.SetActive(true);
             flagInvalidChallenge = true;
@@ -203,11 +194,18 @@ public class ChallengesScript : MonoBehaviour
             ChallengesScreen.SetActive(false);
             if (scenesDict.ContainsKey(challengeLevel))
             {
+                //pass [true/false, challengeId, oppTiming] to challengeHolder variable
+                playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
+                playerInfo.Data.challengeHolder = new ArrayList();
+                playerInfo.Data.challengeHolder.Add(true);
+                playerInfo.Data.challengeHolder.Add(challengeId);
+                playerInfo.Data.challengeHolder.Add(oppTiming);
+                playerInfo.SaveDataToPlayerPref();
                 SceneManager.LoadScene(scenesDict[challengeLevel]);
             }
         }
 
-        
+
     }
 
     private class ChallengeEntry
@@ -230,11 +228,11 @@ public class ChallengesScript : MonoBehaviour
             this.type = type;
             this._id = _id;
         }
-        
+
 
     }
 
-   
+
     public void ToHelp()
     {
         HelpScreen.SetActive(!helpToggle);

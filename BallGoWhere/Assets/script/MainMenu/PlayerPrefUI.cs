@@ -12,7 +12,7 @@ public class PlayerPrefUI : MonoBehaviour
     public PlayerData Data = new PlayerData();
 
 
-    public DeviceUsernames users= new DeviceUsernames();
+    public DeviceUsernames users = new DeviceUsernames();
 
 
     private static bool created = false;
@@ -42,7 +42,7 @@ public class PlayerPrefUI : MonoBehaviour
         if (PlayerPrefs.HasKey("Usernames"))
         {
             this.users = JsonUtility.FromJson<DeviceUsernames>(PlayerPrefs.GetString("Usernames"));
-            
+
         }
 
         if (this.users.nameList.Contains(this.Data.username) == false)
@@ -62,7 +62,7 @@ public class PlayerPrefUI : MonoBehaviour
             newList = this.users.nameList;
 
         }
-        
+
         return newList;
     }
 
@@ -74,14 +74,14 @@ public class DeviceUsernames
     public List<string> nameList = new List<String>();
 }
 
-[Serializable] 
+[Serializable]
 public class AttemptEntry
 {
     public string date_time;
     public int point;
     public int level;
 
-    public AttemptEntry(string date_time,int point, int level)
+    public AttemptEntry(string date_time, int point, int level)
     {
         this.date_time = date_time;
         this.point = point;
@@ -115,6 +115,7 @@ public class PlayerData
     public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
+    public ArrayList challengeHolder = new ArrayList();
 
     public string ExportToJson()
     {
@@ -135,26 +136,26 @@ public class PlayerData
         //skip attempts as it is not required
     }
 
-    
+
     public int getLeaderboardScore(string leaderboardType, int levelNum)
     {
-        Dictionary<string,List<StandardEntryAPI>> typeDict = new Dictionary<string, List<StandardEntryAPI>>();
+        Dictionary<string, List<StandardEntryAPI>> typeDict = new Dictionary<string, List<StandardEntryAPI>>();
         typeDict.Add("standard", this.standard);
         typeDict.Add("special", this.special);
         typeDict.Add("weekly", this.weekly);
-        
+
         int result = -1;
-        Debug.Log("current count in playerInfo.data: "+typeDict[leaderboardType].Count);
+        Debug.Log("current count in playerInfo.data: " + typeDict[leaderboardType].Count);
         if (typeDict[leaderboardType].Count > 0)
         {
-            for(int i = 0; i < typeDict[leaderboardType].Count; i++)
+            for (int i = 0; i < typeDict[leaderboardType].Count; i++)
             {
                 Debug.Log("[entries in leaderboard scores]:");
                 Debug.Log(typeDict[leaderboardType][i].level + "" + typeDict[leaderboardType][i].score);
                 if (typeDict[leaderboardType][i].level.Equals(levelNum))
                 {
                     result = typeDict[leaderboardType][i].score;
-                    Debug.Log("[getLeaderboardScore()]: Found result for level " + typeDict[leaderboardType][i].level +" score: "+ typeDict[leaderboardType][i].score);
+                    Debug.Log("[getLeaderboardScore()]: Found result for level " + typeDict[leaderboardType][i].level + " score: " + typeDict[leaderboardType][i].score);
                     break;
                 }
             }
@@ -243,7 +244,7 @@ public class PlayerData
     {
         this.attempts.Add(inputAttempt);
     }
-    
+
     public void deleteAllAttempts()
     {
         this.attempts.Clear();
