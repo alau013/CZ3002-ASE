@@ -31163,6 +31163,9 @@ MonoBehaviour:
     dailyAttempts: 0
     lastActive: 
     attempts: []
+    standard: []
+    special: []
+    weekly: []
   users:
     nameList: []
 --- !u!4 &2118358698

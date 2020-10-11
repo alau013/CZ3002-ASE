@@ -126,12 +126,14 @@ public class LoginMenu : MonoBehaviour
                 else
                 {
                     LoginMenu.loginSuccess = true;
+                    loginData = (LoginResponseAPI)arr[1];
                     usernamesList = playerInfo.getNameList();
                     playerInfo.Data.setUsername(nameStr);
-                    loginData = (LoginResponseAPI) arr[1];
+                    playerInfo.SaveDataToPlayerPref();
+
                     if (usernamesList.Count > 0)
                     {
-                        if (usernamesList.Contains(nameStr)) //load old username
+                        if (usernamesList.Contains(nameStr)) //load old username and username-linked playerpref data
                         {
                             playerInfo.LoadDataFromPlayerPref(nameStr);
 
@@ -147,10 +149,10 @@ public class LoginMenu : MonoBehaviour
 
                     }
 
+                    playerInfo.Data.LoadLoginData(loginData);
                     playerInfo.Data.updateLastActive();
                     playerInfo.SaveDataToPlayerPref();
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
-
                     LoginMenu.playerName = nameStr;
                     Debug.Log(playerName + "logged in");
                     //string welcomeMsg = "Welcome " + playerName + "!";

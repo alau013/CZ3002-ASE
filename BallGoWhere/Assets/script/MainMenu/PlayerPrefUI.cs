@@ -112,6 +112,10 @@ public class PlayerData
     public int dailyAttempts = 0; //no. of attempted levels today
     public string lastActive; //datetime string from last login/attempt
     public List<AttemptEntry> attempts = new List<AttemptEntry>();
+    public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
+    public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
+    public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
+
     public string ExportToJson()
     {
         return JsonUtility.ToJson(this);
@@ -121,6 +125,64 @@ public class PlayerData
         return JsonUtility.FromJson<PlayerData>(jsonStr);
     }
 
+    public void LoadLoginData(LoginResponseAPI loginData)
+    {
+        this.username = loginData.name;
+        this.level = loginData.levelUnlock;
+        this.standard = loginData.standard;
+        this.special = loginData.special;
+        this.weekly = loginData.weekly;
+        //skip attempts as it is not required
+    }
+    public int getLeaderboardScore(string leaderboardType, int levelNum)
+    {
+        Dictionary<string,List<StandardEntryAPI>> typeDict = new Dictionary<string, List<StandardEntryAPI>>();
+        typeDict.Add("standard", this.standard);
+        typeDict.Add("special", this.special);
+        typeDict.Add("weekly", this.weekly);
+        
+        int result = -1;
+        if (typeDict[leaderboardType].Count > 0)
+        {
+            for(int i = 0; i < this.standard.Count; i++)
+            {
+                if (typeDict[leaderboardType][i].level.Equals(levelNum))
+                {
+                    result = typeDict[leaderboardType][i].score;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+    public void setStandard(List<StandardEntryAPI> someList)
+    {
+        this.standard = someList;
+    }
+
+    public List<StandardEntryAPI> getStandard()
+    {
+        return this.standard;
+    }
+    public void setSpecial(List<StandardEntryAPI> someList)
+    {
+        this.special = someList;
+    }
+
+    public List<StandardEntryAPI> getSpecial()
+    {
+        return this.special;
+    }
+
+    public void setWeekly(List<StandardEntryAPI> someList)
+    {
+        this.weekly = someList;
+    }
+
+    public List<StandardEntryAPI> getWeekly()
+    {
+        return this.weekly;
+    }
     public void setUsername(string playerName)
     {
         this.username = playerName;
