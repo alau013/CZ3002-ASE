@@ -10,6 +10,7 @@ public class ChallengesScript : MonoBehaviour
     public GameObject PrefObject;
     public GameObject APIObject;
     public GameObject ChallengesScreen;
+    public GameObject ChallengesInvalidPanel;
     public GameObject HelpScreen;
     public GameObject ChallengesError;
     private bool helpToggle = false;
@@ -21,9 +22,20 @@ public class ChallengesScript : MonoBehaviour
     private List<ChallengeEntry> challengeEntryList;
     private List<Transform> challengeEntryTransformList;
     PlayerPrefUI playerInfo;
+    private bool flagInvalidChallenge = false;
 
     private void OnEnable()
     {
+        if (flagInvalidChallenge)
+        {
+            ChallengesInvalidPanel.SetActive(true);
+            flagInvalidChallenge = false;
+        }
+        else
+        {
+            ChallengesInvalidPanel.SetActive(false);
+        }
+        ChallengesError.SetActive(false);
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         if (transform.Find("Scroll View") != null)
         {
@@ -48,8 +60,8 @@ public class ChallengesScript : MonoBehaviour
         //modify to load challenges from api..
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         ArrayList results =AccessAPI.GetChallenges();
-        Debug.Log("[ChallengesScript.cs OnEnable()]: ");
-        Debug.Log(results);
+        //Debug.Log("[ChallengesScript.cs OnEnable()]: ");
+        //Debug.Log(results);
         /*
         challengeEntryList = new List<ChallengeEntry>()
         {
@@ -68,7 +80,7 @@ public class ChallengesScript : MonoBehaviour
             ChallengesAPI info = (ChallengesAPI)results[1];
             foreach (ChallengeEntryAPI item in info.challenges)
             {
-                challengeEntryList.Add(new ChallengeEntry(item.state, item.senderName, item.senderTime, item.recvTime, item.level, item.type));
+                challengeEntryList.Add(new ChallengeEntry(item.state, item.senderName, item.senderTime, item.recvTime, item.level, item.type,item._id));
             }
 
             foreach (ChallengeEntry challengeEntry in challengeEntryList)
@@ -76,6 +88,10 @@ public class ChallengesScript : MonoBehaviour
                 CreateChallengeEntryTransform(challengeEntry, entryContainer, challengeEntryTransformList);
 
             }
+        }
+        else
+        {
+            ChallengesError.SetActive(true);
         }
 
         
@@ -115,6 +131,7 @@ public class ChallengesScript : MonoBehaviour
         string oppTiming = challengeEntry.oppTiming.ToString();
         string timing = challengeEntry.timing.ToString();
         int level = challengeEntry.level;
+        string challengeId = challengeEntry._id;
 
         if (entryTransform.Find("stateButton") != null && entryTransform.Find("oppNameText") != null && entryTransform.Find("challengeLevelText") != null && entryTransform.Find("oppTimingText")!=null && entryTransform.Find("timingText")!=null)
         {
@@ -123,6 +140,7 @@ public class ChallengesScript : MonoBehaviour
             entryTransform.Find("stateButton").GetComponentInChildren<TMP_Text>().text = state;
             entryTransform.Find("oppNameText").GetComponent<TMP_Text>().text = oppName;
             entryTransform.Find("challengeLevelText").GetComponent<TMP_Text>().text = level.ToString();
+            entryTransform.Find("challengeIdText").GetComponent<TMP_Text>().text = challengeId;
 
 
             if (state == "WIN" || state == "LOSS")
@@ -137,7 +155,7 @@ public class ChallengesScript : MonoBehaviour
                 entryTransform.Find("oppTimingText").GetComponent<TMP_Text>().text ="?";
                 entryTransform.Find("timingText").GetComponent<TMP_Text>().text ="?";
                 UnityEngine.UI.Button stateButton = entryTransform.Find("stateButton").GetComponent<UnityEngine.UI.Button>();
-                stateButton.onClick.AddListener(delegate { OnStartChallenge(level); });
+                stateButton.onClick.AddListener(delegate { OnStartChallenge(level,challengeId); });
 
             }
 
@@ -145,20 +163,51 @@ public class ChallengesScript : MonoBehaviour
         }
     }
 
-    public void OnStartChallenge(int challengeLevel)
+    public string CheckStartChallenge(string challengeId)
     {
-        Debug.Log("Challenge started!");
-        ChallengesScreen.SetActive(false);
+        string result = "";
+        //challengeId = "5f82f9bbd563394597f952ea";
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        ArrayList arrStart = AccessAPI.PutStartChallenge(playerInfo.Data.username, challengeId);
+        result = arrStart[0].ToString();
+
+        return result;
+    }
+    public void OnStartChallenge(int challengeLevel, string challengeId)
+    {
+        
         IDictionary<int, string> scenesDict = new Dictionary<int, string>();
         scenesDict.Add(1, "level 1");
         scenesDict.Add(2, "level 2");
         scenesDict.Add(3, "level 3");
         //scenesDict.Add(6, "special level");
-
-        if (scenesDict.ContainsKey(challengeLevel))
+        string result = CheckStartChallenge(challengeId);
+        if(result.Equals("INVALID"))
         {
-            SceneManager.LoadScene(scenesDict[challengeLevel]);
+            ChallengesInvalidPanel.SetActive(true);
+            flagInvalidChallenge = true;
+            Debug.Log("Challenge declined! Someone beat you to it...please try another!");
+            OnEnable(); //reloads screen
         }
+        else if (result.Equals("ERROR"))
+        {
+            ChallengesInvalidPanel.SetActive(false);
+            ChallengesError.SetActive(true);
+            Debug.Log("Connection Error!"); //internet connection error
+        }
+        else
+        {
+            Debug.Log("Challenge accepted!");
+            ChallengesInvalidPanel.SetActive(false);
+            ChallengesError.SetActive(false);
+            ChallengesScreen.SetActive(false);
+            if (scenesDict.ContainsKey(challengeLevel))
+            {
+                SceneManager.LoadScene(scenesDict[challengeLevel]);
+            }
+        }
+
+        
     }
 
     private class ChallengeEntry
@@ -169,8 +218,9 @@ public class ChallengesScript : MonoBehaviour
         public int timing;
         public int level;
         public string type;
+        public string _id;
 
-        public ChallengeEntry(string state, string oppName, int oppTiming, int timing, int level, string type)
+        public ChallengeEntry(string state, string oppName, int oppTiming, int timing, int level, string type, string _id)
         {
             this.state = state;
             this.oppName = oppName;
@@ -178,6 +228,7 @@ public class ChallengesScript : MonoBehaviour
             this.timing = timing;
             this.level = level;
             this.type = type;
+            this._id = _id;
         }
         
 
