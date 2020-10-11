@@ -156,9 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinPanel: {fileID: 1729841289}
-  levelHandle: {fileID: 0}
-  APIObject: {fileID: 0}
-  PrefObject: {fileID: 0}
+  levelHandle: {fileID: 287694286}
+  APIObject: {fileID: 416329760}
+  PrefObject: {fileID: 2030644352}
   TimeController: {fileID: 467811186}
   score: 0
   highScore: 0
@@ -841,6 +841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 1265972103}
   PauseButton: {fileID: 211113533}
+  levelHandle: {fileID: 0}
 --- !u!114 &467811186
 MonoBehaviour:
   m_ObjectHideFlags: 0

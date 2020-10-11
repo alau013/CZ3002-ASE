@@ -4767,9 +4767,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinPanel: {fileID: 1165727517}
-  levelHandle: {fileID: 0}
-  APIObject: {fileID: 0}
-  PrefObject: {fileID: 0}
+  levelHandle: {fileID: 805746780}
+  APIObject: {fileID: 755494782}
+  PrefObject: {fileID: 1324559602}
   TimeController: {fileID: 1448081281}
   score: 0
   highScore: 0

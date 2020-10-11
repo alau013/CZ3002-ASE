@@ -1947,9 +1947,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WinPanel: {fileID: 626271179}
-  levelHandle: {fileID: 0}
-  APIObject: {fileID: 0}
-  PrefObject: {fileID: 0}
+  levelHandle: {fileID: 1407447530}
+  APIObject: {fileID: 1191739719}
+  PrefObject: {fileID: 690501472}
   TimeController: {fileID: 853450525}
   score: 0
   highScore: 0
@@ -2443,6 +2443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 602011468}
   PauseButton: {fileID: 278627222}
+  levelHandle: {fileID: 0}
 --- !u!114 &853450523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3575,6 +3576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: standard
   levelInfo: 2
+  isLast: 0
 --- !u!4 &1407447532
 Transform:
   m_ObjectHideFlags: 0
