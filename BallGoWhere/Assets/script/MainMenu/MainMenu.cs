@@ -26,7 +26,8 @@ public class MainMenu : MonoBehaviour
        
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
-        Debug.Log("[Mainmenu getLeaderboardScore()]: " + playerInfo.Data.getLeaderboardScore("standard", 2));
+        //Debug.Log("[Mainmenu getLeaderboardScore()]: " + playerInfo.Data.getLeaderboardScore("standard", 2));
+        
         //Ensure that display message is set to player's name when active.
         if (display != null)
         {

@@ -134,6 +134,8 @@ public class PlayerData
         this.weekly = loginData.weekly;
         //skip attempts as it is not required
     }
+
+    
     public int getLeaderboardScore(string leaderboardType, int levelNum)
     {
         Dictionary<string,List<StandardEntryAPI>> typeDict = new Dictionary<string, List<StandardEntryAPI>>();
@@ -142,13 +144,15 @@ public class PlayerData
         typeDict.Add("weekly", this.weekly);
         
         int result = -1;
+        Debug.Log("current count in playerInfo.data: "+typeDict[leaderboardType].Count);
         if (typeDict[leaderboardType].Count > 0)
         {
-            for(int i = 0; i < this.standard.Count; i++)
+            for(int i = 0; i < typeDict[leaderboardType].Count; i++)
             {
                 if (typeDict[leaderboardType][i].level.Equals(levelNum))
                 {
                     result = typeDict[leaderboardType][i].score;
+                    Debug.Log("[getLeaderboardScore()]: Found result for level " + typeDict[leaderboardType][i].level +" score: "+ typeDict[leaderboardType][i].score);
                     break;
                 }
             }

@@ -23,6 +23,7 @@ public class APIScript : MonoBehaviour
     public GameObject PrefObject;
     private PlayerPrefUI playerInfo;
     private bool loginFlag = false;
+    private bool leadboardFlag = false;
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
@@ -215,11 +216,22 @@ public class APIScript : MonoBehaviour
         logUser.name = username;
         result = Post2("/account/login", logUser);
         loginData = JsonUtility.FromJson<LoginResponseAPI>(result);
-        Debug.Log(loginData.standard.Count);
-        Debug.Log(loginData.special.Count);
-        Debug.Log(loginData.weekly.Count);
         arr.Add(result);
         arr.Add(loginData);
+        return arr;
+    }
+
+    public ArrayList PostLeaderboard(string username, string leaderboardType, StandardEntryAPI inputEntry)
+    {
+         //see challengesscript.cs for sample implementation (search "test").
+        ArrayList arr = new ArrayList();
+        LeaderboardResponseAPI leaderboardData = new LeaderboardResponseAPI();
+        this.leadboardFlag = false;
+        string result = "";
+        result = Post2(String.Format("/score/{0}/{1}",username,leaderboardType), inputEntry);
+        leaderboardData = JsonUtility.FromJson<LeaderboardResponseAPI>(result);
+        arr.Add(result);
+        arr.Add(leaderboardData);
         return arr;
     }
 
@@ -302,9 +314,17 @@ public class StandardEntryAPI //can use for Standard/Weekly/All-Time
 {
     public int score;
     public int time;
-    public string _id;
+    //public string _id;
     public string date_time;
     public int level;
+
+    public StandardEntryAPI(int score, int time, string date_time, int level)
+    {
+        this.score = score;
+        this.time = time;
+        this.date_time = date_time;
+        this.level = level;
+    }
 }
 
 [Serializable]
@@ -324,4 +344,11 @@ public class LoginResponseAPI
     public int __v;
     //public List<ChallengeEntryAPI> challenges;
 
+}
+
+[Serializable]
+public class LeaderboardResponseAPI
+{
+    public string status;
+    public LoginResponseAPI info;
 }
