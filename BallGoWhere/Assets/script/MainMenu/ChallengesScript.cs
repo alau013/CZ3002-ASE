@@ -46,7 +46,8 @@ public class ChallengesScript : MonoBehaviour
 
         entryTemplate.gameObject.SetActive(false);
         //modify to load challenges from api..
-        ArrayList results = GetChallenges();
+        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
+        ArrayList results =AccessAPI.GetChallenges();
         Debug.Log("[ChallengesScript.cs OnEnable()]: ");
         Debug.Log(results);
 
@@ -154,44 +155,7 @@ public class ChallengesScript : MonoBehaviour
 
     }
 
-    [Serializable]
-    public class ChallengesAPI
-    {
-        public string state;
-        public string recvTime;
-        public string _id;
-        public string date_time;
-        public string senderName;
-        public int senderTime;
-        public int level;
-    }
-
-    public ArrayList GetChallenges() 
-    {
-        APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-
-        ArrayList resultsList = new ArrayList();
-        string apiLink = String.Format("/challenge/{0}", playerInfo.Data.username);
-        
-        string jsonResponse = AccessAPI.GetResponse(apiLink); //modify this if you move this to APIScript.cs
-        if (jsonResponse.Equals("ERROR"))
-        {
-            resultsList.Add(false);
-        }
-        else
-        {
-            resultsList.Add(true);
-            Debug.Log("RECEIVED: " + jsonResponse);
-            //ChallengesAPI info = JsonUtility.FromJson<ChallengesAPI>(jsonResponse);
-            //resultsList.Add(info);
-        }
-
-        
-
-
-        return resultsList;
-    }
-
+   
     public void ToHelp()
     {
         HelpScreen.SetActive(!helpToggle);

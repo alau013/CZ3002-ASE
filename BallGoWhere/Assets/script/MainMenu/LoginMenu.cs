@@ -30,6 +30,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnEnable() 
     {
+        //PlayerPrefs.DeleteAll();
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         if (loginSuccess)
         {
@@ -115,7 +116,7 @@ public class LoginMenu : MonoBehaviour
         if (nameStr != "")
         {
             ArrayList arr = AccessAPI.PostLogin(nameStr);
-            if (!arr[0].Equals("ERROR"))
+            if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
                 bool validLogin = true;
@@ -167,8 +168,15 @@ public class LoginMenu : MonoBehaviour
 
             else
             {
+                if (arr[0].Equals("INVALID"))
+                {
+                    this.LoginWarningText.text = "Username is already taken! Please try another.";
+                }
+                else
+                {
+                    this.LoginWarningText.text = "Connection Error! Please try again!";
+                }
                 
-                this.LoginWarningText.text = "Connection Error! Please try again!";
             }
         }
         else

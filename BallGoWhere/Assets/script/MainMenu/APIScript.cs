@@ -190,8 +190,7 @@ public class APIScript : MonoBehaviour
     {
 
         ArrayList resultsList = new ArrayList();
-        string apiLink = String.Format("/challenge/{0}", playerInfo.Data.username);
-
+        string apiLink = String.Format("/challenge/{0}/list", playerInfo.Data.username);
         string jsonResponse = GetResponse(apiLink); 
         if (jsonResponse.Equals("ERROR"))
         {
@@ -202,6 +201,7 @@ public class APIScript : MonoBehaviour
             resultsList.Add(true);
             ChallengesAPI info = JsonUtility.FromJson<ChallengesAPI>(jsonResponse); //add this and the one below once challenge api response is fixed.
             resultsList.Add(info);
+            Debug.Log("[GetChallenges() count]: "+info.challenges.Count);
         }
         return resultsList;
     }
@@ -209,11 +209,13 @@ public class APIScript : MonoBehaviour
     public ArrayList PostLogin(string username)
     {
         ArrayList arr = new ArrayList();
+        string deviceID = SystemInfo.deviceUniqueIdentifier;
         LoginResponseAPI loginData = new LoginResponseAPI();
         this.loginFlag = false;
         string result = "";
         LoginAPI logUser = new LoginAPI();
         logUser.name = username;
+        logUser.deviceID = deviceID;
         result = Post2("/account/login", logUser);
         try
         {
@@ -225,7 +227,14 @@ public class APIScript : MonoBehaviour
         catch(Exception e)
         {
             Debug.Log("[PostLogin()]: Error");
-            result = "ERROR";
+            if (result.Contains("This account may have existed"))
+            {
+                result = "INVALID";
+            }
+            else
+            {
+                result = "ERROR";
+            }
             arr.Add(result);
         }
         return arr;
@@ -288,6 +297,7 @@ public class ChuckNorris
 public class LoginAPI
 {
     public string name;
+    public string deviceID;
 }
 
 [Serializable]
@@ -312,11 +322,12 @@ public class ChallengeEntryAPI
     public string senderName;
     public int senderTime;
     public int level;
+    public string type;
 }
 [Serializable]
 public class ChallengesAPI
 {
-    public List<ChallengeEntryAPI> board;
+    public List<ChallengeEntryAPI> challenges = new List<ChallengeEntryAPI>();
 }
 
 [Serializable]
