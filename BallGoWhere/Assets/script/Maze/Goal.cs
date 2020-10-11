@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Goal : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject WinPanel;
+    public GameObject WinPanel, levelHandle;
     public GameObject APIObject;
     public GameObject PrefObject;
     public timeController TimeController;
@@ -29,6 +29,9 @@ public class Goal : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+        int gameLevel = GameObject.Find("levelHandle").GetComponent<levelHandle>().levelInfo;
+        string gameType = GameObject.Find("levelHandle").GetComponent<levelHandle>().type;
+        
         Color randomlySelectedColor = GetRandomColorWithAlpha();
         GetComponent<Renderer>().material.color = randomlySelectedColor;
         
@@ -49,13 +52,13 @@ public class Goal : MonoBehaviour
          string day = System.DateTime.Now.ToString("MM/dd/yyyy");
          playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
 
-         playerinfo.Data.addAttempt(new AttemptEntry(day,score,1));
+         playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
          playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
 
          playerinfo.SaveDataToPlayerPref();
 
-         //Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
-         Debug.Log("player score: "+score);
+         Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
+         //Debug.Log("player score: "+score);
 
         }
     }

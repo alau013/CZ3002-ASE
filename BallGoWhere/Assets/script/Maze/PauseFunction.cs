@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PauseFunction : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject pausePanel, PauseButton;
+    public GameObject pausePanel, PauseButton, levelHandle;
     public void pauseGame()
     {
         pausePanel.SetActive(true);
@@ -40,9 +40,16 @@ public class PauseFunction : MonoBehaviour
 
     public void nextGame()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        GameController.instance.EndGame();
+        if ((GameObject.Find("levelHandle").GetComponent<levelHandle>().isLast) == true)
+        {
+           exitGame();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            GameController.instance.EndGame();
+        }
     }
 
     

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ballcontrol : MonoBehaviour
 {
    // Move object using accelerometer
-    float speed = 10.0f;
+    float speed = 1.0f;
 
     // Update is called once per frame
     private Rigidbody rigid;
@@ -27,7 +27,7 @@ public class ballcontrol : MonoBehaviour
         // clamp acceleration vector to unit sphere
         if (movement.sqrMagnitude > 1)
             movement.Normalize();
-        rigid.AddForce(movement,ForceMode.VelocityChange);
+        rigid.AddForce(movement*speed,ForceMode.VelocityChange);
        // Debug.DrawRay(transform.position + Vector3.up, movement, Color.cyan);
         }
      }
