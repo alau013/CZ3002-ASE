@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -110,12 +111,14 @@ public class PlayerData
     public float dailyPlay = 0; //total playtime for the day, in mins
     public int level = 3; //highest unlocked level
     public int dailyAttempts = 0; //no. of attempted levels today
-    public string lastActive; //datetime string from last login/attempt
+    public DateTime lastActive = new DateTime(); //datetime string from last login/attempt
     public List<AttemptEntry> attempts = new List<AttemptEntry>();
     public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
     public ArrayList challengeHolder = new ArrayList();
+    public Dictionary<DateTime, int> dailyPlayDict = new Dictionary<DateTime, int>();
+    public Dictionary<DateTime, List<AttemptEntry>> attemptsDict = new Dictionary<DateTime, List<AttemptEntry>>();
 
     public string ExportToJson()
     {
@@ -126,6 +129,106 @@ public class PlayerData
         return JsonUtility.FromJson<PlayerData>(jsonStr);
     }
 
+    public void UpdateAttemptsDict(int point, int level) //update using raw data: points and level.
+    {
+        DateTime currDate = System.DateTime.Now.Date;
+        if (!attemptsDict.ContainsKey(currDate))
+        {
+            attemptsDict[currDate] = new List<AttemptEntry>();
+        }
+        attemptsDict[currDate].Add(new AttemptEntry(currDate.ToString(@"yyyy-MM-dd"), point, level));
+    }
+    public void UpdateAttemptsDict(AttemptEntry inputAttempt) //update using AttemptEntry object.
+    {
+        DateTime currDate = System.DateTime.Now.Date;
+        if (!attemptsDict.ContainsKey(currDate))
+        {
+            attemptsDict[currDate] = new List<AttemptEntry>();
+        }
+        attemptsDict[currDate].Add(inputAttempt);
+    }
+
+    public void UpdateDailyPlayDict(int newTiming)
+    {
+        //string dateStr = System.DateTime.Now.Date.ToString(@"yyyy-MM-dd");
+        DateTime currDate = System.DateTime.Now.Date;
+        if (dailyPlayDict.ContainsKey(currDate))
+        {
+            dailyPlayDict[currDate] += newTiming;
+        }
+        else
+        {
+            dailyPlayDict[currDate] = newTiming;
+            if (dailyPlayDict.Count > 7)
+            {
+                Debug.Log(dailyPlayDict.Count);
+                var dateList = dailyPlayDict.Keys.ToList();
+                dateList.Sort();
+                dailyPlayDict.Remove(dateList[0]);
+
+            }
+        }
+        this.UpdateLastActive();
+
+    }
+
+    public void UpdateDailyPlayDict(DateTime currDate, int newTiming)
+    {
+        
+        if (dailyPlayDict.ContainsKey(currDate))
+        {
+            dailyPlayDict[currDate] += newTiming;
+        }
+        else
+        {
+            dailyPlayDict[currDate] = newTiming;
+            if (dailyPlayDict.Count > 7)
+            {
+                Debug.Log(dailyPlayDict.Count);
+                var dateList = dailyPlayDict.Keys.ToList();
+                dateList.Sort();
+                dailyPlayDict.Remove(dateList[0]);
+
+            }
+        }
+
+        this.UpdateLastActive();
+    }
+
+    public int GetDailyPlayFromDict(DateTime givenDate)
+    {
+        int result = 0;
+        if (dailyPlayDict.ContainsKey(givenDate))
+        {
+            result = dailyPlayDict[givenDate];
+        }
+
+        return result;
+    }
+    public void UpdateLastActive() //call this each time the player completes a level.
+    {
+        DateTime currDate = System.DateTime.Now;
+        //string currDateStr = currDate.ToString(@"yyyy-MM-dd");
+        if (!currDate.Date.Equals(this.lastActive.Date)) //if current date is not equal to last active date..check if streak is broken.
+        {
+            if (!this.lastActive.Equals(""))
+            {
+                TimeSpan value = currDate.Subtract(this.lastActive);
+                if (value.Days > 1)
+                {
+                    this.resetStreak();
+                }
+                else
+                {
+                    this.addStreak();
+                }
+            }
+
+        }
+
+        this.lastActive = currDate;
+
+    }
     public void LoadLoginData(LoginResponseAPI loginData)
     {
         this.username = loginData.name;
@@ -162,6 +265,8 @@ public class PlayerData
         }
         return result;
     }
+
+    
     public void setStandard(List<StandardEntryAPI> someList)
     {
         this.standard = someList;
@@ -265,12 +370,9 @@ public class PlayerData
         this.dailyAttempts = 0;
     }
 
-    public void updateLastActive()
-    {
-        this.lastActive = System.DateTime.Now.ToString();
-    }
+    
 
-    public string getLastActive()
+    public DateTime getLastActive()
     {
         return this.lastActive;
     }

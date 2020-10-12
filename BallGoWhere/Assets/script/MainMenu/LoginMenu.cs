@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Globalization;
 
 public class LoginMenu : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class LoginMenu : MonoBehaviour
     private List<String> usernamesList;
     private LoginResponseAPI loginData = new LoginResponseAPI();
 
-    private void OnEnable() 
+    private void OnEnable()
     {
         //PlayerPrefs.DeleteAll();
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
@@ -151,7 +152,6 @@ public class LoginMenu : MonoBehaviour
                     }
 
                     playerInfo.Data.LoadLoginData(loginData);
-                    playerInfo.Data.updateLastActive();
                     playerInfo.SaveDataToPlayerPref();
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
                     LoginMenu.playerName = nameStr;
