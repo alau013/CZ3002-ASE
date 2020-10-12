@@ -46,28 +46,12 @@ public class Goal : MonoBehaviour
 
          Debug.Log(playerinfo.Data.challengeHolder.Count);
         
-        if (playerinfo.Data.challengeHolder.Count==0) //no challengeholder object = normal gameplay
-        { 
-            string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-
-            playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
-            playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
-
-            toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
-            
-            if(highScrSuccess==true)
-            {
-                playerinfo.SaveDataToPlayerPref();
-            }
-
-            Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
-            //Debug.Log("player score: "+score);
-        }
-        else // challenge stage
+        
+        if (PlayerPrefs.HasKey("cc")) // challenge stage
         {
             APIScript AccessAPI = APIObject.GetComponent<APIScript>();
-            string challengeID = playerinfo.Data.challengeHolder[1].ToString();
-            int  oppTiming = (int)playerinfo.Data.challengeHolder[2];
+            string challengeID = PlayerPrefs.GetString("cid");
+            int  oppTiming = PlayerPrefs.GetInt("oppotime");
 
             if (TimeController.GetPlayTime() < oppTiming)
             {
@@ -85,11 +69,31 @@ public class Goal : MonoBehaviour
             else
             {
                 WinPanel.transform.Find("winText").GetComponent<Text>().text = "You Lose!";
-                WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "Challenged failed!";
+                WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your timing: "+ TimeController.GetPlayTime().ToString() +" opponent timing: "+oppTiming.ToString();
                 Debug.Log("challenge failed");
             }
+
+            PlayerPrefs.DeleteKey("cc");
+            PlayerPrefs.Save();
             
 
+        }
+        else//no challengeholder object = normal gameplay
+        { 
+            string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
+            playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
+
+            toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
+            
+            if(highScrSuccess==true)
+            {
+                playerinfo.SaveDataToPlayerPref();
+            }
+
+            Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
+            //Debug.Log("player score: "+score);
         }
         }
     }
@@ -110,6 +114,10 @@ public class Goal : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         int currHighscore = 0;
         currHighscore = playerinfo.Data.getLeaderboardScore(leaderboardType, level);
+        if (currHighscore <0)
+        {
+            currHighscore =0;
+        }
         WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your current score: "+ (score).ToString() +"   Personal High score: "+currHighscore.ToString();
         if (score > currHighscore+1)
         {

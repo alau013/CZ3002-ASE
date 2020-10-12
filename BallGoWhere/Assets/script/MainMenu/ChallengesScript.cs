@@ -196,10 +196,13 @@ public class ChallengesScript : MonoBehaviour
             {
                 //pass [true/false, challengeId, oppTiming] to challengeHolder variable
                 playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
+                PlayerPrefs.SetInt("cc",1);
                 playerInfo.Data.challengeHolder = new ArrayList();
                 playerInfo.Data.challengeHolder.Add(true);
                 playerInfo.Data.challengeHolder.Add(challengeId);
                 playerInfo.Data.challengeHolder.Add(oppTiming);
+                PlayerPrefs.SetString("cid",challengeId);
+                PlayerPrefs.SetInt("oppotime",oppTiming);
                 playerInfo.SaveDataToPlayerPref();
                 SceneManager.LoadScene(scenesDict[challengeLevel]);
             }
