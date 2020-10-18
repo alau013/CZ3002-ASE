@@ -19,11 +19,12 @@ using System.Net.Http;
 public class APIScript : MonoBehaviour
 {
     public int timeOut;//SET THIS ONLY FROM UNITY
-    public string localHostIp; //SET THIS ONLY FROM UNITY!
+    //public string localHostIp; //SET THIS ONLY FROM UNITY!
     public GameObject PrefObject;
     private PlayerPrefUI playerInfo;
     private bool loginFlag = false;
     private bool leadboardFlag = false;
+    private string localHostIp = "http://192.168.1.5:3000"; //.15 for Jaslyn, .5 for Alan.
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
@@ -385,8 +386,38 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
-    
 
+    public ArrayList PostAttempts(string username, AttemptList aList)
+    {
+        ArrayList arr = new ArrayList();
+        string deviceID = SystemInfo.deviceUniqueIdentifier;
+        LoginResponseAPI loginData = new LoginResponseAPI();
+        string result = "";
+        string apiLink = String.Format("/attempt/{0}", username);
+        result = Post2(apiLink, aList);
+        try
+        {
+            loginData = JsonUtility.FromJson<LoginResponseAPI>(result);
+            arr.Add(result);
+            arr.Add(loginData);
+
+        }
+        catch (Exception e)
+        {
+
+            if (result.Contains("Cannot read property 'attempts' of null"))
+            {
+                result = "INVALID";
+            }
+            else
+            {
+                Debug.Log("[PostAttempts()]: Error");
+                result = "ERROR";
+            }
+            arr.Add(result);
+        }
+        return arr;
+    }
     public void OnApplicationFocus(bool focus)
     {
         if (focus) //user loads the app 
@@ -399,16 +430,28 @@ public class APIScript : MonoBehaviour
             /*
             //test code for uploading attempts to DB
             AttemptEntry a1 = new AttemptEntry();
-            a1.date_time =  "2020-10-07";
+            a1.date_time =  "2020-10-11";
             a1.point = 24;
-            a1.level = 1; //timing = 120;
-            //playerInfo.Data.attempts.Add(a1);
-            //playerInfo.SaveDataToPlayerPref();
-            //AttemptList aList = new AttemptList();
-            //aList.attempts.Add(a1);
+            a1.level = 1; 
+            a1.time = 65;
+            a1.type = "standard";
+
+            AttemptList aList = new AttemptList();
+            aList.attempts.Add(a1);
+            ArrayList arr = PostAttempts("khanh2", aList);
+            if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
+            {
+                Debug.Log("[APIScript.cs] posting attempts success!");
+            }
+            else
+            {
+                Debug.Log("[APIScript.cs] I don't know whats going on!!!");
+            }
             
             Debug.Log("Attempts: ");
             Debug.Log(aList.attempts);
+            Post2("", aList.ExportToJson());
+
             StartCoroutine(Post("/attempt/jaslyn", aList)); //important to use this
 
             */

@@ -80,13 +80,30 @@ public class AttemptEntry
 {
     public string date_time;
     public int point;
+    public int time;
     public int level;
+    public string type;
 
-    public AttemptEntry(string date_time, int point, int level)
+    public AttemptEntry()
+    {
+    }
+
+    public AttemptEntry(string date_time, int point, int time, int level, string type)
     {
         this.date_time = date_time;
         this.point = point;
+        this.time = time;
         this.level = level;
+        this.type = type;
+
+    }
+    public AttemptEntry(string date_time, int point, int level)
+    { //for testing purposes. Alan to update the AttemptEntry() in Goal.Cs to include time and type(like above).
+        this.date_time = date_time;
+        this.point = point;
+        this.time = 10;
+        this.level = level;
+        this.type = "standard";
     }
 }
 
@@ -102,6 +119,7 @@ public class AttemptList
     {
         return JsonUtility.FromJson<AttemptList>(jsonStr);
     }
+
 }
 [Serializable]
 public class PlayerData
@@ -129,14 +147,15 @@ public class PlayerData
         return JsonUtility.FromJson<PlayerData>(jsonStr);
     }
 
-    public void UpdateAttemptsDict(int point, int level) //update using raw data: points and level.
+    public void UpdateAttemptsDict(int point, int time, int level, string type) //update using raw data: points and level.
     {
         DateTime currDate = System.DateTime.Now.Date;
+        // string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
         if (!attemptsDict.ContainsKey(currDate))
         {
             attemptsDict[currDate] = new List<AttemptEntry>();
         }
-        attemptsDict[currDate].Add(new AttemptEntry(currDate.ToString(@"yyyy-MM-dd"), point, level));
+        attemptsDict[currDate].Add(new AttemptEntry(currDate.ToString(@"yyyy-MM-dd"), point, time, level, type));
     }
     public void UpdateAttemptsDict(AttemptEntry inputAttempt) //update using AttemptEntry object.
     {
