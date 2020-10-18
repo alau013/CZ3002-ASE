@@ -113,7 +113,6 @@ public class LoginMenu : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
 
         
-        
         if (nameStr != "")
         {
             ArrayList arr = AccessAPI.PostLogin(nameStr);

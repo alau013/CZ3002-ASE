@@ -120,7 +120,18 @@ public class AttemptList
         return JsonUtility.FromJson<AttemptList>(jsonStr);
     }
 
+    public void Add(AttemptEntry inputEntry)
+    {
+        attempts.Add(inputEntry);
+    }
+
+    public int Count()
+    {
+        return attempts.Count;
+    }
+
 }
+
 [Serializable]
 public class PlayerData
 {
@@ -149,8 +160,12 @@ public class PlayerData
 
     public void UpdateAttemptsDict(int point, int time, int level, string type) //update using raw data: points and level.
     {
-        DateTime currDate = System.DateTime.Now.Date;
-        // string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+        //Update attemptsdict (for use locally)
+        //DateTime currDate = System.DateTime.Now.Date;
+        DateTime currDate = System.DateTime.Now;
+        string dateTimeStr = currDate.ToString("MM/dd/yyyy HH:mm:ss");
+        currDate = currDate.Date;
+        //attempts.Add(new AttemptEntry(dateTimeStr, point, time, level, type)); //Add to attemptsList (waiting list to post to server)
         if (!attemptsDict.ContainsKey(currDate))
         {
             attemptsDict[currDate] = new List<AttemptEntry>();

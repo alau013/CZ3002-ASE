@@ -24,10 +24,11 @@ public class APIScript : MonoBehaviour
     private PlayerPrefUI playerInfo;
     private bool loginFlag = false;
     private bool leadboardFlag = false;
-    private string localHostIp = "http://192.168.1.5:3000"; //.15 for Jaslyn, .5 for Alan.
+    private string localHostIp = "http://192.168.1.15:3000"; //.15 for Jaslyn, .5 for Alan.
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
+        playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username); //load latest data from playerpref..
         
     }
     public ChuckNorris GetChuckling()
@@ -427,35 +428,32 @@ public class APIScript : MonoBehaviour
         else //focus=false means the user exits the app (back/home button)
         {
             Debug.Log("Focus is FALSE");
-            /*
-            //test code for uploading attempts to DB
-            AttemptEntry a1 = new AttemptEntry();
-            a1.date_time =  "2020-10-11";
-            a1.point = 24;
-            a1.level = 1; 
-            a1.time = 65;
-            a1.type = "standard";
-
-            AttemptList aList = new AttemptList();
-            aList.attempts.Add(a1);
-            ArrayList arr = PostAttempts("khanh2", aList);
-            if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
+            playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username); //load latest data from playerpref
+            if (playerInfo.Data.attempts.Count > 0)
             {
-                Debug.Log("[APIScript.cs] posting attempts success!");
+                Debug.Log("[OnApplicationFocus()]: pending attempts to be posted in attemptsList: " + playerInfo.Data.attempts.Count.ToString());
+                AttemptList aList = new AttemptList(); //Must use [Serializable] AttemptList class for posting...
+                foreach (AttemptEntry item in playerInfo.Data.attempts)
+                {
+                    aList.Add(item);
+                }
+                //do postAttempts()...
+                ArrayList arr = PostAttempts(playerInfo.Data.username, aList); 
+                if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
+                {
+                    Debug.Log("[OnApplicationFocus()]: Successful post of attempts to server!");
+                    playerInfo.Data.attempts.Clear(); //reset attempts
+                    playerInfo.SaveDataToPlayerPref(); //save to playerprefs
+                }
+                else
+                {
+                    Debug.Log("[OnApplicationFocus()]: Unsuccessful post of attempts to server - ERROR!");
+                }
             }
             else
             {
-                Debug.Log("[APIScript.cs] I don't know whats going on!!!");
+                Debug.Log("[OnApplicationFocus()]: No pending attempts...");
             }
-            
-            Debug.Log("Attempts: ");
-            Debug.Log(aList.attempts);
-            Post2("", aList.ExportToJson());
-
-            StartCoroutine(Post("/attempt/jaslyn", aList)); //important to use this
-
-            */
-
 
         }
     }
@@ -548,7 +546,7 @@ public class LoginResponseAPI
     public string name;
     public string deviceID;
     
-    public AttemptList attempts;
+    public List<AttemptEntry> attempts = new List<AttemptEntry>();
     public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> special = new List<StandardEntryAPI>();
     public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();

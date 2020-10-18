@@ -16,6 +16,7 @@ ScriptsOnlyBuild:
     - PlayerPrefUI
     - SelectLevelScript
     - ballcontrol
+    - levelHandle
     - timeController
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -123,19 +124,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13454}
+      Script: {instanceID: 13456}
     - Class: 114
-      Script: {instanceID: 13522}
+      Script: {instanceID: 13524}
     - Class: 114
-      Script: {instanceID: 13716}
+      Script: {instanceID: 13718}
     - Class: 114
-      Script: {instanceID: 13834}
+      Script: {instanceID: 13836}
     - Class: 114
-      Script: {instanceID: 13940}
+      Script: {instanceID: 13942}
     - Class: 114
-      Script: {instanceID: 13944}
+      Script: {instanceID: 13946}
     - Class: 114
-      Script: {instanceID: 13980}
+      Script: {instanceID: 13982}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -196,25 +197,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12166}
     - Class: 114
+      Script: {instanceID: 12444}
+    - Class: 114
       Script: {instanceID: 12452}
     - Class: 114
       Script: {instanceID: 12464}
+    - Class: 114
+      Script: {instanceID: 12806}
     - Class: 114
       Script: {instanceID: 12934}
     - Class: 114
       Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13304}
     - Class: 114
-      Script: {instanceID: 13522}
+      Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13560}
+      Script: {instanceID: 13524}
     - Class: 114
-      Script: {instanceID: 13746}
+      Script: {instanceID: 13562}
     - Class: 114
-      Script: {instanceID: 13874}
+      Script: {instanceID: 13748}
     - Class: 114
-      Script: {instanceID: 13944}
+      Script: {instanceID: 13876}
+    - Class: 114
+      Script: {instanceID: 13882}
+    - Class: 114
+      Script: {instanceID: 13946}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -273,27 +282,203 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11990}
     - Class: 114
+      Script: {instanceID: 12444}
+    - Class: 114
       Script: {instanceID: 12452}
     - Class: 114
       Script: {instanceID: 12464}
+    - Class: 114
+      Script: {instanceID: 12806}
     - Class: 114
       Script: {instanceID: 12934}
     - Class: 114
       Script: {instanceID: 13242}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13304}
     - Class: 114
-      Script: {instanceID: 13522}
+      Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13560}
+      Script: {instanceID: 13524}
     - Class: 114
-      Script: {instanceID: 13746}
+      Script: {instanceID: 13562}
     - Class: 114
-      Script: {instanceID: 13874}
+      Script: {instanceID: 13748}
     - Class: 114
-      Script: {instanceID: 13880}
+      Script: {instanceID: 13876}
     - Class: 114
-      Script: {instanceID: 13944}
+      Script: {instanceID: 13882}
+    - Class: 114
+      Script: {instanceID: 13946}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 135
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    Assets/Scenes/level 2.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 11758}
+    - Class: 114
+      Script: {instanceID: 11896}
+    - Class: 114
+      Script: {instanceID: 11948}
+    - Class: 114
+      Script: {instanceID: 11990}
+    - Class: 114
+      Script: {instanceID: 12444}
+    - Class: 114
+      Script: {instanceID: 12452}
+    - Class: 114
+      Script: {instanceID: 12464}
+    - Class: 114
+      Script: {instanceID: 12806}
+    - Class: 114
+      Script: {instanceID: 12934}
+    - Class: 114
+      Script: {instanceID: 13242}
+    - Class: 114
+      Script: {instanceID: 13304}
+    - Class: 114
+      Script: {instanceID: 13338}
+    - Class: 114
+      Script: {instanceID: 13524}
+    - Class: 114
+      Script: {instanceID: 13562}
+    - Class: 114
+      Script: {instanceID: 13748}
+    - Class: 114
+      Script: {instanceID: 13876}
+    - Class: 114
+      Script: {instanceID: 13882}
+    - Class: 114
+      Script: {instanceID: 13946}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 135
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    Assets/Scenes/level 3.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 11758}
+    - Class: 114
+      Script: {instanceID: 11896}
+    - Class: 114
+      Script: {instanceID: 11948}
+    - Class: 114
+      Script: {instanceID: 11990}
+    - Class: 114
+      Script: {instanceID: 12444}
+    - Class: 114
+      Script: {instanceID: 12452}
+    - Class: 114
+      Script: {instanceID: 12464}
+    - Class: 114
+      Script: {instanceID: 12806}
+    - Class: 114
+      Script: {instanceID: 12934}
+    - Class: 114
+      Script: {instanceID: 13242}
+    - Class: 114
+      Script: {instanceID: 13304}
+    - Class: 114
+      Script: {instanceID: 13338}
+    - Class: 114
+      Script: {instanceID: 13524}
+    - Class: 114
+      Script: {instanceID: 13562}
+    - Class: 114
+      Script: {instanceID: 13748}
+    - Class: 114
+      Script: {instanceID: 13876}
+    - Class: 114
+      Script: {instanceID: 13882}
+    - Class: 114
+      Script: {instanceID: 13946}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -327,7 +512,7 @@ ScriptsOnlyBuild:
     className: TMP_SelectionCaret
   - hash:
       serializedVersion: 2
-      Hash: 0b0adc29250d8f8248094753d9b1596b
+      Hash: 1ca3ee779b6c080a3a4a0dd82393eefb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SelectLevelScript
@@ -471,7 +656,7 @@ ScriptsOnlyBuild:
     className: AspectRatioFitter
   - hash:
       serializedVersion: 2
-      Hash: 660647bbae185c8f319f6c35e945eee7
+      Hash: 73625eb85aba767de639dc1fda1c3f0f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LeaderboardScript
@@ -525,7 +710,7 @@ ScriptsOnlyBuild:
     className: WarpTextExample
   - hash:
       serializedVersion: 2
-      Hash: 84083eb3de1fdd8da58caed3b911b585
+      Hash: 72fd28da75c600ae61f968f5501bc6cb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerPrefUI
@@ -543,7 +728,7 @@ ScriptsOnlyBuild:
     className: ControlPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: fc3141cb854b8b7a6cbd4b1534a393d7
+      Hash: 1eaf31a5bc7978fe0c3cfbefbb946c0c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PauseFunction
@@ -621,7 +806,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: ccaf76d74d364ab51c2ee5ccb7babbdc
+      Hash: 9cd14f5f9be1c0f99f17c3bda5997565
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: APIScript
@@ -657,13 +842,13 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: f09c0f8095ef74c8b5c950f5e738fc1c
+      Hash: cd6c9fcec5973bca9eec756a5435abfb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ChallengesScript
   - hash:
       serializedVersion: 2
-      Hash: 26460abe51e3e6dd442e11dca9c4273d
+      Hash: daea6171743102638b4e51718ec95514
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainMenu
@@ -769,6 +954,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: TimelineAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 955adda839d8934b8577b0eabd5f0cc4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: levelHandle
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -963,7 +1154,7 @@ ScriptsOnlyBuild:
     className: Outline
   - hash:
       serializedVersion: 2
-      Hash: 0cb177d16b75631b5f62495b1c9c4604
+      Hash: a8be8e8138775585dc494c83967436d6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Goal
@@ -999,7 +1190,7 @@ ScriptsOnlyBuild:
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: fe9dc9d329dbdf7077dd3450b0bb8785
+      Hash: d0761a4f5c650898600e921b10ab269a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DashboardScript
@@ -1043,5 +1234,7 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/level 1.unity
+  - Assets/Scenes/level 2.unity
+  - Assets/Scenes/level 3.unity
   - Assets/Scenes/Special Level.unity
-  playerPath: C:/Users/whate/Documents/GitHub/CZ3002-ASE/BallGoWhere/BallGoWhereTestapk.apk
+  playerPath: C:/Users/whate/Documents/GitHub/CZ3002-ASE/BallGoWhere/BallGoWhereV7.apk
