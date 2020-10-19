@@ -176,13 +176,52 @@ public class DataEntry{
 }
 
 [Serializable]
+public class DailyAttempts
+{
+    public string key;
+    public List<AttemptEntry> aList;
+    public DailyAttempts()
+    {
+
+    }
+
+    public DailyAttempts(string key, List<AttemptEntry> aList)
+    {
+        this.key = key;
+        this.aList = aList;
+    }
+    public bool CompareKey(string compareKey)
+    {
+        bool result = false;
+        if (compareKey.Equals(this.key))
+        {
+            result = true;
+        }
+        return result;
+    }
+
+    public string GetKey()
+    {
+        return this.key;
+    }
+    public List<AttemptEntry> GetList()
+    {
+        return this.aList;
+    }
+
+    public void AddToList(AttemptEntry inputEntry)
+    {
+        this.aList.Add(inputEntry);
+    }
+
+}
+
+[Serializable]
 public class PlayerData
 {
     public string username;
     public int streak = 0;
-    public float dailyPlay = 0; //total playtime for the day, in mins
     public int level = 3; //highest unlocked level
-    public int dailyAttempts = 0; //no. of attempted levels today
     public String lastActive; //datetime string from last login/attempt
     public List<AttemptEntry> attempts = new List<AttemptEntry>();
     public List<StandardEntryAPI> standard = new List<StandardEntryAPI>();
@@ -190,17 +229,12 @@ public class PlayerData
     public List<StandardEntryAPI> weekly = new List<StandardEntryAPI>();
     public ArrayList challengeHolder = new ArrayList();
     public List<DataEntry> dailyPlayList = new List<DataEntry>();
-    public string jsonDailyPlayList;
+    public List<DailyAttempts> dailyAttemptsList = new List<DailyAttempts>();
     //public Dictionary<DateTime, int> dailyPlayDict = new Dictionary<DateTime, int>();
     public Dictionary<DateTime, List<AttemptEntry>> attemptsDict = new Dictionary<DateTime, List<AttemptEntry>>();
 
     public string ExportToJson()
     {
-        if (this.dailyPlayList.Count > 0)
-        {
-            //this.jsonDailyPlayList = JsonUtility.ToJson(this.dailyPlayList);
-            //Debug.Log("[ExportToJson()] Saving first to jsonDailyPlayList: " + jsonDailyPlayList);
-        }
         
         return JsonUtility.ToJson(this);
     }
@@ -228,26 +262,58 @@ public class PlayerData
         DateTime currDate = System.DateTime.Now;
         string dateTimeStr = currDate.ToString("MM/dd/yyyy HH:mm:ss");
         currDate = currDate.Date;
-        //attempts.Add(new AttemptEntry(dateTimeStr, point, time, level, type)); //Add to attemptsList (waiting list to post to server)
-        if (!attemptsDict.ContainsKey(currDate))
+        bool foundFlag = false;
+
+        foreach (DailyAttempts item in this.dailyAttemptsList)
         {
-            attemptsDict[currDate] = new List<AttemptEntry>();
+            if (item.CompareKey(currDate.ToString()))
+            {
+                item.AddToList(new AttemptEntry(dateTimeStr, point, time, level, type));
+                foundFlag = true;
+            }
         }
-        attemptsDict[currDate].Add(new AttemptEntry(currDate.ToString(@"yyyy-MM-dd"), point, time, level, type));
+
+        if (!foundFlag)
+        {
+            List<AttemptEntry> aList = new List<AttemptEntry>();
+            aList.Add(new AttemptEntry(dateTimeStr, point, time, level, type));
+            this.dailyAttemptsList.Add(new DailyAttempts(currDate.ToString(), aList));
+        }
+
+        if (dailyAttemptsList.Count > 7)
+        {
+            dailyAttemptsList.RemoveAt(0); //First in first out.
+        }
+
     }
     public void UpdateAttemptsDict(AttemptEntry inputAttempt) //update using AttemptEntry object.
     {
-        DateTime currDate = System.DateTime.Now.Date;
-        if (!attemptsDict.ContainsKey(currDate))
+        //Update attemptsdict (for use locally)
+        //DateTime currDate = System.DateTime.Now.Date;
+        DateTime currDate = System.DateTime.Now;
+        string dateTimeStr = currDate.ToString("MM/dd/yyyy HH:mm:ss");
+        currDate = currDate.Date;
+        bool foundFlag = false;
+
+        foreach (DailyAttempts item in this.dailyAttemptsList)
         {
-            attemptsDict[currDate] = new List<AttemptEntry>();
+            if (item.CompareKey(currDate.ToString()))
+            {
+                item.AddToList(inputAttempt);
+                foundFlag = true;
+            }
         }
-        attemptsDict[currDate].Add(inputAttempt);
 
-        foreach (var item in attemptsDict.Keys)
+        if (!foundFlag)
         {
-            Debug.Log("K: " + item.ToString());
+            List<AttemptEntry> aList = new List<AttemptEntry>();
+            aList.Add(inputAttempt);
+            this.dailyAttemptsList.Add(new DailyAttempts(currDate.ToString(), aList));
+        }
 
+        if (dailyAttemptsList.Count > 7)
+        {
+            dailyAttemptsList.RemoveAt(0); //First in first out.
         }
     }
 
@@ -444,17 +510,8 @@ public class PlayerData
 
     public void addDailyPlay(float dailyPlayTime)
     { //ignore this...legacy function no longer in use...
-        this.dailyPlay = dailyPlay + dailyPlayTime;
+        //this.dailyPlay = dailyPlay + dailyPlayTime;
         
-    }
-    public float getDailyPlay()
-    {
-        return this.dailyPlay;
-    }
-
-    public void resetDailyPlay()
-    {
-        this.dailyPlay = 0;
     }
 
     public int getLevel()
@@ -478,21 +535,6 @@ public class PlayerData
     public void deleteAllAttempts()
     {
         this.attempts.Clear();
-    }
-
-    public int getDailyAttempts()
-    {
-        return this.dailyAttempts;
-    }
-
-    public void addDailyAttempts()
-    {
-        this.dailyAttempts += 1;
-    }
-
-    public void resetDailyAttempts()
-    {
-        this.dailyAttempts = 0;
     }
 
     
