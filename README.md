@@ -1,4 +1,14 @@
 # BallGoWhere-Frontend
+V7 update:
+- Implement dashboard visualization and stats from playerpref data.
+- Implement onFocus()=false push of attempts data to server
+
+V6 update:
+ - Added DAOs for accessing the API
+ - Implemented challenges UI and gameplay
+
+V5 update:
+  - Added first implementation of playerpref file - data access object (DAO)
 
 v4 update:
   - Added switching functionality on dashboard
