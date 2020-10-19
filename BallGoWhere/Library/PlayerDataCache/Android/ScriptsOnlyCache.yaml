@@ -710,7 +710,7 @@ ScriptsOnlyBuild:
     className: WarpTextExample
   - hash:
       serializedVersion: 2
-      Hash: 72fd28da75c600ae61f968f5501bc6cb
+      Hash: 03906e2adb6c0692cd216ffb587c94cd
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerPrefUI

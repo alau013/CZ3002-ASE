@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Globalization;
+using System.Linq;
 
 public class LoginMenu : MonoBehaviour
 {
@@ -155,7 +156,12 @@ public class LoginMenu : MonoBehaviour
                     Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
                     LoginMenu.playerName = nameStr;
                     Debug.Log(playerName + "logged in");
+                    if (playerInfo.Data.dailyPlayList.Count > 0)
+                    {
+                        Debug.Log("[dailyPlayList[0]]: " + playerInfo.Data.dailyPlayList[0].GetKey().ToString());
 
+                    }
+                    
                     //test update challenge
                     /*
                     string cid = "5f833a1688dbaa83b57a6d65"; //challengeId

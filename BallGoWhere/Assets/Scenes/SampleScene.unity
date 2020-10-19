@@ -31670,10 +31670,13 @@ MonoBehaviour:
     dailyPlay: 0
     level: 3
     dailyAttempts: 0
+    lastActive: 
     attempts: []
     standard: []
     special: []
     weekly: []
+    dailyPlayList: []
+    jsonDailyPlayList: 
   users:
     nameList: []
 --- !u!4 &2118358698
