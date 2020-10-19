@@ -39,10 +39,52 @@ public class DashboardScript : MonoBehaviour
             //VizCaption.enabled = true;
             int[] values = { 10, 20, 30, 40, 50, 60, 70 };
             Slider[] vizSlides = Viz.GetComponentsInChildren<Slider>();
+
+            ArrayList arrDailyPlay = playerInfo.Data.GetAllDailyPlayMins();
+            ArrayList arrDates = playerInfo.Data.GetDailyPlayDates();
+            Dictionary<string, int> dayVizDict = new Dictionary<string, int>
+            {
+                ["Sun"] = 0,
+                ["Mon"] = 1,
+                ["Tue"] = 2,
+                ["Wed"] = 3,
+                ["Thu"] = 4,
+                ["Fri"] = 5,
+                ["Sat"] = 6
+            };
+            int playCount = arrDailyPlay.Count;
+            double hold;
+            float calVal;
+            DateTime datePlay;
+            string dayStr;
+            double dailyLimit = 10; //i.e. 10 mins per day.
+
+            for (int i = 0; i <playCount; i++)
+            {
+               hold = (double)arrDailyPlay[i]/dailyLimit * 100;
+               calVal = (float)hold;
+
+               datePlay = DateTime.Parse((string)arrDates[i]);
+               dayStr = datePlay.DayOfWeek.ToString().Substring(0,3);
+               vizSlides[dayVizDict[dayStr]].value = calVal;
+            }
+            
+            /*
             for (int i = 0; i < vizSlides.Length; i++)
             {
-                vizSlides[i].value = values[i];
-            }
+                if (i < playCount)
+                {
+
+                    double hold = (double)arrDailyPlay[i] * 10;
+                    float calVal =(float)hold;
+                    vizSlides[i].value =calVal;
+                    //vizSlides[i].value = values[i];
+                    DateTime datePlay = DateTime.Parse((string)arrDates[i]);
+                    string dayStr = datePlay.DayOfWeek.ToString().Substring(3);
+
+                }
+
+            }*/
         }
         else
         {

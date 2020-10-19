@@ -282,6 +282,36 @@ public class PlayerData
 
         return result;
     }
+
+    public ArrayList GetDailyPlayDates()
+    {
+        ArrayList arr = new ArrayList();
+
+        foreach (DailyAttempts item in this.dailyAttemptsList)
+        {
+            arr.Add(item.key);
+        }
+
+        return arr;
+
+    }
+    public ArrayList GetAllDailyPlayMins() //Returns list of the sum of gameplay in mins for each day
+    {
+        ArrayList arr = new ArrayList();
+        
+        foreach (DailyAttempts item in this.dailyAttemptsList)
+        {
+            double result = 0;
+            foreach (AttemptEntry aEntry in item.aList)
+            {
+                result += aEntry.time;
+            }
+            result = Math.Round(result / 60, 2);
+            arr.Add(result);
+        }
+
+        return arr;
+    }
     public void UpdateAttemptsDict(int point, int time, int level, string type) //update using raw data: points and level.
     {
         //Update attemptsdict (for use locally)
