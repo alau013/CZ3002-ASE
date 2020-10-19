@@ -17,16 +17,18 @@ public class DashboardScript : MonoBehaviour
     public TMP_Text StatsDate;
     public TMP_Text StreakText;
     public TMP_Text GameplayText;
-    public TMP_Text MazesText;
-    public TMP_Text ChallengesText;
+    public TMP_Text AttemptsText;
     public Button TypeButton;
     public GameObject HelpScreen;
     private bool helpToggle = false;
+    private PlayerPrefUI playerInfo;
 
     private int vizMode = 1; //0 - Progress, 1 - Stats
     private int numModes = 2;
     private void OnEnable()
     {
+        playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
+        playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username);
         if (vizMode == 0)
         {
             //Generate Progress vizualization
@@ -51,10 +53,9 @@ public class DashboardScript : MonoBehaviour
             Stats.SetActive(true);
             //Test values. to load actual values next time..
             StatsDate.text = System.DateTime.Now.ToString();
-            StreakText.text = "7";
-            GameplayText.text = "11";
-            MazesText.text = "3";
-            ChallengesText.text = "2";
+            StreakText.text = playerInfo.Data.streak.ToString();
+            GameplayText.text = playerInfo.Data.GetDailyPlayMins().ToString();
+            AttemptsText.text = playerInfo.Data.GetDailyAttemptsCount().ToString();
 
         }
         

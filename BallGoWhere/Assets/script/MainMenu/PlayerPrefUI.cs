@@ -246,18 +246,42 @@ public class PlayerData
         return JsonUtility.FromJson<PlayerData>(jsonStr);
     }
 
-    /*
-    public List<DataEntry> loadDailyPlayList()
+    public int GetDailyAttemptsCount()
     {
-        if (!jsonDailyPlayList.Equals(""))
+        int result = 0;
+        String currDateStr = System.DateTime.Now.Date.ToString();
+        foreach (DailyAttempts item in this.dailyAttemptsList)
         {
-            return JsonUtility.FromJson<List<DataEntry>>(this.jsonDailyPlayList);
+            if (item.CompareKey(currDateStr))
+            {
+                result = item.aList.Count;
+                break;
+            }
         }
-        else
+
+        return result;
+    }
+
+    public double GetDailyPlayMins()
+    {
+        double result = 0;
+        String currDateStr = System.DateTime.Now.Date.ToString();
+        foreach (DailyAttempts item in this.dailyAttemptsList)
         {
-            return new List<DataEntry>();
+            if (item.CompareKey(currDateStr))
+            {
+                foreach (AttemptEntry aEntry in item.aList)
+                {
+                    result += aEntry.time;
+                }
+                break;
+            }
         }
-    }*/
+
+        result = Math.Round(result / 60,2);
+
+        return result;
+    }
     public void UpdateAttemptsDict(int point, int time, int level, string type) //update using raw data: points and level.
     {
         //Update attemptsdict (for use locally)

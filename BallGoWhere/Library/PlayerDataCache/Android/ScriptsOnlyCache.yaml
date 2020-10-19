@@ -1190,7 +1190,7 @@ ScriptsOnlyBuild:
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: d0761a4f5c650898600e921b10ab269a
+      Hash: 608ac0e27862161cc229f34ad7435da4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DashboardScript
