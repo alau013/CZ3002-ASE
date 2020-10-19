@@ -120,69 +120,47 @@ public class LoginMenu : MonoBehaviour
             if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
             {
                 //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
-                bool validLogin = true;
-                if (!validLogin) //modify to check if login is valid by reading the result json string.
-                {
-                    this.LoginWarningText.text = "Invalid Username! Please try another...";
-                }
-                else
-                {
-                    LoginMenu.loginSuccess = true;
-                    loginData = (LoginResponseAPI)arr[1];
-                    usernamesList = playerInfo.getNameList();
-                    playerInfo.Data.setUsername(nameStr);
-                    playerInfo.SaveDataToPlayerPref();
+                
+                LoginMenu.loginSuccess = true;
+                loginData = (LoginResponseAPI)arr[1];
+                usernamesList = playerInfo.getNameList();
+                playerInfo.Data.setUsername(nameStr);
+                //playerInfo.SaveDataToPlayerPref();
 
-                    if (usernamesList.Count > 0)
+                if (usernamesList.Count > 0)
+                {
+                    if (usernamesList.Contains(nameStr)) //load old username and username-linked playerpref data
                     {
-                        if (usernamesList.Contains(nameStr)) //load old username and username-linked playerpref data
-                        {
-                            playerInfo.LoadDataFromPlayerPref(nameStr);
+                        playerInfo.LoadDataFromPlayerPref(nameStr);
+                        Debug.Log("[LoadDataFromPlayerPref]: " + playerInfo.Data.ExportToJson());
 
-                        }
-                        else //save new username
-                        {
-                            playerInfo.Data.setUsername(nameStr);
-                        }
                     }
                     else //save new username
                     {
                         playerInfo.Data.setUsername(nameStr);
-
                     }
-
-                    playerInfo.Data.LoadLoginData(loginData);
-                    playerInfo.SaveDataToPlayerPref();
-                    Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
-                    LoginMenu.playerName = nameStr;
-                    Debug.Log(playerName + "logged in");
-                    if (playerInfo.Data.dailyPlayList.Count > 0)
-                    {
-                        Debug.Log("[dailyPlayList[0]]: " + playerInfo.Data.dailyPlayList[0].GetKey().ToString());
-
-                    }
-                    
-                    //test update challenge
-                    /*
-                    string cid = "5f833a1688dbaa83b57a6d65"; //challengeId
-                    ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerInfo.Data.username,9,cid);
-                    if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
-                    {
-                        Debug.Log("PutUpdateChallenge() failed!");
-                    }
-                    else
-                    {
-                        Debug.Log("LoginMenu.cs test [PutUpdateChallenge()]: " + arrTest[0]);
-                    }
-                    */
-
-                    //test create challenge
-                    //ArrayList arrTest = AccessAPI.PostCreateChallenge("2020-10-07", playerInfo.Data.username, "standard", 1);
-                    //Debug.Log(arrTest[0]);
-
-                    LoginScreen.SetActive(false);
-                    MainScreen.SetActive(true);
                 }
+                else //save new username
+                {
+                    playerInfo.Data.setUsername(nameStr);
+
+                }
+
+                playerInfo.Data.LoadLoginData(loginData);
+                playerInfo.SaveDataToPlayerPref();
+                Debug.Log("[playerInfo.Data]: " + playerInfo.Data.ExportToJson());
+                LoginMenu.playerName = nameStr;
+                Debug.Log(playerName + "logged in");
+                if (playerInfo.Data.dailyPlayList.Count > 0)
+                {
+                    Debug.Log("[dailyPlayList[0]]: " + playerInfo.Data.dailyPlayList[0].GetKey().ToString());
+
+                }
+                    
+
+                LoginScreen.SetActive(false);
+                MainScreen.SetActive(true);
+                
                 
             }
 

@@ -28,7 +28,7 @@ public class APIScript : MonoBehaviour
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
-        playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username); //load latest data from playerpref..
+        //playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username); //load latest data from playerpref..
         
     }
     public ChuckNorris GetChuckling()

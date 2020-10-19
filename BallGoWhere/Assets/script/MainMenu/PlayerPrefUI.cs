@@ -30,7 +30,9 @@ public class PlayerPrefUI : MonoBehaviour
         if (PlayerPrefs.HasKey(nameStr))
         {
             string jsonStr = PlayerPrefs.GetString(nameStr);
-            this.SetData(JsonUtility.FromJson<PlayerData>(jsonStr));
+            Debug.Log("LoadDataFromPlayerPrefs: " + jsonStr);
+            this.SetData(this.Data.LoadFromJson(jsonStr));
+            //this.SetData(JsonUtility.FromJson<PlayerData>(jsonStr));
             //this.Data.loadDailyPlayList();
         }
         else
@@ -53,6 +55,7 @@ public class PlayerPrefUI : MonoBehaviour
             this.users.nameList.Add(this.Data.username);
         }
         PlayerPrefs.SetString("Usernames", JsonUtility.ToJson(this.users)); //save to list of usernames on device
+        Debug.Log("Saving: " + this.Data.ExportToJson());
         PlayerPrefs.SetString(this.Data.getUsername(), this.Data.ExportToJson()); //save user's data to device
     }
 
