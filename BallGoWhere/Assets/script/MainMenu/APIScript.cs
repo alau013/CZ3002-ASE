@@ -24,7 +24,7 @@ public class APIScript : MonoBehaviour
     private PlayerPrefUI playerInfo;
     private bool loginFlag = false;
     private bool leadboardFlag = false;
-    private string localHostIp = "http://192.168.1.15:3000"; //.15 for Jaslyn, .5 for Alan.
+    private string localHostIp = "http://192.168.1.5:3000"; //.15 for Jaslyn, .5 for Alan.
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
@@ -181,12 +181,12 @@ public class APIScript : MonoBehaviour
     public ArrayList GetLeaderboard(string mode)
     {
         ArrayList resultsList = new ArrayList();
-        String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
+        String dateStr = System.DateTime.Now.ToString("yyyy-MM-dd");
         string apiLink = "";
 
         if (mode == "weekly")
         {
-            apiLink = String.Format("/score/leaderboard/weekly?date=\"{0}\"", dateStr);
+            apiLink = String.Format("/score/leaderboard/weekly?date={0}", dateStr);
         }
         else if (mode == "special")
         {

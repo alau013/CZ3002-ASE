@@ -28,7 +28,7 @@ public class Goal : MonoBehaviour
     }
         
 
-     private void OnTriggerEnter(Collider other) 
+     private void OnTriggerEnter(Collider other) // called when ball (player) reach the goal
     {
         if (other.tag == "Player")
         {
@@ -73,6 +73,8 @@ public class Goal : MonoBehaviour
                 Debug.Log("challenge failed");
             }
 
+            string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,"special"));
             PlayerPrefs.DeleteKey("cc");
             PlayerPrefs.Save();
             
@@ -82,19 +84,22 @@ public class Goal : MonoBehaviour
         { 
             string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
 
-            playerinfo.Data.addAttempt(new AttemptEntry(day,score,gameLevel));
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,"standard"));
             playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
-
             toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
+           
             
+            /* old code
             if(highScrSuccess==true)
             {
                 playerinfo.SaveDataToPlayerPref();
             }
+            */
 
             Debug.Log("from game level:" + playerinfo.Data.ExportToJson());
             //Debug.Log("player score: "+score);
         }
+        playerinfo.SaveDataToPlayerPref();
         }
     }
 
@@ -119,16 +124,20 @@ public class Goal : MonoBehaviour
             currHighscore =0;
         }
         WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your current score: "+ (score).ToString() +"   Personal High score: "+currHighscore.ToString();
-        if (score > currHighscore+1)
+        if (score > currHighscore)
         {
             Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
             toCreateChallenge(level);
-            ArrayList arr = AccessAPI.PostLeaderboard(playerinfo.Data.username, leaderboardType, new StandardEntryAPI(score, time, date_time, level));
+            ArrayList arr = AccessAPI.PostLeaderboard(playerinfo.Data.username, "standard", new StandardEntryAPI(score, time, date_time, level));
+            Debug.Log("tttttttttttttttttttttttttttttttttttttttttttttttt" +arr);
+            ArrayList arr2 = AccessAPI.PostLeaderboard(playerinfo.Data.username, "weekly", new StandardEntryAPI(score, time, date_time, level));
             if (!arr[0].Equals("ERROR"))
             {
                 LoginResponseAPI leaderboardData = (LoginResponseAPI)arr[1];
+                LoginResponseAPI leaderboardData2 = (LoginResponseAPI)arr2[1];
                 playerinfo.Data.LoadLoginData(leaderboardData);
-                playerinfo.SaveDataToPlayerPref();
+                playerinfo.Data.LoadLoginData(leaderboardData2);
+               
                 highScrSuccess = true;
                 
             }
