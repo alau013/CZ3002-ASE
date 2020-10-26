@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Used to get level from unity scene
 public class levelHandle : MonoBehaviour
 {
     // Start is called before the first frame update

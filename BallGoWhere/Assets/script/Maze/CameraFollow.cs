@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// camera follow player. To be used for special level
 public class CameraFollow : MonoBehaviour
 {
     public Transform PlayerTransform;

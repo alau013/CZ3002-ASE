@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// timer during gameplay
 public class timeController : MonoBehaviour
 {
    public static timeController instance;

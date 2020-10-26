@@ -30,7 +30,7 @@ public class Goal : MonoBehaviour
 
      private void OnTriggerEnter(Collider other) // called when ball (player) reach the goal
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player") // when player is the one that trigger the collider
         {
         int gameLevel = GameObject.Find("levelHandle").GetComponent<levelHandle>().levelInfo;
         string gameType = GameObject.Find("levelHandle").GetComponent<levelHandle>().type;
@@ -42,7 +42,7 @@ public class Goal : MonoBehaviour
         Time.timeScale = 0f;
         WinPanel.SetActive(true);
         int score = 600 / (TimeController.GetPlayTime());
-         playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user"));
+         playerinfo.LoadDataFromPlayerPref(PlayerPrefs.GetString("user")); //get current user info
 
          Debug.Log(playerinfo.Data.challengeHolder.Count);
         
@@ -55,7 +55,7 @@ public class Goal : MonoBehaviour
 
             if (TimeController.GetPlayTime() < oppTiming)
             {
-                ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerinfo.Data.username,TimeController.GetPlayTime(),challengeID);
+                ArrayList arrTest = AccessAPI.PutUpdateChallenge(playerinfo.Data.username,TimeController.GetPlayTime(),challengeID); // automatic put up the challenge if highscore
                 WinPanel.transform.Find("scoreText").GetComponent<Text>().text = "your timing: "+ TimeController.GetPlayTime().ToString() +" opponent timing: "+oppTiming.ToString();
                 if(arrTest[0].Equals("ERROR") || arrTest[0].Equals("INVALID"))
                 {
@@ -74,17 +74,17 @@ public class Goal : MonoBehaviour
             }
 
             string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,"special"));
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,"special")); //save attempt
             PlayerPrefs.DeleteKey("cc");
             PlayerPrefs.Save();
             
 
         }
-        else//no challengeholder object = normal gameplay
+        else// normal gameplay
         { 
             string day = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm");
 
-            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,"standard"));
+            playerinfo.Data.addAttempt(new AttemptEntry(day,score,TimeController.GetPlayTime(),gameLevel,gameType)); //add attempt
             playerinfo.Data.addDailyPlay((float)TimeController.GetPlayTime());
             toSubmitLeaderboard(gameType,score,TimeController.GetPlayTime(),day,gameLevel);
            
@@ -128,10 +128,9 @@ public class Goal : MonoBehaviour
         {
             Debug.Log("Current highscore is " + currHighscore + ". Submitting new highscore: " + score);
             toCreateChallenge(level);
-            ArrayList arr = AccessAPI.PostLeaderboard(playerinfo.Data.username, "standard", new StandardEntryAPI(score, time, date_time, level));
-            Debug.Log("tttttttttttttttttttttttttttttttttttttttttttttttt" +arr);
-            ArrayList arr2 = AccessAPI.PostLeaderboard(playerinfo.Data.username, "weekly", new StandardEntryAPI(score, time, date_time, level));
-            if (!arr[0].Equals("ERROR"))
+            ArrayList arr = AccessAPI.PostLeaderboard(playerinfo.Data.username, leaderboardType, new StandardEntryAPI(score, time, date_time, level)); //post to standard/speical leaderboard
+            ArrayList arr2 = AccessAPI.PostLeaderboard(playerinfo.Data.username, "weekly", new StandardEntryAPI(score, time, date_time, level)); // post to weekly
+            if (!arr[0].Equals("ERROR")) //error handler
             {
                 LoginResponseAPI leaderboardData = (LoginResponseAPI)arr[1];
                 LoginResponseAPI leaderboardData2 = (LoginResponseAPI)arr2[1];

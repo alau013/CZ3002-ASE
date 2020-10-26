@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+// Countdown before game start
 public class CountdownController : MonoBehaviour
 {
     public int countdownTime; 

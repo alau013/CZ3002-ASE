@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//Pause menu function
 public class PauseFunction : MonoBehaviour
 {
     // Start is called before the first frame update
