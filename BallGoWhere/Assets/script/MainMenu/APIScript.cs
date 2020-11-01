@@ -18,24 +18,22 @@ using System.Net.Http;
 //loading of data to DB when app is closed/exited (see OnFocus() method here).
 public class APIScript : MonoBehaviour
 {
-    public int timeOut;//SET THIS ONLY FROM UNITY
-    //public string localHostIp; //SET THIS ONLY FROM UNITY!
+    public int timeOut;
     public GameObject PrefObject;
     private PlayerPrefUI playerInfo;
     private bool loginFlag = false;
     private bool leadboardFlag = false;
-    private string localHostIp = "http://192.168.1.5:3000"; //.15 for Jaslyn, .5 for Alan.
+    private string localHostIp = "https://ballgowhere-backend.herokuapp.com"; //Using the server hosted on cloud (heroku).
+    //private string localHostIp = "http://192.168.1.5:3000"; //Using the server hosted on developers' laptop
     public void OnEnable()
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
-        //playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username); //load latest data from playerpref..
         
     }
-    public ChuckNorris GetChuckling()
+    public ChuckNorris GetChuckling() //Test function for getting API.
     {
         string apiLink = "https://api.chucknorris.io/jokes/random";
-        //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(String.Format("http://api.openweathermap.org/data/2.5/weather?id={0}&APPID={1}", CityId, API_KEY));
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
+       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiLink);
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string jsonResponse = reader.ReadToEnd();
@@ -46,7 +44,7 @@ public class APIScript : MonoBehaviour
     }
 
     
-    public string GetResponse(string apiLink)
+    public string GetResponse(string apiLink) //Function to get API response from link.
     {
         apiLink = this.localHostIp + apiLink;
         Debug.Log("this.localHostIp: "+this.localHostIp);
@@ -75,7 +73,7 @@ public class APIScript : MonoBehaviour
         return jsonResponse;
     }
 
-    public string Post2(string apiLink, object dataObject)
+    public string Post2(string apiLink, object dataObject) //Updated function to POST API, given link and object.
     {
         apiLink = this.localHostIp + apiLink;
         string jsonStr = JsonUtility.ToJson(dataObject);
@@ -116,7 +114,7 @@ public class APIScript : MonoBehaviour
 
     }
 
-    public string Put(string apiLink, object dataObject)
+    public string Put(string apiLink, object dataObject) //Function to PUT API
     {
         apiLink = this.localHostIp + apiLink;
         string jsonStr = JsonUtility.ToJson(dataObject);
@@ -158,7 +156,7 @@ public class APIScript : MonoBehaviour
     }
 
    
-    public ArrayList GetLeaderboard()
+    public ArrayList GetLeaderboard() //(deprecated) Function to retrieve weekly leaderboard
     {
         ArrayList resultsList = new ArrayList();
         String dateStr = System.DateTime.Now.ToString(@"yyyy-MM-dd");
@@ -178,7 +176,7 @@ public class APIScript : MonoBehaviour
         return resultsList;
     }
 
-    public ArrayList GetLeaderboard(string mode)
+    public ArrayList GetLeaderboard(string mode) //Updated Function for Leaderboards API access.
     {
         ArrayList resultsList = new ArrayList();
         String dateStr = System.DateTime.Now.ToString("yyyy-MM-dd");
@@ -230,7 +228,7 @@ public class APIScript : MonoBehaviour
         return resultsList;
 
     }
-    public ArrayList GetChallenges() //actual function for challenge api access.
+    public ArrayList GetChallenges() //Updated function for Challenge API access.
     {
 
         ArrayList resultsList = new ArrayList();
@@ -250,7 +248,7 @@ public class APIScript : MonoBehaviour
     }
 
 
-    public ArrayList PostLogin(string username)
+    public ArrayList PostLogin(string username) //Function for Login API.
     {
         ArrayList arr = new ArrayList();
         string deviceID = SystemInfo.deviceUniqueIdentifier;
@@ -284,7 +282,7 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
-    public ArrayList PostCreateChallenge(string date_time, string name, string type, int level)
+    public ArrayList PostCreateChallenge(string date_time, string name, string type, int level) //Function to Post to Challenges API
     {
         ArrayList arr = new ArrayList();
         string deviceID = SystemInfo.deviceUniqueIdentifier;
@@ -315,7 +313,7 @@ public class APIScript : MonoBehaviour
         }
         return arr;
     }
-    public ArrayList PutStartChallenge(string username, string challengeId)
+    public ArrayList PutStartChallenge(string username, string challengeId) //Function to PUT Challenges API (start challenge).
     {   
         ArrayList arr = new ArrayList();
         string result = "";
@@ -344,7 +342,7 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
-    public ArrayList PutUpdateChallenge(string username, int timing, string challengeId)
+    public ArrayList PutUpdateChallenge(string username, int timing, string challengeId) //Function to PUT Challenges API (Update challenge score).
     {
         ArrayList arr = new ArrayList();
         string result = "";
@@ -373,9 +371,8 @@ public class APIScript : MonoBehaviour
         return arr;
     }
 
-    public ArrayList PostLeaderboard(string username, string leaderboardType, StandardEntryAPI inputEntry)
+    public ArrayList PostLeaderboard(string username, string leaderboardType, StandardEntryAPI inputEntry) //POST entry to Leaderboard API
     {
-         //see challengesscript.cs for sample implementation (search "test").
         ArrayList arr = new ArrayList();
         LoginResponseAPI leaderboardData = new LoginResponseAPI();
         this.leadboardFlag = false;
@@ -388,7 +385,7 @@ public class APIScript : MonoBehaviour
     }
 
 
-    public ArrayList PostAttempts(string username, AttemptList aList)
+    public ArrayList PostAttempts(string username, AttemptList aList) //POST attempts to server.
     {
         ArrayList arr = new ArrayList();
         string deviceID = SystemInfo.deviceUniqueIdentifier;
@@ -419,7 +416,7 @@ public class APIScript : MonoBehaviour
         }
         return arr;
     }
-    public void OnApplicationFocus(bool focus)
+    public void OnApplicationFocus(bool focus) //When application's focus changes.
     {
         if (focus) //user loads the app 
         {
@@ -460,6 +457,7 @@ public class APIScript : MonoBehaviour
     
 }
 
+//Classes here are for serializing the data into JSON files for POST/PUT, as well as to retrieve the serialized JSON data from GET.
 [Serializable]
 public class ChuckNorris
 {
