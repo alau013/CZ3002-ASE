@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
+
+/*
+ * This class implements LeaderboardScripts.cs This provides the logic to handle the interactions of the user with the user interface.
+ * This allows the user to view the leaderboard scores
+ *
+ * @author Tay Jaslyn
+ * 
+ */
 public class LeaderboardScript : MonoBehaviour
 {
     private Transform scrollView;
@@ -140,12 +148,10 @@ public class LeaderboardScript : MonoBehaviour
 
 
     }
-    //Represents a single leaderboard entry
-
-    private void CreateLeaderboardEntryTransform(LeaderboardEntry leaderboardEntry, Transform container, List<Transform> transformList)
+    
+    //Create entry in the leaderboard display.
+    private void CreateLeaderboardEntryTransform(LeaderboardEntry leaderboardEntry, Transform container, List<Transform> transformList) 
     {
-        
-
         float templateHeight = 60f;
         //generate objects for each row
         Transform entryTransform = Instantiate(entryTemplate, container);

@@ -6,6 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+
+/*
+ * This class implements SelectLevelScript.cs This provides the logic to handle the interactions of the user with the user interface.
+ * This allows the user to view the available levels and start the gameplay.
+ *
+ * @author Tay Jaslyn
+ * 
+ */
 public class SelectLevelScript : MonoBehaviour
 {
     public Button TypeButton;
@@ -31,7 +39,7 @@ public class SelectLevelScript : MonoBehaviour
         playerInfo.LoadDataFromPlayerPref(LoginMenu.playerName);
         int level = playerInfo.Data.level;
 
-        if (vizMode == 0)
+        if (vizMode == 0) //Loads the standard levels.
         {
             APIScript AccessAPI = APIObject.GetComponent<APIScript>();
             ArrayList arr = AccessAPI.PostLogin(LoginMenu.playerName);
@@ -61,9 +69,8 @@ public class SelectLevelScript : MonoBehaviour
                     if (viewPort.Find("Content") != null)
                     {
                         entryContainer = viewPort.Find("Content");
-                        //int numLevels = entryContainer.childCount;
                         Debug.Log("[level]: " + level);
-                        if (level < 4)
+                        if (level < 4) //manually sets available levels according to user's current level.
                         {
                             entryContainer.Find("LevelFourButton").GetComponent<Button>().interactable = false;
                             entryContainer.Find("LevelFiveButton").GetComponent<Button>().interactable = false;

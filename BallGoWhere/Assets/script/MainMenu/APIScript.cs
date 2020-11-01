@@ -12,10 +12,15 @@ using UnityEngine.Networking;
 using System.Security.Cryptography;
 using System.Text;
 using System.Net.Http;
-//using System.Diagnostics;
 
-//Create an empty game object in each Scene, that links to this APIScript.cs. Then, will be able to access the methods here, as well as
-//loading of data to DB when app is closed/exited (see OnFocus() method here).
+
+/*
+ * This class implements APIScripts.cs This provides the data layer for the app to communicate with the API.
+ * An empty game object in each scene will link to this APIScript.cs to allow access to the API.
+ * @author Tay Jaslyn
+ * 
+ */
+
 public class APIScript : MonoBehaviour
 {
     public int timeOut;

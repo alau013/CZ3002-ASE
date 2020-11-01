@@ -7,6 +7,13 @@ using System;
 using System.Globalization;
 using System.Linq;
 
+/*
+ * This class implements LoginMenu.cs This provides the logic to handle the interactions of the user with the user interface.
+ * This allows the user to login to the app using an existing username or using a new unique username.
+ *
+ * @author Tay Jaslyn
+ * 
+ */
 public class LoginMenu : MonoBehaviour
 {
     public GameObject APIObject;
@@ -32,7 +39,7 @@ public class LoginMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll(); //use this to reset the device's local data (PlayerPrefs).
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         if (loginSuccess)
         {
@@ -57,20 +64,10 @@ public class LoginMenu : MonoBehaviour
                 }
             }
             
-
-            /*
-            loginEntryList = new List<LoginEntry>()
-        {
-            new LoginEntry{name = "ahHuat10"},
-            new LoginEntry{name = "bond179"},
-            new LoginEntry{name = "doraemon"},
-        };
-        */
             loginEntryList = new List<LoginEntry>();
             
-            usernamesList = playerInfo.getNameList();
-            //usernamesList = playerInfo.availablePlayers();
-            
+            usernamesList = playerInfo.getNameList(); //retrieves list of available usernames on the device
+
             if (usernamesList.Count > 0)
             {
                 foreach (string username in usernamesList)
@@ -79,7 +76,6 @@ public class LoginMenu : MonoBehaviour
                 }
             }
             
-            //test above
             loginEntryTransformList = new List<Transform>();
             if (loginEntryList.Count > 0)
             {
@@ -114,22 +110,20 @@ public class LoginMenu : MonoBehaviour
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
 
         
-        if (nameStr != "")
+        if (nameStr != "") //checks that username is not blank
         {
-            ArrayList arr = AccessAPI.PostLogin(nameStr);
+            ArrayList arr = AccessAPI.PostLogin(nameStr); //POST to Login API, using APIScript.cs.
             if (!arr[0].Equals("ERROR") && !arr[0].Equals("INVALID"))
             {
-                //PlayerPrefs.DeleteAll(); //use this to reset PlayerPrefs when testing
                 
                 LoginMenu.loginSuccess = true;
                 loginData = (LoginResponseAPI)arr[1];
                 usernamesList = playerInfo.getNameList();
                 playerInfo.Data.setUsername(nameStr);
-                //playerInfo.SaveDataToPlayerPref();
 
                 if (usernamesList.Count > 0)
                 {
-                    if (usernamesList.Contains(nameStr)) //load old username and username-linked playerpref data
+                    if (usernamesList.Contains(nameStr)) //loads username-linked playerpref data
                     {
                         playerInfo.LoadDataFromPlayerPref(nameStr);
                         Debug.Log("[LoadDataFromPlayerPref]: " + playerInfo.Data.ExportToJson());
@@ -164,13 +158,13 @@ public class LoginMenu : MonoBehaviour
                 
             }
 
-            else
+            else 
             {
-                if (arr[0].Equals("INVALID"))
+                if (arr[0].Equals("INVALID")) //Error message is displayed to user if username is invalid.
                 {
                     this.LoginWarningText.text = "Username is already taken! Please try another.";
                 }
-                else
+                else //error message is displayed to user if the app cannot connect to the server.
                 {
                     this.LoginWarningText.text = "Connection Error! Please try again!";
                 }
@@ -184,9 +178,8 @@ public class LoginMenu : MonoBehaviour
         
     }
 
-    public void toSubmitLeaderboard(string leaderboardType, int score, int time, string date_time, int level)
+    public void toSubmitLeaderboard(string leaderboardType, int score, int time, string date_time, int level) //Dummy test function for development purposes.
     {
-        //test leaderboard post method.
         APIScript AccessAPI = APIObject.GetComponent<APIScript>();
         int currHighscore = 0;
         currHighscore = playerInfo.Data.getLeaderboardScore(leaderboardType, level);
@@ -211,13 +204,13 @@ public class LoginMenu : MonoBehaviour
         }
         
     }
-    public static void LogOut()
+    public static void LogOut() //Logs the user out
     {
         LoginMenu.loginSuccess = false;
         LoginMenu.playerName = null;
     }
 
-    private void ResetContent(Transform entryContainer)
+    private void ResetContent(Transform entryContainer) //resets display of usernames in the login screen.
     {
         var children = new List<GameObject>();
         foreach (Transform child in entryContainer) {
@@ -232,8 +225,8 @@ public class LoginMenu : MonoBehaviour
 
 
     }
-    //Represents a single leaderboard entry
-    private void CreateLoginEntryTransform(LoginEntry loginEntry, Transform container, List<Transform> transformList)
+    
+    private void CreateLoginEntryTransform(LoginEntry loginEntry, Transform container, List<Transform> transformList) //Creates an entry on the display of usernames.
     {
         float templateHeight = 60f;
         //generate objects for each row

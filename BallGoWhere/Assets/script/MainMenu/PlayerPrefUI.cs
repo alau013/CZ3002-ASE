@@ -8,10 +8,15 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
 
-
+/*
+ * This class implements PlayerPrefUI.cs This provides the data layer for the app to communicate with the PlayerPrefs file (local data on the device).
+ * An empty game object in each scene will link to this PlayerPrefUI.cs to allow access to the PlayerPrefs file.
+ * @author Tay Jaslyn
+ * 
+ */
 public class PlayerPrefUI : MonoBehaviour
 {
-    public PlayerData Data = new PlayerData();
+    public PlayerData Data = new PlayerData(); //PlayerData class object which contains the user data.
 
 
     public DeviceUsernames users = new DeviceUsernames();
@@ -27,13 +32,11 @@ public class PlayerPrefUI : MonoBehaviour
 
     public void LoadDataFromPlayerPref(string nameStr)
     {
-        if (PlayerPrefs.HasKey(nameStr))
+        if (PlayerPrefs.HasKey(nameStr)) //loads user data from PlayerPrefs file. Refer to the PlayerData class in this script for the user data.
         {
             string jsonStr = PlayerPrefs.GetString(nameStr);
             Debug.Log("LoadDataFromPlayerPrefs: " + jsonStr);
             this.SetData(this.Data.LoadFromJson(jsonStr));
-            //this.SetData(JsonUtility.FromJson<PlayerData>(jsonStr));
-            //this.Data.loadDailyPlayList();
         }
         else
         {
@@ -42,7 +45,7 @@ public class PlayerPrefUI : MonoBehaviour
 
     }
 
-    public void SaveDataToPlayerPref()
+    public void SaveDataToPlayerPref() //Saves current user data to the PlayerPrefs file.
     {
         if (PlayerPrefs.HasKey("Usernames"))
         {
@@ -59,7 +62,7 @@ public class PlayerPrefUI : MonoBehaviour
         PlayerPrefs.SetString(this.Data.getUsername(), this.Data.ExportToJson()); //save user's data to device
     }
 
-    public List<string> getNameList()
+    public List<string> getNameList() //Retrieve list of existing users from the PlayerPrefs file.
     {
         List<string> newList = new List<string>();
         if (PlayerPrefs.HasKey("Usernames"))
@@ -74,6 +77,11 @@ public class PlayerPrefUI : MonoBehaviour
 
 
 }
+
+//Serializable classes for saving/retrieval of data from PlayerPrefs 
+//This is because PlayerPrefs does not allow the direct saving of class objects - only integers/floats/strings. Hence, we will first
+//serialize the class objects into json strings to save them.
+
 [Serializable]
 public class DeviceUsernames
 {
@@ -220,7 +228,7 @@ public class DailyAttempts
 }
 
 [Serializable]
-public class PlayerData
+public class PlayerData //This class contains the user data that is saved to/retrieved from the PlayerPrefs file.
 {
     public string username;
     public int streak = 0;
@@ -233,7 +241,6 @@ public class PlayerData
     public ArrayList challengeHolder = new ArrayList();
     public List<DataEntry> dailyPlayList = new List<DataEntry>();
     public List<DailyAttempts> dailyAttemptsList = new List<DailyAttempts>();
-    //public Dictionary<DateTime, int> dailyPlayDict = new Dictionary<DateTime, int>();
     public Dictionary<DateTime, List<AttemptEntry>> attemptsDict = new Dictionary<DateTime, List<AttemptEntry>>();
 
     public string ExportToJson()
@@ -246,7 +253,7 @@ public class PlayerData
         return JsonUtility.FromJson<PlayerData>(jsonStr);
     }
 
-    public int GetDailyAttemptsCount()
+    public int GetDailyAttemptsCount() //retrieves the count of attempts for the day.
     {
         int result = 0;
         String currDateStr = System.DateTime.Now.Date.ToString();
@@ -262,7 +269,7 @@ public class PlayerData
         return result;
     }
 
-    public double GetDailyPlayMins()
+    public double GetDailyPlayMins() //retrieves the sum of minutes in gameplay for the day.
     {
         double result = 0;
         String currDateStr = System.DateTime.Now.Date.ToString();
@@ -283,7 +290,7 @@ public class PlayerData
         return result;
     }
 
-    public ArrayList GetDailyPlayDates()
+    public ArrayList GetDailyPlayDates() 
     {
         ArrayList arr = new ArrayList();
 
@@ -315,7 +322,6 @@ public class PlayerData
     public void UpdateAttemptsDict(int point, int time, int level, string type) //update using raw data: points and level.
     {
         //Update attemptsdict (for use locally)
-        //DateTime currDate = System.DateTime.Now.Date;
         DateTime currDate = System.DateTime.Now;
         string dateTimeStr = currDate.ToString("MM/dd/yyyy HH:mm:ss");
         currDate = currDate.Date;
@@ -346,7 +352,6 @@ public class PlayerData
     public void UpdateAttemptsDict(AttemptEntry inputAttempt) //update using AttemptEntry object.
     {
         //Update attemptsdict (for use locally)
-        //DateTime currDate = System.DateTime.Now.Date;
         DateTime currDate = System.DateTime.Now;
         string dateTimeStr = currDate.ToString("MM/dd/yyyy HH:mm:ss");
         currDate = currDate.Date;
@@ -374,9 +379,8 @@ public class PlayerData
         }
     }
 
-    public void UpdateDailyPlayDict(int newTiming)
+    public void UpdateDailyPlayDict(int newTiming) //Updates dictionary of gameplay mins per day, using current date.
     {
-        //string dateStr = System.DateTime.Now.Date.ToString(@"yyyy-MM-dd");
         DateTime currDate = System.DateTime.Now.Date;
         String dateStr = currDate.ToString();
         bool foundFlag = false;
@@ -405,9 +409,8 @@ public class PlayerData
 
     }
 
-    public void UpdateDailyPlayDict(DateTime currDate, int newTiming)
+    public void UpdateDailyPlayDict(DateTime currDate, int newTiming)//Updates dictionary of gameplay mins per day, using given date.
     {
-        //string dateStr = System.DateTime.Now.Date.ToString(@"yyyy-MM-dd");
         String dateStr = currDate.Date.ToString();
         bool foundFlag = false;
         foreach (DataEntry item in dailyPlayList)
@@ -433,7 +436,7 @@ public class PlayerData
         this.UpdateLastActive();
     }
 
-    public int GetDailyPlayFromList(DateTime givenDate)
+    public int GetDailyPlayFromList(DateTime givenDate) //Gets sum of daily play minutes for given date.
     {
         int result = 0;
         String dateStr = givenDate.Date.ToString();
@@ -447,7 +450,7 @@ public class PlayerData
 
         return result;
     }
-    public void UpdateLastActive() //call this each time the player completes a level.
+    public void UpdateLastActive() //Update last active date of gameplay.
     {
         DateTime currDate = System.DateTime.Now;
         string currDateStr = currDate.Date.ToString();
@@ -460,11 +463,11 @@ public class PlayerData
                 TimeSpan value = currDate.Subtract(lastActiveDate);
                 if (value.Days > 1)
                 {
-                    this.resetStreak();
+                    this.resetStreak(); //reset streak to 0.
                 }
                 else
                 {
-                    this.addStreak();
+                    this.addStreak(); //adds on to streak.
                 }
             }
 
@@ -473,18 +476,17 @@ public class PlayerData
         this.lastActive = currDateStr;
 
     }
-    public void LoadLoginData(LoginResponseAPI loginData)
+    public void LoadLoginData(LoginResponseAPI loginData) //Loads login response data from the API
     {
         this.username = loginData.name;
         this.level = loginData.levelUnlock;
-        this.standard = loginData.standard;
-        this.special = loginData.special;
-        this.weekly = loginData.weekly;
-        //skip attempts as it is not required
+        this.standard = loginData.standard; //Highest scores for each level (all-time)
+        this.special = loginData.special; //Highest scores for each level (special)
+        this.weekly = loginData.weekly; //Highest scores for each level (weekly)
     }
 
 
-    public int getLeaderboardScore(string leaderboardType, int levelNum)
+    public int getLeaderboardScore(string leaderboardType, int levelNum) //Retrieves the highscore for the leaderboard type and level number
     {
         Dictionary<string, List<StandardEntryAPI>> typeDict = new Dictionary<string, List<StandardEntryAPI>>();
         typeDict.Add("standard", this.standard);
@@ -581,7 +583,7 @@ public class PlayerData
         this.level += num;
     }
 
-    public void addAttempt(AttemptEntry inputAttempt)
+    public void addAttempt(AttemptEntry inputAttempt) //This is called after each gameplay to save the relevant data.
     {
         this.attempts.Add(inputAttempt); //add to waiting list (attempts) for upload to server
         UpdateAttemptsDict(inputAttempt); //save to local data (playerprefs) for data viz in dashboard

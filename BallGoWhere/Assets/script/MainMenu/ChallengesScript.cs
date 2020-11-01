@@ -5,6 +5,13 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System;
 
+/*
+ * This class implements ChallengesScripts.cs This provides the logic to handle the interactions of the user with the user interface.
+ * This allows the user to view and start the available challenges, as well as to view the scores of completed challenges.
+ *
+ * @author Tay Jaslyn
+ * 
+ */
 public class ChallengesScript : MonoBehaviour
 {
     public GameObject PrefObject;

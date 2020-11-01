@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+/*
+ * This class implements DashboardScript.cs This provides the logic to handle the interactions of the user with the user interface.
+ * This allows the user to view the daily statistics and weekly gameplay mins.
+ *
+ * @author Tay Jaslyn
+ * 
+ */
 public class DashboardScript : MonoBehaviour
 {
     public GameObject APIObject;
@@ -25,7 +32,7 @@ public class DashboardScript : MonoBehaviour
 
     private int vizMode = 1; //0 - Progress, 1 - Stats
     private int numModes = 2;
-    private void OnEnable()
+    private void OnEnable() //Loads the relevant data
     {
         playerInfo = PrefObject.GetComponent<PlayerPrefUI>();
         playerInfo.LoadDataFromPlayerPref(playerInfo.Data.username);
@@ -36,7 +43,7 @@ public class DashboardScript : MonoBehaviour
             Stats.SetActive(false);
             Viz.SetActive(true);
             VizCaptionObject.SetActive(true);
-            //VizCaption.enabled = true;
+            
             int[] values = { 10, 20, 30, 40, 50, 60, 70 };
             Slider[] vizSlides = Viz.GetComponentsInChildren<Slider>();
 
@@ -69,31 +76,13 @@ public class DashboardScript : MonoBehaviour
                vizSlides[dayVizDict[dayStr]].value = calVal;
             }
             
-            /*
-            for (int i = 0; i < vizSlides.Length; i++)
-            {
-                if (i < playCount)
-                {
-
-                    double hold = (double)arrDailyPlay[i] * 10;
-                    float calVal =(float)hold;
-                    vizSlides[i].value =calVal;
-                    //vizSlides[i].value = values[i];
-                    DateTime datePlay = DateTime.Parse((string)arrDates[i]);
-                    string dayStr = datePlay.DayOfWeek.ToString().Substring(3);
-
-                }
-
-            }*/
         }
         else
         {
             TypeButton.GetComponentInChildren<TMP_Text>().text = "Stats";
             Viz.SetActive(false);
             VizCaptionObject.SetActive(false);
-            //VizCaption.enabled = false;
             Stats.SetActive(true);
-            //Test values. to load actual values next time..
             StatsDate.text = System.DateTime.Now.ToString();
             StreakText.text = playerInfo.Data.streak.ToString();
             GameplayText.text = playerInfo.Data.GetDailyPlayMins().ToString();
@@ -103,19 +92,19 @@ public class DashboardScript : MonoBehaviour
         
     }
 
-    public void ToHelp()
+    public void ToHelp() //Loads help screen.
     {
         HelpScreen.SetActive(!helpToggle);
         helpToggle = !helpToggle;
     }
-    public void togglePrevMode()
+    public void togglePrevMode() //Loads previous mode (stats/weekly)
     {
         vizMode += 1;
         vizMode %= numModes;
         OnEnable();
     }
 
-    public void toggleNextMode()
+    public void toggleNextMode() //Loads next mode (stats/weekly)
     {
         vizMode -= 1;
         vizMode %= numModes;
